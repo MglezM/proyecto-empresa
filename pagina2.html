@@ -125,16 +125,41 @@
 
         .contenedor-resultados {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             gap: 25px;
             margin-top: 30px;
+            width: 100%;
+            overflow: hidden;
         }
 
         #mapa {
             width: 100%;
-            min-height: 420px;
+            max-width: 100%;
+            height: 420px;
             border-radius: 12px;
             border: 2px solid #ccc;
+            overflow: hidden;
+        }
+
+        .leaflet-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        .leaflet-pane,
+        .leaflet-tile,
+        .leaflet-marker-icon,
+        .leaflet-marker-shadow,
+        .leaflet-tile-container,
+        .leaflet-pane > svg,
+        .leaflet-pane > canvas,
+        .leaflet-zoom-box,
+        .leaflet-image-layer,
+        .leaflet-layer {
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .lista-gimnasios {
@@ -307,6 +332,8 @@
             }
         }
     </style>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 
@@ -416,10 +443,12 @@
         const API_BACKEND = "http://localhost:3000";
 
         function iniciarMapa() {
-            mapa = new google.maps.Map(document.getElementById("mapa"), {
-                center: { lat: 40.4168, lng: -3.7038 },
-                zoom: 6
-            });
+            mapa = L.map("mapa").setView([40.4168, -3.7038], 6);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(mapa);
         }
 
         function mostrarSeccion(id) {
@@ -430,7 +459,7 @@
 
             if (id === "buscador" && mapa) {
                 setTimeout(() => {
-                    google.maps.event.trigger(mapa, "resize");
+                    mapa.invalidateSize();
                 }, 200);
             }
 
@@ -489,6 +518,10 @@
             lista.innerHTML = "";
             limpiarMarcadores();
 
+            setTimeout(() => {
+                if (mapa) mapa.invalidateSize();
+            }, 200);
+
             if (!mapa) {
                 lista.innerHTML = "<p>El mapa todavía no se ha cargado. Revisa tu API key de Google Maps.</p>";
                 return;
@@ -496,12 +529,11 @@
 
             if (gimnasios.length === 0) {
                 lista.innerHTML = "<p>No se encontraron gimnasios con esos filtros.</p>";
-                mapa.setCenter({ lat: 40.4168, lng: -3.7038 });
-                mapa.setZoom(6);
+                mapa.setView([40.4168, -3.7038], 6);
                 return;
             }
 
-            const bounds = new google.maps.LatLngBounds();
+            const bounds = [];
 
             gimnasios.forEach(gimnasio => {
                 const latitud = parseFloat(gimnasio.latitud);
@@ -520,39 +552,30 @@
                 lista.appendChild(card);
 
                 if (!isNaN(latitud) && !isNaN(longitud)) {
-                    const posicion = { lat: latitud, lng: longitud };
+                    const posicion = [latitud, longitud];
 
-                    const marcador = new google.maps.Marker({
-                        position: posicion,
-                        map: mapa,
-                        title: gimnasio.nombre
-                    });
-
-                    const infoWindow = new google.maps.InfoWindow({
-                        content: `
+                    const marcador = L.marker(posicion)
+                        .addTo(mapa)
+                        .bindPopup(`
                             <strong>${gimnasio.nombre}</strong><br>
                             ${gimnasio.direccion || "Dirección no indicada"}<br>
                             Deporte: ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}<br>
                             Ciudad: ${gimnasio.ciudad || "No indicada"}
-                        `
-                    });
-
-                    marcador.addListener("click", () => {
-                        infoWindow.open(mapa, marcador);
-                    });
+                        `);
 
                     marcadores.push(marcador);
-                    bounds.extend(posicion);
+                    bounds.push(posicion);
                 }
             });
 
-            if (marcadores.length > 0) {
-                mapa.fitBounds(bounds);
+            if (bounds.length > 0) {
+                mapa.fitBounds(bounds, { padding: [40, 40] });
             }
         }
 
         function limpiarMarcadores() {
-            marcadores.forEach(marcador => marcador.setMap(null));
+            if (!mapa) return;
+            marcadores.forEach(marcador => mapa.removeLayer(marcador));
             marcadores = [];
         }
 
@@ -695,10 +718,11 @@
         }
     </script>
 
-    <!-- Google Maps API -->
-    <!-- Sustituye TU_API_KEY_AQUI por tu clave real de Google Maps -->
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY_AQUI&callback=iniciarMapa">
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        iniciarMapa();
     </script>
 
 </body>
