@@ -1,0 +1,16 @@
+Proyecto:
+Pagina web con buscador de gimnasios de artes marciales, además la pagina contara con una tienda de suplementación y equipo deportivo.
+se cuenta con un sistema en el que los usuarios podrán dejar valoraciones y comentarios de cada gimnasio
+bbdd: PostgreSQL, pgadmin4 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Agente IA 1
+Propósito: Experto en suplementación 
+Funcionamiento: Se le podrá preguntar al agente por efectos y recomendaciones de suplementos, además este estará conectado al segundo agente el cual con las recomendaciones se le podrá hacer un kit al usuario
+Contexto: Productos disponibles y su uso
+--------------------------------------------------------------------------------------------------------------------------------------------
+Agente IA 2
+Propósito: Creador de kits
+Contexto: Base de datos de la tienda, contexto sobre que necesita cada deporte
+Funcionamiento: Al tu buscar un gimnasio y seleccionarlo el agente creara varios "kits para principiantes" que se le mostraran al usuario
+basado en el arte marcial escogido (Estos kits pueden contener tanto equipo como suplementación). Al agente también se le podrá hacer pedir generar un kit con diferentes objetos y presupuesto. 

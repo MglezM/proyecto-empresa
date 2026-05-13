@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MartialHub - Gimnasios y Tienda</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            color: #222;
+        }
+
+        header {
+            background-color: #111;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        header p {
+            color: #ccc;
+        }
+
+        main {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .opciones-inicio {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .opcion {
+            background-color: white;
+            width: 320px;
+            padding: 35px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .opcion:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .opcion h2 {
+            margin-bottom: 15px;
+            color: #b30000;
+        }
+
+        .opcion p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        button {
+            background-color: #b30000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #870000;
+        }
+
+        .seccion {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .seccion h2 {
+            margin-bottom: 20px;
+            color: #b30000;
+        }
+
+        .formulario-filtros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .contenedor-resultados {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        #mapa {
+            width: 100%;
+            min-height: 420px;
+            border-radius: 12px;
+            border: 2px solid #ccc;
+        }
+
+        .lista-gimnasios {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card-gimnasio {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 18px;
+            background-color: #fafafa;
+        }
+
+        .card-gimnasio h3 {
+            color: #b30000;
+            margin-bottom: 8px;
+        }
+
+        .card-gimnasio p {
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .mensaje-tienda {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .volver {
+            margin-bottom: 20px;
+            background-color: #333;
+        }
+
+        .volver:hover {
+            background-color: #111;
+        }
+        
+        .mensaje-error {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .mensaje-cargando {
+            background-color: #cff4fc;
+            color: #055160;
+            border: 1px solid #b6effb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .contenedor-resultados {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>MartialHub</h1>
+        <p>Encuentra gimnasios de artes marciales y compra equipamiento deportivo</p>
+    </header>
+
+    <main>
+        <!-- Pantalla inicial -->
+        <section id="inicio">
+            <div class="opciones-inicio">
+                <div class="opcion" onclick="mostrarSeccion('buscador')">
+                    <h2>Buscar gimnasio</h2>
+                    <p>Encuentra gimnasios según tu localización, horario y deporte.</p>
+                    <button>Entrar al buscador</button>
+                </div>
+
+                <div class="opcion" onclick="mostrarSeccion('tienda')">
+                    <h2>Entrar en la tienda</h2>
+                    <p>Compra equipamiento, protecciones y suplementación deportiva.</p>
+                    <button>Ir a la tienda</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección buscador -->
+        <section id="buscador" class="seccion">
+            <button class="volver" onclick="volverInicio()">Volver</button>
+            <h2>Buscador de gimnasios</h2>
+
+            <form id="formularioBusqueda" class="formulario-filtros">
+                <div>
+                    <label for="localizacion">Localización</label>
+                    <input type="text" id="localizacion" placeholder="Ej: Madrid, Tenerife, La Laguna..." required />
+                </div>
+
+                <div>
+                    <label for="horario">Horario</label>
+                    <select id="horario" required>
+                        <option value="">Selecciona un horario</option>
+                        <option value="mañana">Mañana</option>
+                        <option value="tarde">Tarde</option>
+                        <option value="noche">Noche</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="deporte">Deporte</label>
+                    <select id="deporte" required>
+                        <option value="">Selecciona un deporte</option>
+                        <option value="boxeo">Boxeo</option>
+                        <option value="mma">MMA</option>
+                        <option value="bjj">Brazilian Jiu-Jitsu</option>
+                        <option value="muay thai">Muay Thai</option>
+                        <option value="judo">Judo</option>
+                        <option value="karate">Karate</option>
+                        <option value="taekwondo">Taekwondo</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; align-items: end;">
+                    <button type="submit">Buscar gimnasios</button>
+                </div>
+            </form>
+
+            <div id="mensajeEstado"></div>
+
+            <div id="resultados" class="contenedor-resultados" style="display: none;">
+                <div id="mapa"></div>
+
+                <div>
+                    <h2>Gimnasios encontrados</h2>
+                    <div id="listaGimnasios" class="lista-gimnasios"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección tienda -->
+        <section id="tienda" class="seccion">
+            <button class="volver" onclick="volverInicio()">Volver</button>
+            <div class="mensaje-tienda">
+                <h2>Tienda online</h2>
+                <p>Esta sección estará destinada a la venta de equipamiento, ropa deportiva y suplementación.</p>
+                <p>Próximamente se conectará con la base de datos <strong>tienda</strong>.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let mapa;
+        let marcadores = [];
+
+        const API_BACKEND = "http://localhost:3000";
+
+        function iniciarMapa() {
+            mapa = new google.maps.Map(document.getElementById("mapa"), {
+                center: { lat: 40.4168, lng: -3.7038 },
+                zoom: 6
+            });
+        }
+
+        function mostrarSeccion(id) {
+            document.getElementById("inicio").style.display = "none";
+            document.getElementById("buscador").style.display = "none";
+            document.getElementById("tienda").style.display = "none";
+            document.getElementById(id).style.display = "block";
+
+            if (id === "buscador" && mapa) {
+                setTimeout(() => {
+                    google.maps.event.trigger(mapa, "resize");
+                }, 200);
+            }
+        }
+
+        function volverInicio() {
+            document.getElementById("inicio").style.display = "block";
+            document.getElementById("buscador").style.display = "none";
+            document.getElementById("tienda").style.display = "none";
+            document.getElementById("resultados").style.display = "none";
+            document.getElementById("mensajeEstado").innerHTML = "";
+            limpiarMarcadores();
+        }
+
+        document.getElementById("formularioBusqueda").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const localizacion = document.getElementById("localizacion").value.trim();
+            const horario = document.getElementById("horario").value;
+            const deporte = document.getElementById("deporte").value;
+            const mensajeEstado = document.getElementById("mensajeEstado");
+
+            mensajeEstado.innerHTML = '<div class="mensaje-cargando">Buscando gimnasios...</div>';
+
+            try {
+                const url = `${API_BACKEND}/api/gimnasios?localizacion=${encodeURIComponent(localizacion)}&horario=${encodeURIComponent(horario)}&deporte=${encodeURIComponent(deporte)}`;
+
+                const respuesta = await fetch(url);
+
+                if (!respuesta.ok) {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+
+                const gimnasios = await respuesta.json();
+                mensajeEstado.innerHTML = "";
+                mostrarResultados(gimnasios);
+
+            } catch (error) {
+                console.error("Error al buscar gimnasios:", error);
+                mensajeEstado.innerHTML = `
+                    <div class="mensaje-error">
+                        No se pudo conectar con el servidor. Asegúrate de que el backend está iniciado con <strong>node server.js</strong>.
+                    </div>
+                `;
+            }
+        });
+
+        function mostrarResultados(gimnasios) {
+            const resultados = document.getElementById("resultados");
+            const lista = document.getElementById("listaGimnasios");
+
+            resultados.style.display = "grid";
+            lista.innerHTML = "";
+            limpiarMarcadores();
+
+            if (!mapa) {
+                lista.innerHTML = "<p>El mapa todavía no se ha cargado. Revisa tu API key de Google Maps.</p>";
+                return;
+            }
+
+            if (gimnasios.length === 0) {
+                lista.innerHTML = "<p>No se encontraron gimnasios con esos filtros.</p>";
+                mapa.setCenter({ lat: 40.4168, lng: -3.7038 });
+                mapa.setZoom(6);
+                return;
+            }
+
+            const bounds = new google.maps.LatLngBounds();
+
+            gimnasios.forEach(gimnasio => {
+                const latitud = parseFloat(gimnasio.latitud);
+                const longitud = parseFloat(gimnasio.longitud);
+
+                const card = document.createElement("div");
+                card.classList.add("card-gimnasio");
+                card.innerHTML = `
+                    <h3>${gimnasio.nombre}</h3>
+                    <p><strong>Deporte:</strong> ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}</p>
+                    <p><strong>Ciudad:</strong> ${gimnasio.ciudad || "No indicada"}</p>
+                    <p><strong>Zona:</strong> ${gimnasio.zona || "No indicada"}</p>
+                    <p><strong>Dirección:</strong> ${gimnasio.direccion || "No indicada"}</p>
+                    <p><strong>Teléfono:</strong> ${gimnasio.telefono || "No indicado"}</p>
+                `;
+                lista.appendChild(card);
+
+                if (!isNaN(latitud) && !isNaN(longitud)) {
+                    const posicion = { lat: latitud, lng: longitud };
+
+                    const marcador = new google.maps.Marker({
+                        position: posicion,
+                        map: mapa,
+                        title: gimnasio.nombre
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                            <strong>${gimnasio.nombre}</strong><br>
+                            ${gimnasio.direccion || "Dirección no indicada"}<br>
+                            Deporte: ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}<br>
+                            Ciudad: ${gimnasio.ciudad || "No indicada"}
+                        `
+                    });
+
+                    marcador.addListener("click", () => {
+                        infoWindow.open(mapa, marcador);
+                    });
+
+                    marcadores.push(marcador);
+                    bounds.extend(posicion);
+                }
+            });
+
+            if (marcadores.length > 0) {
+                mapa.fitBounds(bounds);
+            }
+        }
+
+        function limpiarMarcadores() {
+            marcadores.forEach(marcador => marcador.setMap(null));
+            marcadores = [];
+        }
+    </script>
+
+    <!-- Google Maps API -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1Hw2aJ_I-R2E6ea7Rn1G3C4iSWnZgSQs&callback=iniciarMapa">
+    </script>
+
+</body>
+</html>
