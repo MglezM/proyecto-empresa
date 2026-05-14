@@ -1,37 +1,41 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+const bcrypt = require("bcrypt");
+const path = require("path");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
-// Base de datos gym
-const gymDB = new Pool({
-    host: "localhost",
-    port: 5432,
-    user: "postgres",
-    password: "koWv6791",
-    database: "gym"
-});
+function crearPool(prefix) {
+    return new Pool({
+        host: process.env[`${prefix}_DB_HOST`],
+        port: Number(process.env[`${prefix}_DB_PORT`] || 5432),
+        user: process.env[`${prefix}_DB_USER`],
+        password: process.env[`${prefix}_DB_PASSWORD`],
+        database: process.env[`${prefix}_DB_NAME`]
+    });
+}
 
-// Base de datos tienda
-const tiendaDB = new Pool({
-    host: "localhost",
-    port: 5432,
-    user: "postgres",
-    password: "koWv6791",
-    database: "tienda"
-});
+const gymDB = crearPool("GYM");
+const tiendaDB = crearPool("TIENDA");
 
-app.get("/", (req, res) => {
-    res.send("Servidor funcionando correctamente");
+app.get("/api/status", (req, res) => {
+    res.json({ mensaje: "Servidor funcionando correctamente" });
 });
 
 app.get("/api/gimnasios", async (req, res) => {
     try {
         const { localizacion, horario, deporte } = req.query;
+
+        if (!localizacion || !horario || !deporte) {
+            return res.status(400).json({ error: "Faltan filtros de búsqueda" });
+        }
 
         const query = `
             SELECT DISTINCT 
@@ -61,12 +65,7 @@ app.get("/api/gimnasios", async (req, res) => {
                 )
         `;
 
-        const values = [
-            `%${localizacion}%`,
-            deporte,
-            horario
-        ];
-
+        const values = [`%${localizacion}%`, deporte, horario];
         const result = await gymDB.query(query, values);
 
         res.json(result.rows);
@@ -92,6 +91,7 @@ app.get("/api/productos", async (req, res) => {
                 c.nombre AS categoria
             FROM productos p
             LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+            ORDER BY p.id_producto
         `);
 
         res.json(result.rows);
@@ -99,147 +99,8 @@ app.get("/api/productos", async (req, res) => {
         console.error("Error obteniendo productos:", error);
         res.status(500).json({ error: "Error al obtener productos" });
     }
-});app.post("/api/pedidos", async (req, res) => {
-    const client = await tiendaDB.connect();
-
-    try {
-        const { id_usuario, direccion_envio, metodo_pago, productos } = req.body;
-
-        if (!id_usuario || !productos || productos.length === 0) {
-            return res.status(400).json({ error: "Datos del pedido incompletos" });
-        }
-
-        await client.query("BEGIN");
-
-        let total = 0;
-
-        for (const item of productos) {
-            const productoDB = await client.query(
-                "SELECT id_producto, nombre, precio, stock FROM productos WHERE id_producto = $1 FOR UPDATE",
-                [item.id_producto]
-            );
-
-            if (productoDB.rows.length === 0) {
-                throw new Error("Uno de los productos no existe");
-            }
-
-            const producto = productoDB.rows[0];
-
-            if (producto.stock < item.cantidad) {
-                throw new Error(`Stock insuficiente para ${producto.nombre}`);
-            }
-
-            total += Number(producto.precio) * Number(item.cantidad);
-        }
-
-        const pedido = await client.query(
-            `INSERT INTO pedidos (id_usuario, total, estado)
-             VALUES ($1, $2, $3)
-             RETURNING id_pedido, total`,
-            [id_usuario, total, "completado"]
-        );
-
-        const idPedido = pedido.rows[0].id_pedido;
-
-        for (const item of productos) {
-            const productoDB = await client.query(
-                "SELECT precio FROM productos WHERE id_producto = $1",
-                [item.id_producto]
-            );
-
-            const precioUnitario = productoDB.rows[0].precio;
-
-            await client.query(
-                `INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unitario)
-                 VALUES ($1, $2, $3, $4)`,
-                [idPedido, item.id_producto, item.cantidad, precioUnitario]
-            );
-
-            await client.query(
-                `UPDATE productos
-                 SET stock = stock - $1
-                 WHERE id_producto = $2`,
-                [item.cantidad, item.id_producto]
-            );
-        }
-
-        await client.query("COMMIT");
-
-        res.json({
-            mensaje: "Pedido completado correctamente",
-            id_pedido: idPedido,
-            total: total
-        });
-
-    } catch (error) {
-        await client.query("ROLLBACK");
-        console.error("Error creando pedido:", error);
-        res.status(400).json({ error: error.message || "Error al crear el pedido" });
-    } finally {
-        client.release();
-    }
 });
 
-app.listen(3000, () => {
-    console.log("Servidor iniciado en http://localhost:3000");
-});
-app.post("/api/registro", async (req, res) => {
-    try {
-        const { nombre, email, password, direccion, telefono } = req.body;
-
-        const existe = await tiendaDB.query(
-            "SELECT id_usuario FROM usuarios WHERE email = $1",
-            [email]
-        );
-
-        if (existe.rows.length > 0) {
-            return res.status(400).json({ error: "Ya existe una cuenta con ese email" });
-        }
-
-        const result = await tiendaDB.query(
-            `INSERT INTO usuarios (nombre, email, password, direccion, telefono)
-             VALUES ($1, $2, $3, $4, $5)
-             RETURNING id_usuario, nombre, email, direccion, telefono`,
-            [nombre, email, password, direccion, telefono]
-        );
-
-        res.json({
-            mensaje: "Usuario registrado correctamente",
-            usuario: result.rows[0]
-        });
-
-    } catch (error) {
-        console.error("Error registrando usuario:", error);
-        res.status(500).json({ error: "Error al registrar usuario" });
-    }
-});
-
-app.post("/api/login", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const result = await tiendaDB.query(
-            `SELECT id_usuario, nombre, email, direccion, telefono
-             FROM usuarios
-             WHERE email = $1 AND password = $2`,
-            [email, password]
-        );
-
-        if (result.rows.length === 0) {
-            return res.status(401).json({ error: "Email o contraseña incorrectos" });
-        }
-
-        res.json({
-            mensaje: "Login correcto",
-            usuario: result.rows[0]
-        });
-
-    } catch (error) {
-        console.error("Error iniciando sesión:", error);
-        res.status(500).json({ error: "Error al iniciar sesión" });
-    }
-}); 
-// Registrar usuario en la base de datos tienda
 app.post("/api/registro", async (req, res) => {
     try {
         const { nombre, email, password, direccion, telefono } = req.body;
@@ -261,11 +122,13 @@ app.post("/api/registro", async (req, res) => {
             return res.status(400).json({ error: "Ya existe una cuenta con ese email" });
         }
 
+        const passwordHash = await bcrypt.hash(password, 10);
+
         const result = await tiendaDB.query(
             `INSERT INTO usuarios (nombre, email, password, direccion, telefono)
              VALUES ($1, $2, $3, $4, $5)
              RETURNING id_usuario, nombre, email, direccion, telefono`,
-            [nombre, email, password, direccion || null, telefono || null]
+            [nombre, email, passwordHash, direccion || null, telefono || null]
         );
 
         res.status(201).json({
@@ -279,7 +142,6 @@ app.post("/api/registro", async (req, res) => {
     }
 });
 
-// Iniciar sesión con usuario de la base de datos tienda
 app.post("/api/login", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -289,19 +151,32 @@ app.post("/api/login", async (req, res) => {
         }
 
         const result = await tiendaDB.query(
-            `SELECT id_usuario, nombre, email, direccion, telefono
+            `SELECT id_usuario, nombre, email, password, direccion, telefono
              FROM usuarios
-             WHERE email = $1 AND password = $2`,
-            [email, password]
+             WHERE email = $1`,
+            [email]
         );
 
         if (result.rows.length === 0) {
             return res.status(401).json({ error: "Email o contraseña incorrectos" });
         }
 
+        const usuario = result.rows[0];
+        const passwordCorrecta = await bcrypt.compare(password, usuario.password);
+
+        if (!passwordCorrecta) {
+            return res.status(401).json({ error: "Email o contraseña incorrectos" });
+        }
+
         res.json({
             mensaje: "Login correcto",
-            usuario: result.rows[0]
+            usuario: {
+                id_usuario: usuario.id_usuario,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                direccion: usuario.direccion,
+                telefono: usuario.telefono
+            }
         });
 
     } catch (error) {
@@ -309,14 +184,98 @@ app.post("/api/login", async (req, res) => {
         res.status(500).json({ error: "Error al iniciar sesión" });
     }
 });
-app.post("/api/registro", async (req, res) => {
-    // código de registro
+
+app.post("/api/pedidos", async (req, res) => {
+    const client = await tiendaDB.connect();
+
+    try {
+        const { id_usuario, productos } = req.body;
+
+        if (!id_usuario || !productos || productos.length === 0) {
+            return res.status(400).json({ error: "Datos del pedido incompletos" });
+        }
+
+        await client.query("BEGIN");
+
+        let total = 0;
+
+        for (const item of productos) {
+            const cantidad = Number(item.cantidad);
+
+            if (!Number.isInteger(cantidad) || cantidad <= 0) {
+                throw new Error("Cantidad de producto no válida");
+            }
+
+            const productoDB = await client.query(
+                "SELECT id_producto, nombre, precio, stock FROM productos WHERE id_producto = $1 FOR UPDATE",
+                [item.id_producto]
+            );
+
+            if (productoDB.rows.length === 0) {
+                throw new Error("Uno de los productos no existe");
+            }
+
+            const producto = productoDB.rows[0];
+
+            if (Number(producto.stock) < cantidad) {
+                throw new Error(`Stock insuficiente para ${producto.nombre}`);
+            }
+
+            total += Number(producto.precio) * cantidad;
+        }
+
+        const pedido = await client.query(
+            `INSERT INTO pedidos (id_usuario, total, estado)
+             VALUES ($1, $2, $3)
+             RETURNING id_pedido, total`,
+            [id_usuario, total, "completado"]
+        );
+
+        const idPedido = pedido.rows[0].id_pedido;
+
+        for (const item of productos) {
+            const cantidad = Number(item.cantidad);
+
+            const productoDB = await client.query(
+                "SELECT precio FROM productos WHERE id_producto = $1",
+                [item.id_producto]
+            );
+
+            const precioUnitario = productoDB.rows[0].precio;
+
+            await client.query(
+                `INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unitario)
+                 VALUES ($1, $2, $3, $4)`,
+                [idPedido, item.id_producto, cantidad, precioUnitario]
+            );
+
+            await client.query(
+                `UPDATE productos
+                 SET stock = stock - $1
+                 WHERE id_producto = $2`,
+                [cantidad, item.id_producto]
+            );
+        }
+
+        await client.query("COMMIT");
+
+        res.json({
+            mensaje: "Pedido completado correctamente",
+            id_pedido: idPedido,
+            total
+        });
+
+    } catch (error) {
+        await client.query("ROLLBACK");
+        console.error("Error creando pedido:", error);
+        res.status(400).json({ error: error.message || "Error al crear el pedido" });
+    } finally {
+        client.release();
+    }
 });
 
-app.post("/api/login", async (req, res) => {
-    // código de login
-});
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, () => {
-    console.log("Servidor iniciado en http://localhost:3000");
+app.listen(PORT, () => {
+    console.log(`Servidor iniciado en puerto ${PORT}`);
 });
