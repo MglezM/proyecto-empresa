@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MartialHub - Gimnasios y Tienda</title>
+    <title>FIghtFinder - Gimnasios y Tienda</title>
 
     <style>
+        :root {
+            --bg-principal: #0f1115;
+            --bg-secundario: #151922;
+            --bg-tarjeta: #1c2230;
+            --bg-tarjeta-hover: #242b3a;
+            --borde: #30384a;
+            --texto-principal: #f1f1f1;
+            --texto-secundario: #b8beca;
+            --rojo: #d90429;
+            --rojo-hover: #a80320;
+            --verde: #20c997;
+            --azul-info: #1f4e5f;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,24 +28,31 @@
         }
 
         body {
-            background-color: #f4f4f4;
-            color: #222;
+            background:
+                radial-gradient(circle at top, #202638 0%, #0f1115 42%, #090b0f 100%);
+            color: var(--texto-principal);
+            min-height: 100vh;
         }
 
         header {
-            background-color: #111;
+            background: linear-gradient(135deg, #08090c, #191f2b);
             color: white;
-            padding: 25px;
+            padding: 32px 25px;
             text-align: center;
+            border-bottom: 1px solid var(--borde);
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
         }
 
         header h1 {
             margin-bottom: 10px;
-            font-size: 32px;
+            font-size: 36px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         header p {
-            color: #ccc;
+            color: var(--texto-secundario);
+            letter-spacing: 0.5px;
         }
 
         main {
@@ -49,56 +70,71 @@
         }
 
         .opcion {
-            background-color: white;
+            background: linear-gradient(180deg, var(--bg-tarjeta), #151a24);
             width: 320px;
             padding: 35px;
-            border-radius: 15px;
+            border-radius: 18px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--borde);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
         }
 
         .opcion:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 32px rgba(217, 4, 41, 0.18);
+            border-color: var(--rojo);
+            background: linear-gradient(180deg, var(--bg-tarjeta-hover), #171d29);
         }
 
         .opcion h2 {
             margin-bottom: 15px;
-            color: #b30000;
+            color: var(--rojo);
         }
 
         .opcion p {
             margin-bottom: 20px;
-            color: #555;
+            color: var(--texto-secundario);
         }
 
         button {
-            background-color: #b30000;
+            background-color: var(--rojo);
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 8px;
+            border-radius: 9px;
             cursor: pointer;
             font-size: 15px;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
         }
 
         button:hover {
-            background-color: #870000;
+            background-color: var(--rojo-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(217, 4, 41, 0.25);
+        }
+
+        button:disabled {
+            background-color: #555b66;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .seccion {
             display: none;
-            background-color: white;
+            background: rgba(21, 25, 34, 0.96);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 18px;
+            border: 1px solid var(--borde);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
 
         .seccion h2 {
             margin-bottom: 20px;
-            color: #b30000;
+            color: var(--rojo);
         }
 
         .formulario-filtros {
@@ -112,54 +148,45 @@
             font-weight: bold;
             margin-bottom: 8px;
             display: block;
+            color: var(--texto-principal);
         }
 
         input,
         select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            border: 1px solid var(--borde);
+            border-radius: 9px;
             font-size: 15px;
+            background-color: #0f131c;
+            color: var(--texto-principal);
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #777f90;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--rojo);
+            box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.18);
         }
 
         .contenedor-resultados {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 25px;
             margin-top: 30px;
-            width: 100%;
-            overflow: hidden;
         }
 
         #mapa {
             width: 100%;
-            max-width: 100%;
-            height: 420px;
-            border-radius: 12px;
-            border: 2px solid #ccc;
+            min-height: 420px;
+            border-radius: 14px;
+            border: 2px solid var(--borde);
             overflow: hidden;
-        }
-
-        .leaflet-container {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-        }
-
-        .leaflet-pane,
-        .leaflet-tile,
-        .leaflet-marker-icon,
-        .leaflet-marker-shadow,
-        .leaflet-tile-container,
-        .leaflet-pane > svg,
-        .leaflet-pane > canvas,
-        .leaflet-zoom-box,
-        .leaflet-image-layer,
-        .leaflet-layer {
-            position: absolute;
-            left: 0;
-            top: 0;
+            background-color: #111722;
         }
 
         .lista-gimnasios {
@@ -169,46 +196,48 @@
         }
 
         .card-gimnasio {
-            border: 1px solid #ddd;
-            border-radius: 12px;
+            border: 1px solid var(--borde);
+            border-radius: 14px;
             padding: 18px;
-            background-color: #fafafa;
+            background-color: var(--bg-tarjeta);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
         }
 
         .card-gimnasio h3 {
-            color: #b30000;
+            color: var(--rojo);
             margin-bottom: 8px;
         }
 
         .card-gimnasio p {
             margin-bottom: 5px;
-            color: #444;
+            color: var(--texto-secundario);
         }
 
         .volver {
             margin-bottom: 20px;
-            background-color: #333;
+            background-color: #2a303d;
         }
 
         .volver:hover {
-            background-color: #111;
+            background-color: #3a4354;
+            box-shadow: none;
         }
 
         .mensaje-error {
-            background-color: #f8d7da;
-            color: #842029;
-            border: 1px solid #f5c2c7;
+            background-color: #3a151b;
+            color: #ffb4c0;
+            border: 1px solid #842029;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 9px;
             margin-top: 15px;
         }
 
         .mensaje-cargando {
-            background-color: #cff4fc;
-            color: #055160;
-            border: 1px solid #b6effb;
+            background-color: #15323d;
+            color: #b8efff;
+            border: 1px solid #245a6f;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 9px;
             margin-top: 15px;
         }
 
@@ -223,14 +252,14 @@
         }
 
         .cabecera-tienda p {
-            color: #555;
+            color: var(--texto-secundario);
             max-width: 650px;
         }
 
         .filtros-tienda {
-            background-color: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 12px;
+            background-color: #151a24;
+            border: 1px solid var(--borde);
+            border-radius: 14px;
             padding: 20px;
             margin-bottom: 25px;
         }
@@ -243,42 +272,64 @@
         }
 
         .boton-categoria {
-            background-color: #eee;
-            color: #222;
-            border: 1px solid #ccc;
+            background-color: #252c3a;
+            color: var(--texto-principal);
+            border: 1px solid var(--borde);
         }
 
         .boton-categoria:hover,
         .boton-categoria.activo {
-            background-color: #b30000;
+            background-color: var(--rojo);
             color: white;
-            border-color: #b30000;
+            border-color: var(--rojo);
         }
 
         .grid-productos {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 240px));
+            gap: 18px;
+            justify-content: center;
+            align-items: start;
         }
 
         .card-producto {
-            border: 1px solid #ddd;
-            border-radius: 14px;
-            background-color: #fafafa;
+            width: 100%;
+            max-width: 240px;
+            min-height: auto;
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            background-color: var(--bg-tarjeta);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .card-producto:hover {
+            transform: translateY(-4px);
+            border-color: var(--rojo);
+            box-shadow: 0 10px 28px rgba(217, 4, 41, 0.15);
+        }
+
+        .card-producto.destacado-temporal {
+            border-color: var(--rojo);
+            box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.35), 0 10px 28px rgba(217, 4, 41, 0.2);
         }
 
         .imagen-producto {
             width: 100%;
-            height: 170px;
-            background-color: #e9e9e9;
+            height: 115px;
+            min-height: 115px;
+            max-height: 115px;
+            background-color: #111722;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #777;
+            color: #8991a3;
             font-weight: bold;
+            border-bottom: 1px solid var(--borde);
         }
 
         .imagen-producto img {
@@ -288,58 +339,412 @@
         }
 
         .info-producto {
-            padding: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
         }
 
         .info-producto h3 {
-            color: #b30000;
-            font-size: 18px;
+            color: var(--rojo);
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .info-producto p {
+            color: var(--texto-secundario);
+        }
+
+        .resumen-producto {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detalle-producto {
+            display: none;
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid var(--borde);
+            color: var(--texto-secundario);
+        }
+
+        .card-producto.abierto .detalle-producto {
+            display: block;
+        }
+
+        .detalle-producto p {
+            margin-bottom: 6px;
+        }
+
+        .texto-desplegable {
+            font-size: 12px;
+            color: #8991a3 !important;
+            margin-top: 2px;
         }
 
         .categoria-producto {
             font-size: 13px;
-            background-color: #eee;
-            color: #333;
+            background-color: #2a303d;
+            color: var(--texto-principal);
             display: inline-block;
             padding: 5px 8px;
             border-radius: 20px;
             width: fit-content;
+            border: 1px solid var(--borde);
         }
 
         .precio-producto {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            color: #111;
+            color: white !important;
         }
 
         .stock-disponible {
-            color: #198754;
+            color: var(--verde) !important;
             font-weight: bold;
         }
 
         .stock-agotado {
-            color: #b30000;
+            color: #ff5c75 !important;
             font-weight: bold;
+        }
+
+
+        /* PROMOCIONES EN BUSCADOR */
+        .buscador-con-promos {
+            display: none;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
+
+        .layout-buscador {
+            display: grid;
+            grid-template-columns: 210px minmax(0, 1fr) 210px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .panel-buscador-central {
+            min-width: 0;
+            background: rgba(21, 25, 34, 0.96);
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid var(--borde);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .promo-lateral {
+            background: linear-gradient(180deg, #1c2230, #131823);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+            position: sticky;
+            top: 20px;
+        }
+
+        .promo-lateral h3 {
+            color: var(--rojo);
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .producto-promo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .producto-promo img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--borde);
+            background-color: #111722;
+        }
+
+        .producto-promo .sin-imagen-promo {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            border: 1px solid var(--borde);
+            background-color: #111722;
+            color: #8991a3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .producto-promo h4 {
+            color: var(--texto-principal);
+            font-size: 15px;
+            line-height: 1.25;
+        }
+
+        .producto-promo p {
+            color: var(--texto-secundario);
+            font-size: 13px;
+        }
+
+        .precio-promo {
+            color: white !important;
+            font-size: 18px !important;
+            font-weight: bold;
+        }
+
+        .boton-promo {
+            padding: 9px 12px;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 1000px) {
+            .layout-buscador {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-buscador-central {
+                padding: 22px;
+            }
+
+            .promo-lateral {
+                position: static;
+                display: none;
+            }
+        }
+
+
+        /* LOGIN, REGISTRO, CARRITO Y PAGO */
+        .boton-carrito {
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .boton-carrito:hover {
+            background-color: #333;
+        }
+
+        .contador-carrito {
+            background-color: var(--rojo);
+            color: white;
+            border-radius: 50%;
+            min-width: 24px;
+            height: 24px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .estado-login {
+            color: var(--texto-secundario);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .pagina-auth,
+        .pagina-pago {
+            display: none;
+            background: rgba(21, 25, 34, 0.96);
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid var(--borde);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .contenedor-auth {
+            max-width: 520px;
+            margin: 0 auto;
+            background-color: var(--bg-tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .contenedor-auth h2,
+        .pagina-pago h2 {
+            color: var(--rojo);
+            margin-bottom: 15px;
+        }
+
+        .contenedor-auth p {
+            color: var(--texto-secundario);
+            margin-bottom: 18px;
+        }
+
+        .tabs-auth {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-auth {
+            background-color: #252c3a;
+            color: var(--texto-principal);
+            border: 1px solid var(--borde);
+        }
+
+        .tab-auth.activo {
+            background-color: var(--rojo);
+            border-color: var(--rojo);
+        }
+
+        .form-auth {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-auth.activo {
+            display: flex;
+        }
+
+        .contenedor-pago {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .resumen-pago,
+        .datos-pago {
+            border: 1px solid var(--borde);
+            border-radius: 14px;
+            background-color: var(--bg-tarjeta);
+            padding: 18px;
+        }
+
+        .resumen-pago h3,
+        .datos-pago h3 {
+            color: var(--rojo);
+            margin-bottom: 15px;
+        }
+
+        .item-carrito {
+            border-bottom: 1px solid var(--borde);
+            padding: 12px 0;
+        }
+
+        .item-carrito:last-child {
+            border-bottom: none;
+        }
+
+        .item-carrito h4 {
+            margin-bottom: 6px;
+            color: var(--texto-principal);
+        }
+
+        .controles-carrito {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .boton-cantidad,
+        .boton-eliminar {
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+        .boton-cantidad {
+            background-color: #333;
+        }
+
+        .boton-eliminar,
+        .boton-vaciar {
+            background-color: #777;
+        }
+
+        .total-carrito {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--borde);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .acciones-carrito {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .boton-finalizar {
+            background-color: #198754;
+        }
+
+        .boton-finalizar:hover {
+            background-color: #146c43;
+        }
+
+        .mensaje-ok {
+            background-color: #123524;
+            color: #9ff0c2;
+            border: 1px solid #1f7a4c;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .contenedor-pago {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
             .contenedor-resultados {
                 grid-template-columns: 1fr;
             }
+
+            main {
+                padding: 25px 12px;
+            }
+
+            .seccion {
+                padding: 22px;
+            }
+
+            .grid-productos {
+                grid-template-columns: 1fr;
+                justify-content: stretch;
+            }
+
+            .card-producto {
+                width: 100%;
+                max-width: none;
+                min-height: auto;
+            }
+
+            .imagen-producto {
+                height: 140px;
+                min-height: 140px;
+                max-height: 140px;
+            }
         }
     </style>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 
     <header>
-        <h1>MartialHub</h1>
-        <p>Encuentra gimnasios de artes marciales y compra equipamiento deportivo</p>
+        <h1>Fight-Finder</h1>
+        <p>choose your way</p>
     </header>
 
     <main>
@@ -361,54 +766,72 @@
         </section>
 
         <!-- Sección buscador -->
-        <section id="buscador" class="seccion">
-            <button class="volver" onclick="volverInicio()">Volver</button>
-            <h2>Buscador de gimnasios</h2>
+        <section id="buscador" class="buscador-con-promos">
+            <div class="layout-buscador">
+                <aside class="promo-lateral">
+                    <h3>Producto destacado</h3>
+                    <div id="promoIzquierda" class="producto-promo">
+                        <div class="sin-imagen-promo">Cargando...</div>
+                    </div>
+                </aside>
 
-            <form id="formularioBusqueda" class="formulario-filtros">
-                <div>
-                    <label for="localizacion">Localización</label>
-                    <input type="text" id="localizacion" placeholder="Ej: Madrid, Tenerife, La Laguna..." required />
+                <div class="panel-buscador-central">
+                    <button class="volver" onclick="volverInicio()">Volver</button>
+                    <h2>Buscador de gimnasios</h2>
+
+                    <form id="formularioBusqueda" class="formulario-filtros">
+                        <div>
+                            <label for="localizacion">Localización</label>
+                            <input type="text" id="localizacion" placeholder="Ej: Madrid, Tenerife, La Laguna..." required />
+                        </div>
+
+                        <div>
+                            <label for="horario">Horario</label>
+                            <select id="horario" required>
+                                <option value="">Selecciona un horario</option>
+                                <option value="mañana">Mañana</option>
+                                <option value="tarde">Tarde</option>
+                                <option value="noche">Noche</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="deporte">Deporte</label>
+                            <select id="deporte" required>
+                                <option value="">Selecciona un deporte</option>
+                                <option value="boxeo">Boxeo</option>
+                                <option value="mma">MMA</option>
+                                <option value="bjj">Brazilian Jiu-Jitsu</option>
+                                <option value="muay thai">Muay Thai</option>
+                                <option value="judo">Judo</option>
+                                <option value="karate">Karate</option>
+                                <option value="taekwondo">Taekwondo</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; align-items: end;">
+                            <button type="submit">Buscar gimnasios</button>
+                        </div>
+                    </form>
+
+                    <div id="mensajeEstado"></div>
+
+                    <div id="resultados" class="contenedor-resultados" style="display: none;">
+                        <div id="mapa"></div>
+
+                        <div>
+                            <h2>Gimnasios encontrados</h2>
+                            <div id="listaGimnasios" class="lista-gimnasios"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="horario">Horario</label>
-                    <select id="horario" required>
-                        <option value="">Selecciona un horario</option>
-                        <option value="mañana">Mañana</option>
-                        <option value="tarde">Tarde</option>
-                        <option value="noche">Noche</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="deporte">Deporte</label>
-                    <select id="deporte" required>
-                        <option value="">Selecciona un deporte</option>
-                        <option value="boxeo">Boxeo</option>
-                        <option value="mma">MMA</option>
-                        <option value="bjj">Brazilian Jiu-Jitsu</option>
-                        <option value="muay thai">Muay Thai</option>
-                        <option value="judo">Judo</option>
-                        <option value="karate">Karate</option>
-                        <option value="taekwondo">Taekwondo</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; align-items: end;">
-                    <button type="submit">Buscar gimnasios</button>
-                </div>
-            </form>
-
-            <div id="mensajeEstado"></div>
-
-            <div id="resultados" class="contenedor-resultados" style="display: none;">
-                <div id="mapa"></div>
-
-                <div>
-                    <h2>Gimnasios encontrados</h2>
-                    <div id="listaGimnasios" class="lista-gimnasios"></div>
-                </div>
+                <aside class="promo-lateral">
+                    <h3>Recomendado</h3>
+                    <div id="promoDerecha" class="producto-promo">
+                        <div class="sin-imagen-promo">Cargando...</div>
+                    </div>
+                </aside>
             </div>
         </section>
 
@@ -419,7 +842,13 @@
             <div class="cabecera-tienda">
                 <div>
                     <h2>Productos</h2>
+                    <p class="estado-login" id="estadoLogin">No has iniciado sesión</p>
                 </div>
+
+                <button class="boton-carrito" onclick="irAPago()">
+                    Carrito
+                    <span id="contadorCarrito" class="contador-carrito">0</span>
+                </button>
             </div>
 
             <div class="filtros-tienda">
@@ -432,6 +861,109 @@
             <div id="mensajeTienda"></div>
             <div id="gridProductos" class="grid-productos"></div>
         </section>
+
+        <!-- Página de login / registro -->
+        <section id="auth" class="pagina-auth">
+            <button class="volver" onclick="volverATienda()">Volver a la tienda</button>
+
+            <div class="contenedor-auth">
+                <h2>Acceso de usuario</h2>
+                <p>Para usar el carrito y continuar con el pago debes iniciar sesión o crear una cuenta.</p>
+
+                <div class="tabs-auth">
+                    <button id="tabLogin" class="tab-auth activo" onclick="mostrarFormularioAuth('login')">Iniciar sesión</button>
+                    <button id="tabRegistro" class="tab-auth" onclick="mostrarFormularioAuth('registro')">Crear cuenta</button>
+                </div>
+
+                <form id="formLogin" class="form-auth activo">
+                    <div>
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="tu@email.com" required />
+                    </div>
+
+                    <div>
+                        <label for="loginPassword">Contraseña</label>
+                        <input type="password" id="loginPassword" placeholder="Contraseña" required />
+                    </div>
+
+                    <button type="submit">Iniciar sesión</button>
+                </form>
+
+                <form id="formRegistro" class="form-auth">
+                    <div>
+                        <label for="registroNombre">Nombre completo</label>
+                        <input type="text" id="registroNombre" placeholder="Tu nombre" required />
+                    </div>
+
+                    <div>
+                        <label for="registroEmail">Email</label>
+                        <input type="email" id="registroEmail" placeholder="tu@email.com" required />
+                    </div>
+
+                    <div>
+                        <label for="registroPassword">Contraseña</label>
+                        <input type="password" id="registroPassword" placeholder="Mínimo 6 caracteres" required />
+                    </div>
+
+                    <div>
+                        <label for="registroDireccion">Dirección</label>
+                        <input type="text" id="registroDireccion" placeholder="Dirección de envío" />
+                    </div>
+
+                    <div>
+                        <label for="registroTelefono">Teléfono</label>
+                        <input type="text" id="registroTelefono" placeholder="Teléfono" />
+                    </div>
+
+                    <button type="submit">Crear cuenta</button>
+                </form>
+
+                <div id="mensajeAuth"></div>
+            </div>
+        </section>
+
+        <!-- Página de pago -->
+        <section id="pago" class="pagina-pago">
+            <button class="volver" onclick="volverATienda()">Volver a la tienda</button>
+
+            <h2>Página de pago</h2>
+
+            <div class="contenedor-pago">
+                <div class="resumen-pago">
+                    <h3>Resumen del carrito</h3>
+                    <div id="listaCarrito"></div>
+
+                    <div class="total-carrito">
+                        Total: <span id="totalCarrito">0.00 €</span>
+                    </div>
+
+                    <div class="acciones-carrito">
+                        <button class="boton-vaciar" onclick="vaciarCarrito()">Vaciar carrito</button>
+                    </div>
+                </div>
+
+                <div class="datos-pago">
+                    <h3>Datos de pago</h3>
+
+                    <label for="nombreCliente">Nombre completo</label>
+                    <input type="text" id="nombreCliente" placeholder="Tu nombre" />
+
+                    <label for="direccionCliente">Dirección de envío</label>
+                    <input type="text" id="direccionCliente" placeholder="Dirección completa" />
+
+                    <label for="metodoPago">Método de pago</label>
+                    <select id="metodoPago">
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="contrareembolso">Contrareembolso</option>
+                    </select>
+
+                    <div class="acciones-carrito">
+                        <button class="boton-finalizar" onclick="finalizarCompra()">Finalizar compra</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
@@ -439,32 +971,44 @@
         let marcadores = [];
         let productosTienda = [];
         let tiendaCargada = false;
+        let usuarioLogeado = JSON.parse(localStorage.getItem('usuarioFightFinder')) || null;
+        let carrito = JSON.parse(localStorage.getItem('carritoFightFinder')) || [];
+        let promocionesCargadas = false;
 
         const API_BACKEND = "http://localhost:3000";
 
         function iniciarMapa() {
-            mapa = L.map("mapa").setView([40.4168, -3.7038], 6);
-
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                maxZoom: 19,
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(mapa);
+            mapa = new google.maps.Map(document.getElementById("mapa"), {
+                center: { lat: 40.4168, lng: -3.7038 },
+                zoom: 6
+            });
         }
 
         function mostrarSeccion(id) {
             document.getElementById("inicio").style.display = "none";
             document.getElementById("buscador").style.display = "none";
             document.getElementById("tienda").style.display = "none";
+            document.getElementById("auth").style.display = "none";
+            document.getElementById("pago").style.display = "none";
             document.getElementById(id).style.display = "block";
 
-            if (id === "buscador" && mapa) {
-                setTimeout(() => {
-                    mapa.invalidateSize();
-                }, 200);
+            if (id === "buscador") {
+                cargarPromocionesTienda();
+
+                if (mapa) {
+                    setTimeout(() => {
+                        google.maps.event.trigger(mapa, "resize");
+                    }, 200);
+                }
             }
 
-            if (id === "tienda" && !tiendaCargada) {
-                cargarProductos();
+            if (id === "tienda") {
+                actualizarEstadoLogin();
+                actualizarCarrito();
+
+                if (!tiendaCargada) {
+                    cargarProductos();
+                }
             }
         }
 
@@ -472,6 +1016,8 @@
             document.getElementById("inicio").style.display = "block";
             document.getElementById("buscador").style.display = "none";
             document.getElementById("tienda").style.display = "none";
+            document.getElementById("auth").style.display = "none";
+            document.getElementById("pago").style.display = "none";
             document.getElementById("resultados").style.display = "none";
             document.getElementById("mensajeEstado").innerHTML = "";
             limpiarMarcadores();
@@ -518,10 +1064,6 @@
             lista.innerHTML = "";
             limpiarMarcadores();
 
-            setTimeout(() => {
-                if (mapa) mapa.invalidateSize();
-            }, 200);
-
             if (!mapa) {
                 lista.innerHTML = "<p>El mapa todavía no se ha cargado. Revisa tu API key de Google Maps.</p>";
                 return;
@@ -529,11 +1071,12 @@
 
             if (gimnasios.length === 0) {
                 lista.innerHTML = "<p>No se encontraron gimnasios con esos filtros.</p>";
-                mapa.setView([40.4168, -3.7038], 6);
+                mapa.setCenter({ lat: 40.4168, lng: -3.7038 });
+                mapa.setZoom(6);
                 return;
             }
 
-            const bounds = [];
+            const bounds = new google.maps.LatLngBounds();
 
             gimnasios.forEach(gimnasio => {
                 const latitud = parseFloat(gimnasio.latitud);
@@ -552,39 +1095,142 @@
                 lista.appendChild(card);
 
                 if (!isNaN(latitud) && !isNaN(longitud)) {
-                    const posicion = [latitud, longitud];
+                    const posicion = { lat: latitud, lng: longitud };
 
-                    const marcador = L.marker(posicion)
-                        .addTo(mapa)
-                        .bindPopup(`
+                    const marcador = new google.maps.Marker({
+                        position: posicion,
+                        map: mapa,
+                        title: gimnasio.nombre
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
                             <strong>${gimnasio.nombre}</strong><br>
                             ${gimnasio.direccion || "Dirección no indicada"}<br>
                             Deporte: ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}<br>
                             Ciudad: ${gimnasio.ciudad || "No indicada"}
-                        `);
+                        `
+                    });
+
+                    marcador.addListener("click", () => {
+                        infoWindow.open(mapa, marcador);
+                    });
 
                     marcadores.push(marcador);
-                    bounds.push(posicion);
+                    bounds.extend(posicion);
                 }
             });
 
-            if (bounds.length > 0) {
-                mapa.fitBounds(bounds, { padding: [40, 40] });
+            if (marcadores.length > 0) {
+                mapa.fitBounds(bounds);
             }
         }
 
         function limpiarMarcadores() {
-            if (!mapa) return;
-            marcadores.forEach(marcador => mapa.removeLayer(marcador));
+            marcadores.forEach(marcador => marcador.setMap(null));
             marcadores = [];
         }
 
-        async function cargarProductos() {
+
+        async function cargarPromocionesTienda() {
+            if (promocionesCargadas) return;
+
+            const promoIzquierda = document.getElementById("promoIzquierda");
+            const promoDerecha = document.getElementById("promoDerecha");
+
+            try {
+                const respuesta = await fetch(`${API_BACKEND}/api/productos`);
+
+                if (!respuesta.ok) {
+                    throw new Error("Error cargando promociones");
+                }
+
+                const productos = await respuesta.json();
+                promocionesCargadas = true;
+
+                if (!productos || productos.length === 0) {
+                    promoIzquierda.innerHTML = `<p>No hay productos destacados.</p>`;
+                    promoDerecha.innerHTML = `<p>No hay productos recomendados.</p>`;
+                    return;
+                }
+
+                renderizarPromo(promoIzquierda, productos[0]);
+
+                if (productos.length > 1) {
+                    renderizarPromo(promoDerecha, productos[1]);
+                } else {
+                    renderizarPromo(promoDerecha, productos[0]);
+                }
+
+            } catch (error) {
+                console.error("Error al cargar promociones:", error);
+                promoIzquierda.innerHTML = `<p>Producto destacado próximamente.</p>`;
+                promoDerecha.innerHTML = `<p>Producto recomendado próximamente.</p>`;
+            }
+        }
+
+        function renderizarPromo(contenedor, producto) {
+            const precio = Number(producto.precio || 0).toFixed(2);
+
+            contenedor.innerHTML = `
+                ${
+                    producto.imagen_url
+                    ? `<img src="${producto.imagen_url}" alt="${producto.nombre}">`
+                    : `<div class="sin-imagen-promo">Sin imagen</div>`
+                }
+                <h4>${producto.nombre}</h4>
+                <p>${producto.categoria ? capitalizar(producto.categoria) : "Producto de tienda"}</p>
+                <p class="precio-promo">${precio} €</p>
+                <button class="boton-promo" onclick="verProductoDesdeBanner(${producto.id_producto})">Ver producto</button>
+            `;
+        }
+
+        async function verProductoDesdeBanner(idProducto) {
+            mostrarSeccion("tienda");
+
+            if (!tiendaCargada) {
+                await cargarProductos();
+            }
+
+            const producto = productosTienda.find(item => Number(item.id_producto) === Number(idProducto));
+
+            if (!producto) {
+                return;
+            }
+
+            mostrarProductos([producto]);
+
+            document.querySelectorAll(".boton-categoria").forEach(boton => {
+                boton.classList.remove("activo");
+            });
+
+            const gridProductos = document.getElementById("gridProductos");
+
+            setTimeout(() => {
+                const tarjeta = document.getElementById(`producto-${idProducto}`);
+
+                if (tarjeta) {
+                    tarjeta.classList.add("destacado-temporal");
+                    tarjeta.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    setTimeout(() => {
+                        tarjeta.classList.remove("destacado-temporal");
+                    }, 2500);
+                }
+            }, 150);
+        }
+
+        async function cargarProductos(mostrarCarga = true) {
             const mensajeTienda = document.getElementById("mensajeTienda");
             const gridProductos = document.getElementById("gridProductos");
 
-            mensajeTienda.innerHTML = '<div class="mensaje-cargando">Cargando productos de la tienda...</div>';
-            gridProductos.innerHTML = "";
+            if (mostrarCarga) {
+                mensajeTienda.innerHTML = '<div class="mensaje-cargando">Cargando productos de la tienda...</div>';
+                gridProductos.innerHTML = "";
+            }
 
             try {
                 const respuesta = await fetch(`${API_BACKEND}/api/productos`);
@@ -604,8 +1250,7 @@
                 console.error("Error al cargar productos:", error);
                 mensajeTienda.innerHTML = `
                     <div class="mensaje-error">
-                        No se pudieron cargar los productos. Asegúrate de que el backend está iniciado con <strong>node server.js</strong>
-                        y de que la ruta <strong>/api/productos</strong> consulta la base de datos <strong>tienda</strong>.
+                        No se pudieron cargar los productos.
                     </div>
                 `;
             }
@@ -679,10 +1324,24 @@
             productos.forEach(producto => {
                 const card = document.createElement("div");
                 card.classList.add("card-producto");
+                card.id = `producto-${producto.id_producto}`;
 
                 const precio = Number(producto.precio || 0).toFixed(2);
                 const stock = Number(producto.stock || 0);
                 const categoria = producto.categoria || "Sin categoría";
+                const categoriaNormalizada = categoria
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+
+                const esSuplementacion = categoriaNormalizada === "suplementacion";
+
+                const caracteristicasProducto = esSuplementacion
+                    ? `<p><strong>Peso:</strong> ${producto.talla || "No indicado"}</p>`
+                    : `
+                        <p><strong>Talla:</strong> ${producto.talla || "No indicada"}</p>
+                        <p><strong>Color:</strong> ${producto.color || "No indicado"}</p>
+                    `;
 
                 card.innerHTML = `
                     <div class="imagen-producto">
@@ -694,22 +1353,416 @@
                     </div>
 
                     <div class="info-producto">
-                        <span class="categoria-producto">${capitalizar(categoria)}</span>
-                        <h3>${producto.nombre}</h3>
-                        <p>${producto.descripcion || "Sin descripción disponible."}</p>
-                        <p><strong>Marca:</strong> ${producto.marca || "No indicada"}</p>
-                        <p><strong>Talla:</strong> ${producto.talla || "No indicada"}</p>
-                        <p><strong>Color:</strong> ${producto.color || "No indicado"}</p>
-                        <p class="precio-producto">${precio} €</p>
-                        <p class="${stock > 0 ? "stock-disponible" : "stock-agotado"}">
-                            ${stock > 0 ? `Stock disponible: ${stock}` : "Producto agotado"}
-                        </p>
-                        <button ${stock <= 0 ? "disabled" : ""}>Añadir al carrito</button>
+                        <div class="resumen-producto">
+                            <h3>${producto.nombre}</h3>
+                            <p><strong>Marca:</strong> ${producto.marca || "No indicada"}</p>
+                            <p class="precio-producto">${precio} €</p>
+                            <p class="texto-desplegable">Haz clic para ver detalles</p>
+                        </div>
+
+                        <div class="detalle-producto">
+                            <span class="categoria-producto">${capitalizar(categoria)}</span>
+                            <p><strong>Descripción:</strong> ${producto.descripcion || "Sin descripción disponible."}</p>
+                            ${caracteristicasProducto}
+                            <p class="${stock > 0 ? "stock-disponible" : "stock-agotado"}">
+                                ${stock > 0 ? `Stock disponible: ${stock}` : "Producto agotado"}
+                            </p>
+                            <button onclick="event.stopPropagation(); agregarAlCarrito(${producto.id_producto})" ${stock <= 0 ? "disabled" : ""}>Añadir al carrito</button>
+                        </div>
                     </div>
                 `;
 
+                card.addEventListener("click", function() {
+                    card.classList.toggle("abierto");
+                });
+
                 gridProductos.appendChild(card);
             });
+        }
+
+
+        function mostrarFormularioAuth(tipo) {
+            document.getElementById("formLogin").classList.remove("activo");
+            document.getElementById("formRegistro").classList.remove("activo");
+            document.getElementById("tabLogin").classList.remove("activo");
+            document.getElementById("tabRegistro").classList.remove("activo");
+            document.getElementById("mensajeAuth").innerHTML = "";
+
+            if (tipo === "login") {
+                document.getElementById("formLogin").classList.add("activo");
+                document.getElementById("tabLogin").classList.add("activo");
+            } else {
+                document.getElementById("formRegistro").classList.add("activo");
+                document.getElementById("tabRegistro").classList.add("activo");
+            }
+        }
+
+        function actualizarEstadoLogin() {
+            const estadoLogin = document.getElementById("estadoLogin");
+
+            if (!estadoLogin) return;
+
+            if (usuarioLogeado) {
+                estadoLogin.innerHTML = `Sesión iniciada como <strong>${usuarioLogeado.email}</strong>
+                    <button style="margin-left: 10px; padding: 6px 10px;" onclick="cerrarSesion()">Cerrar sesión</button>`;
+            } else {
+                estadoLogin.textContent = "No has iniciado sesión";
+            }
+        }
+
+        document.getElementById("formRegistro").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById("registroNombre").value.trim();
+            const email = document.getElementById("registroEmail").value.trim();
+            const password = document.getElementById("registroPassword").value.trim();
+            const direccion = document.getElementById("registroDireccion").value.trim();
+            const telefono = document.getElementById("registroTelefono").value.trim();
+            const mensajeAuth = document.getElementById("mensajeAuth");
+
+            if (password.length < 6) {
+                mensajeAuth.innerHTML = `<div class="mensaje-error">La contraseña debe tener al menos 6 caracteres.</div>`;
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(`${API_BACKEND}/api/registro`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        nombre,
+                        email,
+                        password,
+                        direccion,
+                        telefono
+                    })
+                });
+
+                const data = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(data.error || "Error al crear la cuenta");
+                }
+
+                usuarioLogeado = data.usuario;
+                localStorage.setItem("usuarioFightFinder", JSON.stringify(usuarioLogeado));
+
+                mensajeAuth.innerHTML = `<div class="mensaje-ok">Cuenta creada correctamente. Redirigiendo al pago...</div>`;
+
+                setTimeout(() => {
+                    abrirPago();
+                }, 700);
+
+            } catch (error) {
+                mensajeAuth.innerHTML = `<div class="mensaje-error">${error.message}</div>`;
+            }
+        });
+
+        document.getElementById("formLogin").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value.trim();
+            const mensajeAuth = document.getElementById("mensajeAuth");
+
+            try {
+                const respuesta = await fetch(`${API_BACKEND}/api/login`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                const data = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(data.error || "Email o contraseña incorrectos");
+                }
+
+                usuarioLogeado = data.usuario;
+                localStorage.setItem("usuarioFightFinder", JSON.stringify(usuarioLogeado));
+
+                mensajeAuth.innerHTML = `<div class="mensaje-ok">Login correcto. Redirigiendo al pago...</div>`;
+
+                setTimeout(() => {
+                    abrirPago();
+                }, 700);
+
+            } catch (error) {
+                mensajeAuth.innerHTML = `<div class="mensaje-error">${error.message}</div>`;
+            }
+        });
+
+        function cerrarSesion() {
+            usuarioLogeado = null;
+            localStorage.removeItem("usuarioFightFinder");
+            actualizarEstadoLogin();
+            alert("Sesión cerrada.");
+        }
+
+        function agregarAlCarrito(idProducto) {
+            const producto = productosTienda.find(item => Number(item.id_producto) === Number(idProducto));
+
+            if (!producto) {
+                alert("No se encontró el producto.");
+                return;
+            }
+
+            const stock = Number(producto.stock || 0);
+
+            if (stock <= 0) {
+                alert("Este producto está agotado.");
+                return;
+            }
+
+            const productoEnCarrito = carrito.find(item => Number(item.id_producto) === Number(idProducto));
+
+            if (productoEnCarrito) {
+                if (productoEnCarrito.cantidad >= stock) {
+                    alert("No puedes añadir más unidades que el stock disponible.");
+                    return;
+                }
+
+                productoEnCarrito.cantidad++;
+            } else {
+                carrito.push({
+                    id_producto: producto.id_producto,
+                    nombre: producto.nombre,
+                    precio: Number(producto.precio || 0),
+                    stock: stock,
+                    cantidad: 1
+                });
+            }
+
+            guardarCarrito();
+            actualizarCarrito();
+
+            const mensajeTienda = document.getElementById("mensajeTienda");
+            mensajeTienda.innerHTML = `
+                <div class="mensaje-ok">
+                    Producto añadido al carrito: <strong>${producto.nombre}</strong>
+                </div>
+            `;
+
+            setTimeout(() => {
+                mensajeTienda.innerHTML = "";
+            }, 1800);
+        }
+
+        function irAPago() {
+            if (carrito.length === 0) {
+                alert("El carrito está vacío. Añade algún producto antes de continuar.");
+                return;
+            }
+
+            if (!usuarioLogeado) {
+                document.getElementById("inicio").style.display = "none";
+                document.getElementById("buscador").style.display = "none";
+                document.getElementById("tienda").style.display = "none";
+                document.getElementById("pago").style.display = "none";
+                document.getElementById("auth").style.display = "block";
+                mostrarFormularioAuth("login");
+                return;
+            }
+
+            abrirPago();
+        }
+
+        function abrirPago() {
+            document.getElementById("inicio").style.display = "none";
+            document.getElementById("buscador").style.display = "none";
+            document.getElementById("tienda").style.display = "none";
+            document.getElementById("auth").style.display = "none";
+            document.getElementById("pago").style.display = "block";
+
+            document.getElementById("nombreCliente").value = usuarioLogeado?.nombre || "";
+            document.getElementById("direccionCliente").value = usuarioLogeado?.direccion || "";
+
+            actualizarCarrito();
+        }
+
+        function volverATienda() {
+            document.getElementById("inicio").style.display = "none";
+            document.getElementById("buscador").style.display = "none";
+            document.getElementById("auth").style.display = "none";
+            document.getElementById("pago").style.display = "none";
+            document.getElementById("tienda").style.display = "block";
+
+            actualizarEstadoLogin();
+            actualizarCarrito();
+        }
+
+        function aumentarCantidad(idProducto) {
+            const item = carrito.find(producto => Number(producto.id_producto) === Number(idProducto));
+            if (!item) return;
+
+            if (item.cantidad >= item.stock) {
+                alert("No puedes superar el stock disponible.");
+                return;
+            }
+
+            item.cantidad++;
+            guardarCarrito();
+            actualizarCarrito();
+        }
+
+        function disminuirCantidad(idProducto) {
+            const item = carrito.find(producto => Number(producto.id_producto) === Number(idProducto));
+            if (!item) return;
+
+            item.cantidad--;
+
+            if (item.cantidad <= 0) {
+                carrito = carrito.filter(producto => Number(producto.id_producto) !== Number(idProducto));
+            }
+
+            guardarCarrito();
+            actualizarCarrito();
+        }
+
+        function eliminarDelCarrito(idProducto) {
+            carrito = carrito.filter(producto => Number(producto.id_producto) !== Number(idProducto));
+            guardarCarrito();
+            actualizarCarrito();
+        }
+
+        function vaciarCarrito() {
+            if (carrito.length === 0) {
+                alert("El carrito ya está vacío.");
+                return;
+            }
+
+            const confirmar = confirm("¿Seguro que quieres vaciar el carrito?");
+            if (!confirmar) return;
+
+            carrito = [];
+            guardarCarrito();
+            actualizarCarrito();
+
+            if (document.getElementById("pago").style.display === "block") {
+                volverATienda();
+            }
+        }
+
+        function actualizarCarrito() {
+            const listaCarrito = document.getElementById("listaCarrito");
+            const totalCarrito = document.getElementById("totalCarrito");
+            const contadorCarrito = document.getElementById("contadorCarrito");
+
+            const cantidadTotal = carrito.reduce((total, item) => total + item.cantidad, 0);
+
+            if (contadorCarrito) {
+                contadorCarrito.textContent = cantidadTotal;
+            }
+
+            if (!listaCarrito || !totalCarrito) return;
+
+            listaCarrito.innerHTML = "";
+
+            const precioTotal = carrito.reduce((total, item) => total + item.precio * item.cantidad, 0);
+            totalCarrito.textContent = `${precioTotal.toFixed(2)} €`;
+
+            if (carrito.length === 0) {
+                listaCarrito.innerHTML = "<p>Tu carrito está vacío.</p>";
+                return;
+            }
+
+            carrito.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                const div = document.createElement("div");
+                div.classList.add("item-carrito");
+
+                div.innerHTML = `
+                    <h4>${item.nombre}</h4>
+                    <p>Precio: ${item.precio.toFixed(2)} €</p>
+                    <p>Subtotal: ${subtotal.toFixed(2)} €</p>
+
+                    <div class="controles-carrito">
+                        <button class="boton-cantidad" onclick="disminuirCantidad(${item.id_producto})">-</button>
+                        <strong>${item.cantidad}</strong>
+                        <button class="boton-cantidad" onclick="aumentarCantidad(${item.id_producto})">+</button>
+                        <button class="boton-eliminar" onclick="eliminarDelCarrito(${item.id_producto})">Eliminar</button>
+                    </div>
+                `;
+
+                listaCarrito.appendChild(div);
+            });
+        }
+
+        function guardarCarrito() {
+            localStorage.setItem("carritoFightFinder", JSON.stringify(carrito));
+        }
+
+        async function finalizarCompra() {
+            if (!usuarioLogeado) {
+                alert("Debes iniciar sesión para finalizar la compra.");
+                irAPago();
+                return;
+            }
+
+            if (carrito.length === 0) {
+                alert("El carrito está vacío.");
+                return;
+            }
+
+            const nombre = document.getElementById("nombreCliente").value.trim();
+            const direccion = document.getElementById("direccionCliente").value.trim();
+            const metodoPago = document.getElementById("metodoPago").value;
+
+            if (!nombre || !direccion) {
+                alert("Completa tu nombre y dirección de envío.");
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(`${API_BACKEND}/api/pedidos`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id_usuario: usuarioLogeado.id_usuario,
+                        direccion_envio: direccion,
+                        metodo_pago: metodoPago,
+                        productos: carrito.map(item => ({
+                            id_producto: item.id_producto,
+                            cantidad: item.cantidad,
+                            precio_unitario: item.precio
+                        }))
+                    })
+                });
+
+                const data = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(data.error || "Error al completar el pedido");
+                }
+
+                alert(
+                    `Pedido realizado correctamente.\n` +
+                    `Número de pedido: ${data.id_pedido}\n` +
+                    `Cliente: ${nombre}\n` +
+                    `Método de pago: ${metodoPago}\n` +
+                    `Total: ${Number(data.total).toFixed(2)} €`
+                );
+
+                carrito = [];
+                guardarCarrito();
+                actualizarCarrito();
+
+                await cargarProductos(false);
+                volverATienda();
+
+            } catch (error) {
+                alert(error.message);
+                await cargarProductos(false);
+            }
         }
 
         function capitalizar(texto) {
@@ -718,12 +1771,14 @@
         }
     </script>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <script>
-        iniciarMapa();
+    <!-- Google Maps API -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1Hw2aJ_I-R2E6ea7Rn1G3C4iSWnZgSQs&callback=iniciarMapa">
     </script>
 
+    <script>
+        actualizarEstadoLogin();
+        actualizarCarrito();
+    </script>
 </body>
 </html>

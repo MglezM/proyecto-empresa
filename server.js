@@ -99,6 +99,222 @@ app.get("/api/productos", async (req, res) => {
         console.error("Error obteniendo productos:", error);
         res.status(500).json({ error: "Error al obtener productos" });
     }
+});app.post("/api/pedidos", async (req, res) => {
+    const client = await tiendaDB.connect();
+
+    try {
+        const { id_usuario, direccion_envio, metodo_pago, productos } = req.body;
+
+        if (!id_usuario || !productos || productos.length === 0) {
+            return res.status(400).json({ error: "Datos del pedido incompletos" });
+        }
+
+        await client.query("BEGIN");
+
+        let total = 0;
+
+        for (const item of productos) {
+            const productoDB = await client.query(
+                "SELECT id_producto, nombre, precio, stock FROM productos WHERE id_producto = $1 FOR UPDATE",
+                [item.id_producto]
+            );
+
+            if (productoDB.rows.length === 0) {
+                throw new Error("Uno de los productos no existe");
+            }
+
+            const producto = productoDB.rows[0];
+
+            if (producto.stock < item.cantidad) {
+                throw new Error(`Stock insuficiente para ${producto.nombre}`);
+            }
+
+            total += Number(producto.precio) * Number(item.cantidad);
+        }
+
+        const pedido = await client.query(
+            `INSERT INTO pedidos (id_usuario, total, estado)
+             VALUES ($1, $2, $3)
+             RETURNING id_pedido, total`,
+            [id_usuario, total, "completado"]
+        );
+
+        const idPedido = pedido.rows[0].id_pedido;
+
+        for (const item of productos) {
+            const productoDB = await client.query(
+                "SELECT precio FROM productos WHERE id_producto = $1",
+                [item.id_producto]
+            );
+
+            const precioUnitario = productoDB.rows[0].precio;
+
+            await client.query(
+                `INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unitario)
+                 VALUES ($1, $2, $3, $4)`,
+                [idPedido, item.id_producto, item.cantidad, precioUnitario]
+            );
+
+            await client.query(
+                `UPDATE productos
+                 SET stock = stock - $1
+                 WHERE id_producto = $2`,
+                [item.cantidad, item.id_producto]
+            );
+        }
+
+        await client.query("COMMIT");
+
+        res.json({
+            mensaje: "Pedido completado correctamente",
+            id_pedido: idPedido,
+            total: total
+        });
+
+    } catch (error) {
+        await client.query("ROLLBACK");
+        console.error("Error creando pedido:", error);
+        res.status(400).json({ error: error.message || "Error al crear el pedido" });
+    } finally {
+        client.release();
+    }
+});
+
+app.listen(3000, () => {
+    console.log("Servidor iniciado en http://localhost:3000");
+});
+app.post("/api/registro", async (req, res) => {
+    try {
+        const { nombre, email, password, direccion, telefono } = req.body;
+
+        const existe = await tiendaDB.query(
+            "SELECT id_usuario FROM usuarios WHERE email = $1",
+            [email]
+        );
+
+        if (existe.rows.length > 0) {
+            return res.status(400).json({ error: "Ya existe una cuenta con ese email" });
+        }
+
+        const result = await tiendaDB.query(
+            `INSERT INTO usuarios (nombre, email, password, direccion, telefono)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING id_usuario, nombre, email, direccion, telefono`,
+            [nombre, email, password, direccion, telefono]
+        );
+
+        res.json({
+            mensaje: "Usuario registrado correctamente",
+            usuario: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error registrando usuario:", error);
+        res.status(500).json({ error: "Error al registrar usuario" });
+    }
+});
+
+app.post("/api/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const result = await tiendaDB.query(
+            `SELECT id_usuario, nombre, email, direccion, telefono
+             FROM usuarios
+             WHERE email = $1 AND password = $2`,
+            [email, password]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: "Email o contraseña incorrectos" });
+        }
+
+        res.json({
+            mensaje: "Login correcto",
+            usuario: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error iniciando sesión:", error);
+        res.status(500).json({ error: "Error al iniciar sesión" });
+    }
+}); 
+// Registrar usuario en la base de datos tienda
+app.post("/api/registro", async (req, res) => {
+    try {
+        const { nombre, email, password, direccion, telefono } = req.body;
+
+        if (!nombre || !email || !password) {
+            return res.status(400).json({ error: "Nombre, email y contraseña son obligatorios" });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({ error: "La contraseña debe tener al menos 6 caracteres" });
+        }
+
+        const existe = await tiendaDB.query(
+            "SELECT id_usuario FROM usuarios WHERE email = $1",
+            [email]
+        );
+
+        if (existe.rows.length > 0) {
+            return res.status(400).json({ error: "Ya existe una cuenta con ese email" });
+        }
+
+        const result = await tiendaDB.query(
+            `INSERT INTO usuarios (nombre, email, password, direccion, telefono)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING id_usuario, nombre, email, direccion, telefono`,
+            [nombre, email, password, direccion || null, telefono || null]
+        );
+
+        res.status(201).json({
+            mensaje: "Usuario registrado correctamente",
+            usuario: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error registrando usuario:", error);
+        res.status(500).json({ error: "Error al registrar usuario" });
+    }
+});
+
+// Iniciar sesión con usuario de la base de datos tienda
+app.post("/api/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email y contraseña son obligatorios" });
+        }
+
+        const result = await tiendaDB.query(
+            `SELECT id_usuario, nombre, email, direccion, telefono
+             FROM usuarios
+             WHERE email = $1 AND password = $2`,
+            [email, password]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: "Email o contraseña incorrectos" });
+        }
+
+        res.json({
+            mensaje: "Login correcto",
+            usuario: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error iniciando sesión:", error);
+        res.status(500).json({ error: "Error al iniciar sesión" });
+    }
+});
+app.post("/api/registro", async (req, res) => {
+    // código de registro
+});
+
+app.post("/api/login", async (req, res) => {
+    // código de login
 });
 
 app.listen(3000, () => {
