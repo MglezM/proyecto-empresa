@@ -1,10 +1,15 @@
 Proyecto:
 Pagina web con buscador de gimnasios de artes marciales, además la pagina contara con una tienda de suplementación y equipo deportivo.
 se cuenta con un sistema en el que los usuarios podrán dejar valoraciones y comentarios de cada gimnasio
+--------------------------------------------------------------------------------------------------------------------------------------------
 bbdd: PostgreSQL, pgadmin4 
 añadir descripción y valores del deporte 
-socket:192.168.56.1
-
+socket:192.168.56.1:3000
+mirar parte visual y contrastes 
+añadir como idioma: portugués y francés
+usar rol: marketing y ux(user experience)
+cambiar banner: logo o imagen(horizontal)
+parte guía: pasarla a targetas
 --------------------------------------------------------------------------------------------------------------------------------------------
 Agente IA 1
 Propósito: Experto en suplementación 
