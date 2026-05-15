@@ -12,18 +12,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-function crearPool(prefix) {
-    return new Pool({
-        host: process.env[`${prefix}_DB_HOST`],
-        port: Number(process.env[`${prefix}_DB_PORT`] || 5432),
-        user: process.env[`${prefix}_DB_USER`],
-        password: process.env[`${prefix}_DB_PASSWORD`],
-        database: process.env[`${prefix}_DB_NAME`]
-    });
-}
-
-const gymDB = crearPool("GYM");
-const tiendaDB = crearPool("TIENDA");
+const db = new Pool({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT || 5432),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+});
 
 app.get("/api/status", (req, res) => {
     res.json({ mensaje: "Servidor funcionando correctamente" });
@@ -66,7 +61,7 @@ app.get("/api/gimnasios", async (req, res) => {
         `;
 
         const values = [`%${localizacion}%`, deporte, horario];
-        const result = await gymDB.query(query, values);
+        const result = await db.query(query, values);
 
         res.json(result.rows);
     } catch (error) {
@@ -77,7 +72,7 @@ app.get("/api/gimnasios", async (req, res) => {
 
 app.get("/api/productos", async (req, res) => {
     try {
-        const result = await tiendaDB.query(`
+        const result = await db.query(`
             SELECT 
                 p.id_producto,
                 p.nombre,
@@ -113,7 +108,7 @@ app.post("/api/registro", async (req, res) => {
             return res.status(400).json({ error: "La contraseña debe tener al menos 6 caracteres" });
         }
 
-        const existe = await tiendaDB.query(
+        const existe = await db.query(
             "SELECT id_usuario FROM usuarios WHERE email = $1",
             [email]
         );
@@ -124,7 +119,7 @@ app.post("/api/registro", async (req, res) => {
 
         const passwordHash = await bcrypt.hash(password, 10);
 
-        const result = await tiendaDB.query(
+        const result = await db.query(
             `INSERT INTO usuarios (nombre, email, password, direccion, telefono)
              VALUES ($1, $2, $3, $4, $5)
              RETURNING id_usuario, nombre, email, direccion, telefono`,
@@ -141,6 +136,102 @@ app.post("/api/registro", async (req, res) => {
         res.status(500).json({ error: "Error al registrar usuario" });
     }
 });
+app.get("/api/gimnasios/:id_gimnasio/valoraciones", async (req, res) => {
+    try {
+        const { id_gimnasio } = req.params;
+
+        const resumen = await db.query(`
+            SELECT 
+                COALESCE(ROUND(AVG(puntuacion)::numeric, 1), 0) AS media,
+                COUNT(*) AS total_valoraciones
+            FROM valoraciones_gimnasios
+            WHERE id_gimnasio = $1
+        `, [id_gimnasio]);
+
+        const comentarios = await db.query(`
+            SELECT 
+                vg.id_valoracion,
+                vg.puntuacion,
+                vg.comentario,
+                vg.fecha_valoracion,
+                u.nombre AS usuario
+            FROM valoraciones_gimnasios vg
+            JOIN usuarios u ON vg.id_usuario = u.id_usuario
+            WHERE vg.id_gimnasio = $1
+            ORDER BY vg.fecha_valoracion DESC
+            LIMIT 5
+        `, [id_gimnasio]);
+
+        res.json({
+            media: resumen.rows[0].media,
+            total_valoraciones: resumen.rows[0].total_valoraciones,
+            comentarios: comentarios.rows
+        });
+
+    } catch (error) {
+        console.error("Error obteniendo valoraciones:", error);
+        res.status(500).json({ error: "Error obteniendo valoraciones" });
+    }
+});
+
+app.post("/api/gimnasios/:id_gimnasio/valoraciones", async (req, res) => {
+    try {
+        const { id_gimnasio } = req.params;
+        const { id_usuario, puntuacion, comentario } = req.body;
+
+        if (!id_usuario) {
+            return res.status(401).json({ error: "Debes iniciar sesión para valorar" });
+        }
+
+        if (!puntuacion || puntuacion < 1 || puntuacion > 5) {
+            return res.status(400).json({ error: "La puntuación debe estar entre 1 y 5" });
+        }
+
+        const usuarioExiste = await db.query(
+            "SELECT id_usuario FROM usuarios WHERE id_usuario = $1",
+            [id_usuario]
+        );
+
+        if (usuarioExiste.rows.length === 0) {
+            return res.status(404).json({ error: "Usuario no encontrado" });
+        }
+
+        const gimnasioExiste = await db.query(
+            "SELECT id_gimnasio FROM gimnasios WHERE id_gimnasio = $1",
+            [id_gimnasio]
+        );
+
+        if (gimnasioExiste.rows.length === 0) {
+            return res.status(404).json({ error: "Gimnasio no encontrado" });
+        }
+
+        const resultado = await db.query(`
+            INSERT INTO valoraciones_gimnasios 
+                (id_gimnasio, id_usuario, puntuacion, comentario)
+            VALUES ($1, $2, $3, $4)
+            ON CONFLICT (id_gimnasio, id_usuario)
+            DO UPDATE SET
+                puntuacion = EXCLUDED.puntuacion,
+                comentario = EXCLUDED.comentario,
+                fecha_valoracion = CURRENT_TIMESTAMP
+            RETURNING *
+        `, [
+            id_gimnasio,
+            id_usuario,
+            puntuacion,
+            comentario || null
+        ]);
+
+        res.status(201).json({
+            mensaje: "Valoración guardada correctamente",
+            valoracion: resultado.rows[0]
+        });
+
+    } catch (error) {
+        console.error("Error guardando valoración:", error);
+        res.status(500).json({ error: "Error guardando valoración" });
+    }
+});
 
 app.post("/api/login", async (req, res) => {
     try {
@@ -150,7 +241,7 @@ app.post("/api/login", async (req, res) => {
             return res.status(400).json({ error: "Email y contraseña son obligatorios" });
         }
 
-        const result = await tiendaDB.query(
+        const result = await db.query(
             `SELECT id_usuario, nombre, email, password, direccion, telefono
              FROM usuarios
              WHERE email = $1`,
@@ -186,7 +277,7 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.post("/api/pedidos", async (req, res) => {
-    const client = await tiendaDB.connect();
+    const client = await db.connect();
 
     try {
         const { id_usuario, productos } = req.body;

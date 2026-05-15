@@ -12,17 +12,17 @@
 
     <style>
         :root {
-            --bg-principal: #050506;
-            --bg-secundario: #09090b;
-            --bg-tarjeta: rgba(0, 0, 0, 0.94);
-            --bg-tarjeta-hover: rgba(18, 18, 20, 0.96);
-            --borde: #2b2b2f;
-            --texto-principal: #f4f4f5;
-            --texto-secundario: #b7b7bd;
+            --bg-principal: #0f1115;
+            --bg-secundario: #151922;
+            --bg-tarjeta: #1c2230;
+            --bg-tarjeta-hover: #242b3a;
+            --borde: #30384a;
+            --texto-principal: #f1f1f1;
+            --texto-secundario: #b8beca;
             --rojo: #d90429;
             --rojo-hover: #a80320;
             --verde: #20c997;
-            --azul-info: #18181b;
+            --azul-info: #1f4e5f;
         }
 
         * {
@@ -34,7 +34,7 @@
 
         body {
             background:
-                linear-gradient(rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.90)),
+                linear-gradient(rgba(9, 11, 15, 0.72), rgba(9, 11, 15, 0.86)),
                 url("https://wallpapercave.com/wp/RaQ0Gpy.jpg") center center / cover fixed no-repeat;
             color: var(--texto-principal);
             min-height: 100vh;
@@ -104,14 +104,14 @@
         }
 
         .opcion {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94));
+            background: linear-gradient(180deg, rgba(28, 34, 48, 0.94), rgba(21, 26, 36, 0.94));
             backdrop-filter: blur(4px);
             width: 320px;
             padding: 35px;
             border-radius: 18px;
             text-align: center;
             border: 1px solid var(--borde);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.58);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
         }
@@ -120,7 +120,7 @@
             transform: translateY(-5px);
             box-shadow: 0 12px 32px rgba(217, 4, 41, 0.18);
             border-color: var(--rojo);
-            background: linear-gradient(180deg, rgba(18, 18, 20, 0.98), rgba(8, 8, 10, 0.98));
+            background: linear-gradient(180deg, var(--bg-tarjeta-hover), #171d29);
         }
 
         .opcion h2 {
@@ -160,11 +160,11 @@
 
         .seccion {
             display: none;
-            background: rgba(0, 0, 0, 0.86);
+            background: rgba(21, 25, 34, 0.96);
             padding: 30px;
             border-radius: 18px;
             border: 1px solid var(--borde);
-            box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
 
         .seccion h2 {
@@ -193,10 +193,9 @@
             border: 1px solid var(--borde);
             border-radius: 9px;
             font-size: 15px;
-            background-color: rgba(0, 0, 0, 0.82);
+            background-color: #0f131c;
             color: var(--texto-principal);
             outline: none;
-            backdrop-filter: blur(4px);
         }
 
         input::placeholder {
@@ -217,7 +216,7 @@
         }
 
         .leaflet-container {
-            background-color: rgba(0, 0, 0, 0.86);
+            background-color: #111722;
         }
 
         .leaflet-popup-content-wrapper,
@@ -239,7 +238,7 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(18, 18, 20, 0.96));
+            background: linear-gradient(135deg, #111722, #242b3a);
             color: #d7dbe5;
             text-align: center;
             padding: 10px;
@@ -262,7 +261,7 @@
             border-radius: 14px;
             border: 2px solid var(--borde);
             overflow: hidden;
-            background-color: rgba(0, 0, 0, 0.86);
+            background-color: #111722;
             z-index: 1;
         }
 
@@ -277,7 +276,7 @@
             border-radius: 14px;
             padding: 18px;
             background-color: var(--bg-tarjeta);
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.52);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
         }
 
         .card-gimnasio h3 {
@@ -397,15 +396,6 @@
             color: var(--texto-principal);
         }
 
-
-        .comentario-gimnasio .gimnasio-comentario {
-            display: block;
-            color: var(--rojo);
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
         .comentario-gimnasio p {
             color: var(--texto-secundario);
             margin-top: 6px;
@@ -426,26 +416,26 @@
         }
 
         .volver {
-            background-color: rgba(0, 0, 0, 0.76);
+            background-color: #2a303d;
         }
 
         .volver:hover {
-            background-color: rgba(24, 24, 27, 0.92);
+            background-color: #3a4354;
             box-shadow: none;
         }
 
         .boton-secundario {
-            background-color: rgba(0, 0, 0, 0.72);
+            background-color: #252c3a;
             border: 1px solid var(--borde);
         }
 
         .boton-secundario:hover {
-            background-color: rgba(24, 24, 27, 0.92);
+            background-color: #343c4f;
             box-shadow: none;
         }
 
         .mensaje-error {
-            background-color: rgba(47, 7, 15, 0.92);
+            background-color: #3a151b;
             color: #ffb4c0;
             border: 1px solid #842029;
             padding: 12px;
@@ -454,7 +444,7 @@
         }
 
         .mensaje-cargando {
-            background-color: rgba(10, 31, 38, 0.92);
+            background-color: #15323d;
             color: #b8efff;
             border: 1px solid #245a6f;
             padding: 12px;
@@ -478,7 +468,7 @@
         }
 
         .filtros-tienda {
-            background-color: rgba(0, 0, 0, 0.78);
+            background-color: #151a24;
             border: 1px solid var(--borde);
             border-radius: 14px;
             padding: 20px;
@@ -520,7 +510,7 @@
 
 
         .boton-categoria {
-            background-color: rgba(0, 0, 0, 0.72);
+            background-color: #252c3a;
             color: var(--texto-principal);
             border: 1px solid var(--borde);
         }
@@ -550,7 +540,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
             transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
             cursor: pointer;
         }
@@ -571,7 +561,7 @@
             height: 115px;
             min-height: 115px;
             max-height: 115px;
-            background-color: rgba(0, 0, 0, 0.86);
+            background-color: #111722;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -634,7 +624,7 @@
 
         .categoria-producto {
             font-size: 13px;
-            background-color: rgba(0, 0, 0, 0.76);
+            background-color: #2a303d;
             color: var(--texto-principal);
             display: inline-block;
             padding: 5px 8px;
@@ -679,19 +669,19 @@
 
         .panel-buscador-central {
             min-width: 0;
-            background: rgba(0, 0, 0, 0.86);
+            background: rgba(21, 25, 34, 0.96);
             padding: 30px;
             border-radius: 18px;
             border: 1px solid var(--borde);
-            box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
 
         .promo-lateral {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.92), rgba(8, 8, 10, 0.96));
+            background: linear-gradient(180deg, #1c2230, #131823);
             border: 1px solid var(--borde);
             border-radius: 16px;
             padding: 14px;
-            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
             position: sticky;
             top: 20px;
         }
@@ -716,7 +706,7 @@
             object-fit: cover;
             border-radius: 12px;
             border: 1px solid var(--borde);
-            background-color: rgba(0, 0, 0, 0.86);
+            background-color: #111722;
         }
 
         .producto-promo .sin-imagen-promo {
@@ -724,7 +714,7 @@
             height: 120px;
             border-radius: 12px;
             border: 1px solid var(--borde);
-            background-color: rgba(0, 0, 0, 0.86);
+            background-color: #111722;
             color: #8991a3;
             display: flex;
             align-items: center;
@@ -784,11 +774,11 @@
 
         .panel-guia-central {
             min-width: 0;
-            background: rgba(0, 0, 0, 0.86);
+            background: rgba(21, 25, 34, 0.96);
             padding: 30px;
             border-radius: 18px;
             border: 1px solid var(--borde);
-            box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
 
         @media (max-width: 1000px) {
@@ -810,7 +800,7 @@
             border: 1px solid var(--borde);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.52);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
@@ -897,14 +887,14 @@
 
         /* LOGIN, REGISTRO, CARRITO Y PAGO */
         .boton-carrito {
-            background-color: rgba(0, 0, 0, 0.92);
+            background-color: #111;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
         .boton-carrito:hover {
-            background-color: rgba(24, 24, 27, 0.96);
+            background-color: #333;
         }
 
         .acciones-usuario-tienda {
@@ -915,21 +905,21 @@
         }
 
         .boton-login-tienda {
-            background-color: rgba(0, 0, 0, 0.72);
+            background-color: #252c3a;
             border: 1px solid var(--borde);
         }
 
         .boton-login-tienda:hover {
-            background-color: rgba(24, 24, 27, 0.92);
+            background-color: #343c4f;
             box-shadow: none;
         }
 
         .boton-logout-tienda {
-            background-color: #3f3f46;
+            background-color: #555;
         }
 
         .boton-logout-tienda:hover {
-            background-color: #52525b;
+            background-color: #6a6a6a;
             box-shadow: none;
         }
 
@@ -955,11 +945,11 @@
         .pagina-auth,
         .pagina-pago {
             display: none;
-            background: rgba(0, 0, 0, 0.86);
+            background: rgba(21, 25, 34, 0.96);
             padding: 30px;
             border-radius: 18px;
             border: 1px solid var(--borde);
-            box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
         }
 
         .contenedor-auth {
@@ -990,7 +980,7 @@
         }
 
         .tab-auth {
-            background-color: rgba(0, 0, 0, 0.72);
+            background-color: #252c3a;
             color: var(--texto-principal);
             border: 1px solid var(--borde);
         }
@@ -1060,12 +1050,12 @@
         }
 
         .boton-cantidad {
-            background-color: rgba(24, 24, 27, 0.96);
+            background-color: #333;
         }
 
         .boton-eliminar,
         .boton-vaciar {
-            background-color: #52525b;
+            background-color: #777;
         }
 
         .total-carrito {
@@ -1092,7 +1082,7 @@
         }
 
         .mensaje-ok {
-            background-color: rgba(7, 43, 26, 0.92);
+            background-color: #123524;
             color: #9ff0c2;
             border: 1px solid #1f7a4c;
             padding: 12px;
@@ -1118,7 +1108,7 @@
 
         .modal-mensaje {
             width: min(440px, 100%);
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.96), rgba(8, 8, 10, 0.98));
+            background: linear-gradient(180deg, var(--bg-tarjeta), #151a24);
             border: 1px solid var(--borde);
             border-radius: 18px;
             padding: 24px;
@@ -1157,132 +1147,6 @@
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
-        }
-
-
-        /* PALETA GLOBAL ESTILO INICIO */
-        .seccion,
-        .panel-buscador-central,
-        .panel-guia-central,
-        .pagina-auth,
-        .pagina-pago,
-        .contenedor-auth,
-        .resumen-pago,
-        .datos-pago,
-        .card-gimnasio,
-        .card-producto,
-        .card-deporte,
-        .comentario-gimnasio,
-        .filtros-tienda,
-        .promo-lateral {
-            background-color: rgba(0, 0, 0, 0.86);
-            border-color: var(--borde);
-            backdrop-filter: blur(4px);
-        }
-
-        .card-producto,
-        .card-gimnasio,
-        .card-deporte,
-        .comentario-gimnasio,
-        .promo-lateral,
-        .opcion {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94));
-        }
-
-        .card-producto:hover,
-        .card-deporte.abierto,
-        .opcion:hover {
-            background: linear-gradient(180deg, rgba(18, 18, 20, 0.98), rgba(8, 8, 10, 0.98));
-        }
-
-        input,
-        select,
-        textarea {
-            background-color: rgba(0, 0, 0, 0.82);
-            border-color: var(--borde);
-            color: var(--texto-principal);
-        }
-
-        .boton-secundario,
-        .boton-login-tienda,
-        .volver,
-        .tab-auth,
-        .boton-categoria {
-            background-color: rgba(0, 0, 0, 0.78);
-            border: 1px solid var(--borde);
-        }
-
-        .boton-secundario:hover,
-        .boton-login-tienda:hover,
-        .volver:hover,
-        .tab-auth:hover,
-        .boton-categoria:hover {
-            background-color: rgba(18, 18, 20, 0.96);
-        }
-
-
-
-        /* Desplegables con estética oscura del sitio */
-        select {
-            color-scheme: dark;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background:
-                linear-gradient(45deg, transparent 50%, var(--texto-principal) 50%) right 16px center / 7px 7px no-repeat,
-                linear-gradient(135deg, var(--texto-principal) 50%, transparent 50%) right 10px center / 7px 7px no-repeat,
-                rgba(0, 0, 0, 0.82);
-            padding-right: 42px;
-        }
-
-        select option {
-            background-color: #050506;
-            color: var(--texto-principal);
-        }
-
-        select option:checked {
-            background-color: var(--rojo);
-            color: #ffffff;
-        }
-
-        select option:hover,
-        select option:focus {
-            background-color: rgba(217, 4, 41, 0.85);
-            color: #ffffff;
-        }
-
-        .selector-idioma select {
-            background:
-                linear-gradient(45deg, transparent 50%, var(--texto-principal) 50%) right 14px center / 7px 7px no-repeat,
-                linear-gradient(135deg, var(--texto-principal) 50%, transparent 50%) right 8px center / 7px 7px no-repeat,
-                rgba(0, 0, 0, 0.82);
-            padding-right: 38px;
-        }
-
-        /* Evita que el campo de localización cambie a fondo claro al escribir/autocompletar */
-        #localizacion,
-        #localizacion:focus,
-        #localizacion:active,
-        #localizacion:hover {
-            background-color: rgba(0, 0, 0, 0.82) !important;
-            color: var(--texto-principal) !important;
-            border-color: var(--borde);
-            caret-color: var(--texto-principal);
-        }
-
-        #localizacion:-webkit-autofill,
-        #localizacion:-webkit-autofill:hover,
-        #localizacion:-webkit-autofill:focus,
-        #localizacion:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.82) inset !important;
-            -webkit-text-fill-color: var(--texto-principal) !important;
-            caret-color: var(--texto-principal);
-            transition: background-color 9999s ease-in-out 0s;
-        }
-
-        #localizacion::selection {
-            background-color: rgba(217, 4, 41, 0.35);
-            color: var(--texto-principal);
         }
 
         @media (max-width: 900px) {
@@ -1756,8 +1620,7 @@
                 seleccionaEstrellas: "Selecciona una puntuación entre 1 y 5 estrellas.",
                 resenaGuardada: "Reseña guardada correctamente.",
                 sinComentarios: "Todavía no hay comentarios.",
-                valoraciones: "valoraciones",
-                comentarioSobre: "Gimnasio"
+                valoraciones: "valoraciones"
             },
             en: {
                 titulo: "Fight-Finder",
@@ -1847,8 +1710,7 @@
                 seleccionaEstrellas: "Select a rating between 1 and 5 stars.",
                 resenaGuardada: "Review saved successfully.",
                 sinComentarios: "There are no comments yet.",
-                valoraciones: "reviews",
-                comentarioSobre: "Gym"
+                valoraciones: "reviews"
             }
         };
 
@@ -2227,7 +2089,7 @@
                         <textarea 
                             id="comentario-${gimnasio.id_gimnasio}" 
                             class="comentario-resena"
-                            placeholder="${t("Dejanos tu opinión")}"
+                            placeholder="${t("comentarioOpcional")}"
                         ></textarea>
 
                         <button 
@@ -2240,7 +2102,7 @@
                     </div>
                 `;
                 lista.appendChild(card);
-                cargarValoracionesGimnasio(gimnasio.id_gimnasio, gimnasio.nombre);
+                cargarValoracionesGimnasio(gimnasio.id_gimnasio);
 
                 if (!isNaN(latitud) && !isNaN(longitud)) {
                     const posicion = [latitud, longitud];
@@ -2327,15 +2189,7 @@
             return estrellas;
         }
 
-
-        function obtenerNombreGimnasioDesdeTarjeta(idGimnasio) {
-            const media = document.getElementById(`valoracion-media-${idGimnasio}`);
-            const tarjeta = media ? media.closest(".card-gimnasio") : null;
-            const titulo = tarjeta ? tarjeta.querySelector("h3") : null;
-            return titulo ? titulo.textContent.trim() : "";
-        }
-
-        async function cargarValoracionesGimnasio(idGimnasio, nombreGimnasio = '') {
+        async function cargarValoracionesGimnasio(idGimnasio) {
             try {
                 const respuesta = await fetch(`${API_BACKEND}/api/gimnasios/${idGimnasio}/valoraciones`);
 
@@ -2357,14 +2211,14 @@
                     `;
                 }
 
-                renderizarComentariosGimnasio(data.comentarios || [], nombreGimnasio);
+                renderizarComentariosGimnasio(data.comentarios || []);
 
             } catch (error) {
                 console.error("Error cargando valoraciones:", error);
             }
         }
 
-        function renderizarComentariosGimnasio(comentarios, nombreGimnasio = '') {
+        function renderizarComentariosGimnasio(comentarios) {
             const lista = document.getElementById("listaComentariosGimnasios");
 
             if (!lista) return;
@@ -2380,7 +2234,6 @@
                 .filter(item => item.comentario)
                 .map(item => `
                     <div class="comentario-gimnasio">
-                        <span class="gimnasio-comentario">${nombreGimnasio || item.gimnasio || "Gimnasio"}</span>
                         <strong>${item.usuario || "Usuario"}</strong>
                         <span class="estrellas-media">${generarEstrellasMedia(item.puntuacion)}</span>
                         <p>${item.comentario}</p>
@@ -2463,7 +2316,7 @@
                 const listaComentarios = document.getElementById("listaComentariosGimnasios");
                 if (listaComentarios) listaComentarios.innerHTML = "";
 
-                cargarValoracionesGimnasio(idGimnasio, obtenerNombreGimnasioDesdeTarjeta(idGimnasio));
+                cargarValoracionesGimnasio(idGimnasio);
 
             } catch (error) {
                 mostrarMensajeModal(error.message);

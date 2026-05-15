@@ -9,7 +9,7 @@ mirar parte visual y contrastes
 añadir como idioma: portugués y francés
 usar rol: marketing y ux(user experience)
 cambiar banner: logo o imagen(horizontal)
-parte guía: pasarla a targetas
+parte guía: pasarla a tarjeta
 --------------------------------------------------------------------------------------------------------------------------------------------
 Agente IA 1
 Propósito: Experto en suplementación 
