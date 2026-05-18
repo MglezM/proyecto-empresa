@@ -1473,6 +1473,14 @@
 
                     <div id="comentariosGimnasios" class="comentarios-gimnasios" style="display: none;">
                         <h3 data-i18n="comentariosUsuarios">Comentarios de usuarios</h3>
+
+                        <label for="buscadorComentariosGimnasio" data-i18n="">Buscar comentarios por gimnasio</label>
+                        <input
+                            type="text"
+                            id="buscadorComentariosGimnasio"
+                            oninput="filtrarComentariosPorGimnasio()"
+                        />
+
                         <div id="listaComentariosGimnasios" class="lista-comentarios-gimnasios"></div>
                     </div>
                 </div>
@@ -2058,6 +2066,13 @@
 
             const buscadorNombreProducto = document.getElementById("buscadorNombreProducto");
             if (buscadorNombreProducto) buscadorNombreProducto.placeholder = "";
+
+            const buscadorComentariosGimnasio = document.getElementById("buscadorComentariosGimnasio");
+            if (buscadorComentariosGimnasio) {
+                buscadorComentariosGimnasio.placeholder = idiomaActual === "es"
+                    ? "Nombre del gimnasio"
+                    : "Gym name";
+            }
         }
 
 
@@ -2171,6 +2186,9 @@
 
             if (comentariosGimnasios) comentariosGimnasios.style.display = "block";
             if (listaComentariosGimnasios) listaComentariosGimnasios.innerHTML = "";
+
+            const buscadorComentariosGimnasio = document.getElementById("buscadorComentariosGimnasio");
+            if (buscadorComentariosGimnasio) buscadorComentariosGimnasio.value = "";
 
             limpiarMarcadores();
 
@@ -2364,6 +2382,41 @@
             }
         }
 
+
+        function filtrarComentariosPorGimnasio() {
+            const input = document.getElementById("buscadorComentariosGimnasio");
+            const lista = document.getElementById("listaComentariosGimnasios");
+
+            if (!input || !lista) return;
+
+            const busqueda = normalizarTexto(input.value);
+            const comentarios = lista.querySelectorAll(".comentario-gimnasio");
+            let visibles = 0;
+
+            const mensajeAnterior = document.getElementById("mensajeFiltroComentariosGimnasio");
+            if (mensajeAnterior) {
+                mensajeAnterior.remove();
+            }
+
+            comentarios.forEach(comentario => {
+                const nombreGimnasio = comentario.querySelector(".gimnasio-comentario")?.textContent || "";
+                const coincide = !busqueda || normalizarTexto(nombreGimnasio).includes(busqueda);
+
+                comentario.style.display = coincide ? "block" : "none";
+
+                if (coincide) {
+                    visibles++;
+                }
+            });
+
+            if (busqueda && comentarios.length > 0 && visibles === 0) {
+                const mensaje = document.createElement("p");
+                mensaje.id = "mensajeFiltroComentariosGimnasio";
+                mensaje.textContent = t("sinComentariosFiltro");
+                lista.appendChild(mensaje);
+            }
+        }
+
         function renderizarComentariosGimnasio(comentarios, nombreGimnasio = '') {
             const lista = document.getElementById("listaComentariosGimnasios");
 
@@ -2397,6 +2450,7 @@
                 }
 
                 lista.innerHTML += comentariosHtml;
+                filtrarComentariosPorGimnasio();
             }
         }
 

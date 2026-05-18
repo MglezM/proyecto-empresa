@@ -4,7 +4,7 @@ se cuenta con un sistema en el que los usuarios podrán dejar valoraciones y com
 --------------------------------------------------------------------------------------------------------------------------------------------
 bbdd: PostgreSQL, pgadmin4 
 añadir descripción y valores del deporte 
-socket:192.168.56.1:3000
+Puerto:3000
 mirar parte visual y contrastes 
 añadir como idioma: portugués y francés
 usar rol: marketing y ux(user experience)
