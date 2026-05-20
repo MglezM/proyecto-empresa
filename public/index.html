@@ -970,6 +970,19 @@
             border-bottom: 1px solid var(--borde);
             font-size: 48px;
             line-height: 1;
+            overflow: hidden;
+        }
+
+        .imagen-deporte img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .imagen-deporte .icono-deporte-fallback {
+            font-size: 48px;
+            line-height: 1;
         }
 
         .card-deporte-cabecera {
@@ -1028,6 +1041,45 @@
             color: var(--texto-secundario);
             line-height: 1.5;
             font-size: 13px;
+        }
+
+        .apartado-video-deporte {
+            margin-top: 12px;
+        }
+
+        .contenedor-video-deporte {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid var(--borde);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.86);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .contenedor-video-deporte iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .placeholder-video-deporte {
+            min-height: 110px;
+            border: 1px dashed rgba(217, 4, 41, 0.55);
+            border-radius: 12px;
+            background: rgba(217, 4, 41, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 14px;
+        }
+
+        .placeholder-video-deporte p {
+            color: var(--texto-secundario);
+            font-size: 12px;
+            line-height: 1.45;
         }
 
         .intro-deportes {
@@ -1956,6 +2008,8 @@
                 desventajas: "Desventajas",
                 valores: "Valores",
                 recomendadoPara: "Recomendado para",
+                videoDeporte: "Video",
+                insertarVideoAqui: "Apartado reservado para insertar un video. Edita la propiedad video de este deporte con una URL de YouTube o un enlace embed.",
                 buscadorTitulo: "Buscador de gimnasios",
                 localizacion: "Localización",
                 zona: "Zona",
@@ -2046,6 +2100,8 @@
                 desventajas: "Disadvantages",
                 valores: "Values",
                 recomendadoPara: "Recommended for",
+                videoDeporte: "Video",
+                insertarVideoAqui: "Reserved area to insert a video. Edit this sport's video property with a YouTube URL or embed link.",
                 buscadorTitulo: "Gym finder",
                 localizacion: "Location",
                 zona: "Area",
@@ -3650,7 +3706,7 @@
                             <p>${traducirCategoria(producto.categoria)}</p>
                             ${producto.marca ? `<p>${t("marca")}: ${producto.marca}</p>` : ""}
                             <p class="precio-relacionado-carrito">${Number(producto.precio).toFixed(2)} €</p>
-                            <button class="boton-relacionado-carrito" type="button" onclick="anadirAlCarritoRelacionado(${obtenerIdProducto(producto)})">${t("anadirCarrito")}</button>
+                            <button class="boton-relacionado-carrito" type="button" onclick="event.stopPropagation(); anadirAlCarritoRelacionado(${obtenerIdProducto(producto)})">${t("anadirCarrito")}</button>
                         </div>
                     </div>
                 `;
@@ -3660,11 +3716,17 @@
         function anadirAlCarritoRelacionado(idProducto) {
             const producto = productosTienda.find(item => obtenerIdProducto(item) === Number(idProducto));
 
-            if (!producto) return;
+            if (!producto) {
+                mostrarMensajeModal("No se encontró el producto.");
+                return;
+            }
 
-            anadirAlCarrito(producto);
-            renderizarProductosRelacionadosCarrito();
-            actualizarCarrito();
+            agregarAlCarrito(idProducto);
+
+            if (document.getElementById("pago").style.display === "block") {
+                actualizarCarrito();
+                renderizarProductosRelacionadosCarrito();
+            }
         }
 
         function actualizarProductosRelacionadosSiVisible() {
@@ -3676,7 +3738,39 @@
         }
 
 
+
+        function sincronizarDatosCarritoConProductos() {
+            if (!Array.isArray(carrito) || !Array.isArray(productosTienda)) return;
+
+            carrito = carrito.map(item => {
+                const idItem = obtenerIdProducto(item);
+                const productoCompleto = productosTienda.find(producto => obtenerIdProducto(producto) === idItem);
+
+                if (!productoCompleto) {
+                    return {
+                        ...item,
+                        precio: Number(item.precio || 0),
+                        cantidad: Number(item.cantidad || 1)
+                    };
+                }
+
+                return {
+                    ...productoCompleto,
+                    ...item,
+                    id_producto: productoCompleto.id_producto,
+                    nombre: item.nombre || productoCompleto.nombre,
+                    precio: Number(item.precio || productoCompleto.precio || 0),
+                    stock: Number(item.stock || productoCompleto.stock || 0),
+                    cantidad: Number(item.cantidad || 1)
+                };
+            });
+
+            guardarCarrito();
+        }
+
+
         function actualizarCarrito() {
+            sincronizarDatosCarritoConProductos();
             const listaCarrito = document.getElementById("listaCarrito");
             const totalCarrito = document.getElementById("totalCarrito");
             const contadorCarrito = document.getElementById("contadorCarrito");
@@ -3791,7 +3885,13 @@
                 await cargarProductos(false);
             }
         }
-
+        const videoBoxing = "https://www.youtube.com/watch?v=uITAYo97mgU"
+        const videoMMA = "https://www.youtube.com/watch?v=1bn90TtnNRQ"
+        const videoBJJ = "https://www.youtube.com/watch?v=5H3ZI9yproE"
+        const videoMuayThai = "https://www.youtube.com/shorts/k2QTyGH1ZZI"
+        const videoJudo = "https://www.youtube.com/watch?v=bPGLd3yz0DE"
+        const videoKarate = "https://www.youtube.com/watch?v=wjlZKEToSE8&pp=ygUQcXVlIGVzIGVsIGthcmF0ZQ%3D%3D"
+        const videoTaekwondo = "https://www.youtube.com/watch?v=pVTqxx9-_Cg&pp=ygUTcXVlIGVzIGVsIHRhZWt3b25kbw%3D%3D"
 
         const guiaDeportes = {
             es: [
@@ -3801,7 +3901,8 @@
                     ventajas: "Mejora mucho la resistencia, la coordinación, la velocidad de reacción y la confianza personal.",
                     desventajas: "Puede ser exigente para hombros, muñecas y condición cardiovascular. El sparring requiere buena supervisión.",
                     valores: "Disciplina, constancia, autocontrol, respeto y superación personal.",
-                    recomendado: "Personas que disfrutan del entrenamiento intenso, quieren mejorar cardio y coordinación, y prefieren técnicas de golpeo sin patadas."
+                    recomendado: "Personas que disfrutan del entrenamiento intenso, quieren mejorar cardio y coordinación, y prefieren técnicas de golpeo sin patadas.",
+                    video: videoBoxing
                 },
                 {
                     nombre: "MMA",
@@ -3809,7 +3910,8 @@
                     ventajas: "Desarrolla fuerza, resistencia, movilidad, estrategia y adaptación a diferentes situaciones.",
                     desventajas: "Tiene una curva de aprendizaje amplia y puede ser físicamente exigente para principiantes.",
                     valores: "Versatilidad, humildad, resiliencia, estrategia y respeto por distintas disciplinas.",
-                    recomendado: "Personas con buena motivación general, interés por aprender de todo y condición física media o ganas de mejorarla progresivamente."
+                    recomendado: "Personas con buena motivación general, interés por aprender de todo y condición física media o ganas de mejorarla progresivamente.",
+                    video: videoMMA
                 },
                 {
                     nombre: "Brazilian Jiu-Jitsu",
@@ -3817,7 +3919,8 @@
                     ventajas: "Muy técnico, mejora la movilidad, el control corporal y permite progresar sin depender tanto de la fuerza.",
                     desventajas: "Puede ser incómodo al principio por el contacto físico cercano y exige paciencia técnica.",
                     valores: "Paciencia, humildad, técnica, autocontrol y resolución de problemas.",
-                    recomendado: "Personas que prefieren estrategia, técnica y combate de suelo. Buena opción para quienes no quieren recibir golpes."
+                    recomendado: "Personas que prefieren estrategia, técnica y combate de suelo. Buena opción para quienes no quieren recibir golpes.",
+                    video: videoBJJ
                 },
                 {
                     nombre: "Muay Thai",
@@ -3825,7 +3928,8 @@
                     ventajas: "Muy completo para condición física, potencia, resistencia y defensa personal.",
                     desventajas: "Puede ser duro para piernas, caderas y espinillas. Requiere adaptación progresiva.",
                     valores: "Respeto, fortaleza mental, tradición, disciplina y tolerancia al esfuerzo.",
-                    recomendado: "Personas que buscan un entrenamiento intenso, les gustan las patadas y quieren trabajar todo el cuerpo."
+                    recomendado: "Personas que buscan un entrenamiento intenso, les gustan las patadas y quieren trabajar todo el cuerpo.",
+                    video: videoMuayThai
                 },
                 {
                     nombre: "Judo",
@@ -3833,7 +3937,8 @@
                     ventajas: "Mejora equilibrio, fuerza funcional, coordinación y capacidad de caer con seguridad.",
                     desventajas: "Las caídas pueden ser exigentes al principio y requiere buena técnica para evitar molestias.",
                     valores: "Respeto, cortesía, autocontrol, compañerismo y uso eficiente de la energía.",
-                    recomendado: "Personas que disfrutan del trabajo físico, agarres, proyecciones y entrenamiento con compañero."
+                    recomendado: "Personas que disfrutan del trabajo físico, agarres, proyecciones y entrenamiento con compañero.",
+                    video: videoJudo
                 },
                 {
                     nombre: "Karate",
@@ -3841,7 +3946,8 @@
                     ventajas: "Mejora coordinación, concentración, movilidad, postura y control corporal.",
                     desventajas: "El progreso puede sentirse más gradual si buscas combate intenso desde el inicio.",
                     valores: "Respeto, disciplina, autocontrol, precisión y desarrollo personal.",
-                    recomendado: "Personas que buscan una mezcla de técnica, tradición, defensa personal y desarrollo mental."
+                    recomendado: "Personas que buscan una mezcla de técnica, tradición, defensa personal y desarrollo mental.",
+                    video: videoKarate
                 },
                 {
                     nombre: "Taekwondo",
@@ -3849,7 +3955,8 @@
                     ventajas: "Mejora flexibilidad, velocidad, coordinación, equilibrio y potencia de piernas.",
                     desventajas: "Puede exigir bastante movilidad de cadera y flexibilidad, especialmente en niveles altos.",
                     valores: "Cortesía, perseverancia, autocontrol, espíritu indomable y respeto.",
-                    recomendado: "Personas que disfrutan de movimientos dinámicos, patadas, agilidad y trabajo de piernas."
+                    recomendado: "Personas que disfrutan de movimientos dinámicos, patadas, agilidad y trabajo de piernas.",
+                    video: videoTaekwondo
                 }
             ],
             en: [
@@ -3859,7 +3966,8 @@
                     ventajas: "Greatly improves endurance, coordination, reaction speed and self-confidence.",
                     desventajas: "Can be demanding on shoulders, wrists and cardio. Sparring requires good supervision.",
                     valores: "Discipline, consistency, self-control, respect and personal growth.",
-                    recomendado: "People who enjoy intense training, want better cardio and coordination, and prefer punching techniques without kicks."
+                    recomendado: "People who enjoy intense training, want better cardio and coordination, and prefer punching techniques without kicks.",
+                    video: videoBoxing
                 },
                 {
                     nombre: "MMA",
@@ -3867,7 +3975,8 @@
                     ventajas: "Builds strength, endurance, mobility, strategy and adaptability.",
                     desventajas: "Has a broad learning curve and can be physically demanding for beginners.",
                     valores: "Versatility, humility, resilience, strategy and respect for different disciplines.",
-                    recomendado: "People with strong motivation, interest in learning multiple areas and average fitness or willingness to improve gradually."
+                    recomendado: "People with strong motivation, interest in learning multiple areas and average fitness or willingness to improve gradually.",
+                    video: videoMMA
                 },
                 {
                     nombre: "Brazilian Jiu-Jitsu",
@@ -3875,7 +3984,8 @@
                     ventajas: "Very technical, improves mobility and body control, and does not rely only on strength.",
                     desventajas: "Close physical contact can feel uncomfortable at first and it requires technical patience.",
                     valores: "Patience, humility, technique, self-control and problem-solving.",
-                    recomendado: "People who prefer strategy, technique and ground fighting. Good option if you do not want to receive strikes."
+                    recomendado: "People who prefer strategy, technique and ground fighting. Good option if you do not want to receive strikes.",
+                    video: videoBJJ
                 },
                 {
                     nombre: "Muay Thai",
@@ -3883,7 +3993,8 @@
                     ventajas: "Excellent for fitness, power, endurance and self-defense.",
                     desventajas: "Can be tough on legs, hips and shins. Requires gradual adaptation.",
                     valores: "Respect, mental toughness, tradition, discipline and effort tolerance.",
-                    recomendado: "People looking for intense training, who like kicks and want to train the whole body."
+                    recomendado: "People looking for intense training, who like kicks and want to train the whole body.",
+                    video: videoMuayThai
                 },
                 {
                     nombre: "Judo",
@@ -3891,7 +4002,8 @@
                     ventajas: "Improves balance, functional strength, coordination and safe falling skills.",
                     desventajas: "Falls can be demanding at first and good technique is needed to prevent discomfort.",
                     valores: "Respect, courtesy, self-control, teamwork and efficient use of energy.",
-                    recomendado: "People who enjoy physical work, grips, throws and partner-based training."
+                    recomendado: "People who enjoy physical work, grips, throws and partner-based training.",
+                    video: videoJudo
                 },
                 {
                     nombre: "Karate",
@@ -3899,7 +4011,8 @@
                     ventajas: "Improves coordination, focus, mobility, posture and body control.",
                     desventajas: "Progress can feel gradual if you want intense sparring from the beginning.",
                     valores: "Respect, discipline, self-control, precision and personal development.",
-                    recomendado: "People looking for a mix of technique, tradition, self-defense and mental development."
+                    recomendado: "People looking for a mix of technique, tradition, self-defense and mental development.",
+                    video: videoKarate
                 },
                 {
                     nombre: "Taekwondo",
@@ -3907,7 +4020,8 @@
                     ventajas: "Improves flexibility, speed, coordination, balance and leg power.",
                     desventajas: "Can require significant hip mobility and flexibility, especially at higher levels.",
                     valores: "Courtesy, perseverance, self-control, indomitable spirit and respect.",
-                    recomendado: "People who enjoy dynamic movement, kicks, agility and leg-focused training."
+                    recomendado: "People who enjoy dynamic movement, kicks, agility and leg-focused training.",
+                    video: videoTaekwondo
                 }
             ],
            
@@ -3923,6 +4037,86 @@
             "Taekwondo": "🦶"
         };
 
+        const imagenesDeporte = {
+            "Boxeo": "img/deportes/boxeo.png",
+            "Boxing": "img/deportes/boxeo.png",
+
+            "MMA": "img/deportes/mma.png",
+
+            "Jiu-Jitsu Brasileño": "img/deportes/bjj.png",
+            "Brazilian Jiu-Jitsu": "img/deportes/bjj.png",
+
+            "Muay Thai": "img/deportes/muay-thai.png",
+
+            "Judo": "img/deportes/judo.png",
+
+            "Karate": "img/deportes/karate.png",
+
+            "Taekwondo": "img/deportes/taekwondo.png"
+        };
+
+        function obtenerImagenDeporte(nombreDeporte) {
+            return imagenesDeporte[nombreDeporte] || "";
+        }
+
+        function renderizarImagenDeporte(deporte, icono) {
+            const imagen = obtenerImagenDeporte(deporte.nombre);
+
+            if (!imagen) {
+                return `<span class="icono-deporte-fallback">${icono}</span>`;
+            }
+
+            return `
+                <img
+                    src="${imagen}"
+                    alt="${deporte.nombre}"
+                    onerror="this.parentElement.innerHTML = '<span class=&quot;icono-deporte-fallback&quot;>${icono}</span>'"
+                />
+            `;
+        }
+
+
+        function obtenerUrlVideoEmbebido(url) {
+            if (!url) return "";
+
+            const texto = String(url).trim();
+
+            if (texto.includes("youtube.com/watch?v=")) {
+                const id = texto.split("v=")[1].split("&")[0];
+                return `https://www.youtube.com/embed/${id}`;
+            }
+
+            if (texto.includes("youtu.be/")) {
+                const id = texto.split("youtu.be/")[1].split(/[?&]/)[0];
+                return `https://www.youtube.com/embed/${id}`;
+            }
+
+            return texto;
+        }
+
+        function renderizarVideoDeporte(deporte) {
+            const urlVideo = obtenerUrlVideoEmbebido(deporte.video);
+
+            if (!urlVideo) {
+                return `
+                    <div class="placeholder-video-deporte">
+                        <p>${t("insertarVideoAqui")}</p>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="contenedor-video-deporte">
+                    <iframe
+                        src="${urlVideo}"
+                        title="${deporte.nombre} video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            `;
+        }
+
         function mostrarGuiaDeportes() {
             const grid = document.getElementById("gridDeportes");
             if (!grid) return;
@@ -3936,7 +4130,7 @@
                 const icono = iconosDeporte[deporte.nombre] || "🥋";
 
                 card.innerHTML = `
-                    <div class="imagen-deporte" onclick="toggleDeporte(this.parentElement)">${icono}</div>
+                    <div class="imagen-deporte" onclick="toggleDeporte(this.parentElement)">${renderizarImagenDeporte(deporte, icono)}</div>
                     <div class="card-deporte-cabecera" onclick="toggleDeporte(this.parentElement)">
                         <h3>${deporte.nombre}</h3>
                         <p class="descripcion-corta">${deporte.descripcion}</p>
@@ -3954,6 +4148,11 @@
 
                         <h4>${t("recomendadoPara")}</h4>
                         <p>${deporte.recomendado}</p>
+
+                        <div class="apartado-video-deporte">
+                            <h4>${t("videoDeporte")}</h4>
+                            ${renderizarVideoDeporte(deporte)}
+                        </div>
                     </div>
                 `;
 
