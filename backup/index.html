@@ -66,7 +66,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background-color: rgba(9, 11, 15, 0.78);
+            background-color: rgba(0, 0, 0, 0.78);
             border: 1px solid rgba(255, 255, 255, 0.18);
             padding: 10px 14px;
             border-radius: 12px;
@@ -401,7 +401,6 @@
         .comentario-gimnasio .gimnasio-comentario {
             display: block;
             color: var(--rojo);
-            font-size: 14px;
             font-weight: bold;
             margin-bottom: 6px;
         }
@@ -1340,6 +1339,8 @@
             <select id="idioma" onchange="cambiarIdioma(this.value)">
                 <option value="es">Español</option>
                 <option value="en">English</option>
+                <option value="pt">Português</option>
+                <option value="ja">日本語</option>
             </select>
         </div>
     </header>
@@ -1516,7 +1517,7 @@
                 </div>
 
                 <div class="buscador-productos">
-                        <label for="buscadorNombreProducto" data-i18n="buscar producto">Buscar producto</label>
+                        <label for="buscadorNombreProducto" data-i18n="Buscar producto">Buscar producto</label>
                     <input
                         type="text"
                         id="buscadorNombreProducto"
@@ -1527,7 +1528,7 @@
                 <div class="filtro-precio-productos">
                     <label for="ordenPrecioProducto" data-i18n="Ordenar precio">Filtrar por precio</label>
                     <select id="ordenPrecioProducto" onchange="aplicarFiltrosTienda()">
-                        <option value="normal" data-i18n="sin orden">Orden normal</option>
+                        <option value="normal" data-i18n="...">Orden normal</option>
                         <option value="precioAsc" data-i18n="Menor a mayor">Precio: menor a mayor</option>
                         <option value="precioDesc" data-i18n="Mayor a menor">Precio: mayor a menor</option>
                     </select>
@@ -1756,8 +1757,7 @@
                 seleccionaEstrellas: "Selecciona una puntuación entre 1 y 5 estrellas.",
                 resenaGuardada: "Reseña guardada correctamente.",
                 sinComentarios: "Todavía no hay comentarios.",
-                valoraciones: "valoraciones",
-                comentarioSobre: "Gimnasio"
+                valoraciones: "valoraciones"
             },
             en: {
                 titulo: "Fight-Finder",
@@ -1847,13 +1847,198 @@
                 seleccionaEstrellas: "Select a rating between 1 and 5 stars.",
                 resenaGuardada: "Review saved successfully.",
                 sinComentarios: "There are no comments yet.",
-                valoraciones: "reviews",
-                comentarioSobre: "Gym"
+                valoraciones: "reviews"
+            },
+            pt: {
+                titulo: "Fight-Finder",
+                subtitulo: "Escolhe o teu caminho",
+                idioma: "Idioma",
+                buscarGimnasio: "Procurar ginásio",
+                buscarGimnasioDesc: "Encontra ginásios por localização, horário e desporto.",
+                entrarBuscador: "Entrar no buscador",
+                entrarTienda: "Entrar na loja",
+                tiendaDesc: "Compra equipamento, proteções e suplementação desportiva.",
+                irTienda: "Ir para a loja",
+                volver: "Voltar",
+                volverInicio: "Voltar ao início",
+                volverTienda: "Voltar à loja",
+                irBuscador: "Ir para o buscador",
+                guiaDeportesTituloCard: "Guia de desportos",
+                guiaDeportesDescCard: "Conhece cada arte marcial e descobre qual se adapta melhor a ti.",
+                verGuiaDeportes: "Ver guia",
+                guiaDeportesTitulo: "Guia de desportos de combate",
+                guiaDeportesIntro: "Esta secção explica os desportos disponíveis na plataforma para te ajudar a escolher segundo os teus objetivos, gostos e condição física.",
+                ventajas: "Vantagens",
+                desventajas: "Desvantagens",
+                valores: "Valores",
+                recomendadoPara: "Recomendado para",
+                buscadorTitulo: "Buscador de ginásios",
+                localizacion: "Localização",
+                horario: "Horário",
+                seleccionaHorario: "Seleciona um horário",
+                manana: "Manhã",
+                tarde: "Tarde",
+                noche: "Noite",
+                deporte: "Desporto",
+                seleccionaDeporte: "Seleciona um desporto",
+                buscar: "Procurar ginásios",
+                gimnasiosEncontrados: "Ginásios encontrados",
+                productos: "Produtos",
+                categorias: "Categorias",
+                todos: "Todos",
+                carrito: "Carrinho",
+                accesoUsuario: "Acesso de utilizador",
+                authDesc: "Para usar o carrinho e continuar para o pagamento, deves iniciar sessão ou criar uma conta.",
+                login: "Iniciar sessão",
+                crearCuenta: "Criar conta",
+                email: "Email",
+                password: "Palavra-passe",
+                nombreCompleto: "Nome completo",
+                direccion: "Morada",
+                telefono: "Telefone",
+                paginaPago: "Página de pagamento",
+                resumenCarrito: "Resumo do carrinho",
+                total: "Total",
+                vaciarCarrito: "Esvaziar carrinho",
+                datosPago: "Dados de pagamento",
+                direccionEnvio: "Morada de envio",
+                metodoPago: "Método de pagamento",
+                tarjeta: "Cartão",
+                contrareembolso: "Pagamento na entrega",
+                finalizarCompra: "Finalizar compra",
+                marca: "Marca",
+                precio: "Preço",
+                descripcion: "Descrição",
+                talla: "Tamanho",
+                peso: "Peso",
+                color: "Cor",
+                stockDisponible: "Stock disponível",
+                agotado: "Produto esgotado",
+                verDetalles: "Clica para ver detalhes",
+                noIndicada: "Não indicada",
+                noIndicado: "Não indicado",
+                sinDescripcion: "Sem descrição disponível.",
+                anadirCarrito: "Adicionar ao carrinho",
+                productoAnadido: "Produto adicionado ao carrinho",
+                noSesion: "Não iniciaste sessão",
+                sesionIniciada: "Sessão iniciada como",
+                cerrarSesion: "Terminar sessão",
+                carritoVacio: "O teu carrinho está vazio.",
+                eliminar: "Eliminar",
+                productoDestacado: "Produto destacado",
+                recomendado: "Recomendado",
+                aviso: "Aviso",
+                aceptar: "Aceitar",
+                comentariosUsuarios: "Comentários dos utilizadores",
+                guardarResena: "Guardar avaliação",
+                comentarioOpcional: "Comentário opcional",
+                valorarGimnasio: "Avaliar ginásio",
+                iniciaSesionValorar: "Deves iniciar sessão para deixar uma avaliação.",
+                seleccionaEstrellas: "Seleciona uma pontuação entre 1 e 5 estrelas.",
+                resenaGuardada: "Avaliação guardada corretamente.",
+                sinComentarios: "Ainda não há comentários.",
+                valoraciones: "avaliações",
+                comentarioSobre: "Ginásio",
+                buscarComentariosGimnasio: "Procurar comentários por ginásio",
+                sinComentariosFiltro: "Não há comentários desse ginásio."
+            },
+            ja: {
+                titulo: "Fight-Finder",
+                subtitulo: "自分の道を選ぼう",
+                idioma: "言語",
+                buscarGimnasio: "ジムを探す",
+                buscarGimnasioDesc: "場所、時間帯、スポーツでジムを検索できます。",
+                entrarBuscador: "検索へ進む",
+                entrarTienda: "ショップに入る",
+                tiendaDesc: "用具、防具、スポーツサプリメントを購入できます。",
+                irTienda: "ショップへ",
+                volver: "戻る",
+                volverInicio: "ホームへ戻る",
+                volverTienda: "ショップへ戻る",
+                irBuscador: "ジム検索へ",
+                guiaDeportesTituloCard: "スポーツガイド",
+                guiaDeportesDescCard: "格闘技を知り、自分に合うものを見つけましょう。",
+                verGuiaDeportes: "ガイドを見る",
+                guiaDeportesTitulo: "格闘技ガイド",
+                guiaDeportesIntro: "このセクションでは、目的、好み、体力に合わせて選べるスポーツを説明します。",
+                ventajas: "メリット",
+                desventajas: "デメリット",
+                valores: "価値観",
+                recomendadoPara: "おすすめの人",
+                buscadorTitulo: "ジム検索",
+                localizacion: "場所",
+                horario: "時間帯",
+                seleccionaHorario: "時間帯を選択",
+                manana: "午前",
+                tarde: "午後",
+                noche: "夜",
+                deporte: "スポーツ",
+                seleccionaDeporte: "スポーツを選択",
+                buscar: "ジムを検索",
+                gimnasiosEncontrados: "見つかったジム",
+                productos: "商品",
+                categorias: "カテゴリ",
+                todos: "すべて",
+                carrito: "カート",
+                accesoUsuario: "ユーザーアクセス",
+                authDesc: "カートを使用して支払いに進むには、ログインまたはアカウント作成が必要です。",
+                login: "ログイン",
+                crearCuenta: "アカウント作成",
+                email: "メール",
+                password: "パスワード",
+                nombreCompleto: "氏名",
+                direccion: "住所",
+                telefono: "電話番号",
+                paginaPago: "支払いページ",
+                resumenCarrito: "カート概要",
+                total: "合計",
+                vaciarCarrito: "カートを空にする",
+                datosPago: "支払い情報",
+                direccionEnvio: "配送先住所",
+                metodoPago: "支払い方法",
+                tarjeta: "カード",
+                contrareembolso: "代金引換",
+                finalizarCompra: "購入を確定",
+                marca: "ブランド",
+                precio: "価格",
+                descripcion: "説明",
+                talla: "サイズ",
+                peso: "重量",
+                color: "色",
+                stockDisponible: "在庫あり",
+                agotado: "在庫切れ",
+                verDetalles: "クリックして詳細を見る",
+                noIndicada: "未指定",
+                noIndicado: "未指定",
+                sinDescripcion: "説明はありません。",
+                anadirCarrito: "カートに追加",
+                productoAnadido: "商品をカートに追加しました",
+                noSesion: "ログインしていません",
+                sesionIniciada: "ログイン中:",
+                cerrarSesion: "ログアウト",
+                carritoVacio: "カートは空です。",
+                eliminar: "削除",
+                productoDestacado: "注目商品",
+                recomendado: "おすすめ",
+                aviso: "お知らせ",
+                aceptar: "OK",
+                comentariosUsuarios: "ユーザーコメント",
+                guardarResena: "レビューを保存",
+                comentarioOpcional: "任意コメント",
+                valorarGimnasio: "ジムを評価",
+                iniciaSesionValorar: "レビューを残すにはログインが必要です。",
+                seleccionaEstrellas: "1〜5つ星で評価してください。",
+                resenaGuardada: "レビューを保存しました。",
+                sinComentarios: "まだコメントはありません。",
+                valoraciones: "件の評価",
+                comentarioSobre: "ジム",
+                buscarComentariosGimnasio: "ジム名でコメント検索",
+                sinComentariosFiltro: "そのジムのコメントはありません。"
             }
         };
 
         function t(clave) {
-            return traducciones[idiomaActual][clave] || traducciones.es[clave] || clave;
+            return (traducciones[idiomaActual] && traducciones[idiomaActual][clave]) || traducciones.es[clave] || clave;
         }
 
         function mostrarMensajeModal(mensaje, titulo = t("aviso")) {
@@ -3330,6 +3515,122 @@
                     valores: "Courtesy, perseverance, self-control, indomitable spirit and respect.",
                     recomendado: "People who enjoy dynamic movement, kicks, agility and leg-focused training."
                 }
+            ],
+            pt: [
+                {
+                    nombre: "Boxe",
+                    descripcion: "Desporto de combate focado em golpes de punho, defesa, jogo de pés e resistência cardiovascular.",
+                    ventajas: "Melhora muito a resistência, coordenação, velocidade de reação e autoconfiança.",
+                    desventajas: "Pode ser exigente para ombros, punhos e cardio. O sparring requer boa supervisão.",
+                    valores: "Disciplina, constância, autocontrolo, respeito e desenvolvimento pessoal.",
+                    recomendado: "Pessoas que gostam de treino intenso, querem melhorar o cardio e a coordenação, e preferem técnicas de punhos sem pontapés."
+                },
+                {
+                    nombre: "MMA",
+                    descripcion: "Desporto de combate misto que combina golpes, quedas, controlo no chão e finalizações. Uma das modalidades mais completas.",
+                    ventajas: "Desenvolve força, resistência, mobilidade, estratégia e capacidade de adaptação.",
+                    desventajas: "Tem uma curva de aprendizagem ampla e pode ser fisicamente exigente para principiantes.",
+                    valores: "Versatilidade, humildade, resiliência, estratégia e respeito por diferentes disciplinas.",
+                    recomendado: "Pessoas com muita motivação, interesse em aprender várias áreas e condição física média ou vontade de melhorar progressivamente."
+                },
+                {
+                    nombre: "Jiu-Jitsu Brasileiro",
+                    descripcion: "Arte marcial focada em agarres, controlo, finalizações e estrangulamentos no chão.",
+                    ventajas: "Muito técnico, melhora mobilidade e controlo corporal, e não depende apenas da força.",
+                    desventajas: "O contacto físico próximo pode ser desconfortável no início e exige paciência técnica.",
+                    valores: "Paciência, humildade, técnica, autocontrolo e resolução de problemas.",
+                    recomendado: "Pessoas que preferem estratégia, técnica e combate de solo. Boa opção para quem não quer receber golpes."
+                },
+                {
+                    nombre: "Muay Thai",
+                    descripcion: "Desporto de golpeo tailandês que usa punhos, cotovelos, joelhos, pontapés e clinch.",
+                    ventajas: "Excelente para condição física, potência, resistência e defesa pessoal.",
+                    desventajas: "Pode ser duro para pernas, ancas e canelas. Requer adaptação progressiva.",
+                    valores: "Respeito, força mental, tradição, disciplina e tolerância ao esforço.",
+                    recomendado: "Pessoas que procuram treino intenso, gostam de pontapés e querem trabalhar todo o corpo."
+                },
+                {
+                    nombre: "Judo",
+                    descripcion: "Arte marcial japonesa baseada em projeções, agarres, controlo e técnicas de queda.",
+                    ventajas: "Melhora equilíbrio, força funcional, coordenação e capacidade de cair com segurança.",
+                    desventajas: "As quedas podem ser exigentes no início e é necessária boa técnica para evitar desconforto.",
+                    valores: "Respeito, cortesia, autocontrolo, companheirismo e uso eficiente da energia.",
+                    recomendado: "Pessoas que gostam de trabalho físico, agarres, projeções e treino com parceiro."
+                },
+                {
+                    nombre: "Karaté",
+                    descripcion: "Arte marcial tradicional com golpes, pontapés, defesas, katas e trabalho técnico.",
+                    ventajas: "Melhora coordenação, concentração, mobilidade, postura e controlo corporal.",
+                    desventajas: "O progresso pode parecer mais gradual se procuras combate intenso desde o início.",
+                    valores: "Respeito, disciplina, autocontrolo, precisão e desenvolvimento pessoal.",
+                    recomendado: "Pessoas que procuram uma mistura de técnica, tradição, defesa pessoal e desenvolvimento mental."
+                },
+                {
+                    nombre: "Taekwondo",
+                    descripcion: "Arte marcial coreana conhecida pelos pontapés rápidos, flexibilidade e mobilidade.",
+                    ventajas: "Melhora flexibilidade, velocidade, coordenação, equilíbrio e potência de pernas.",
+                    desventajas: "Pode exigir bastante mobilidade de anca e flexibilidade, especialmente em níveis altos.",
+                    valores: "Cortesia, perseverança, autocontrolo, espírito indomável e respeito.",
+                    recomendado: "Pessoas que gostam de movimentos dinâmicos, pontapés, agilidade e trabalho de pernas."
+                }
+            ],
+            ja: [
+                {
+                    nombre: "ボクシング",
+                    descripcion: "パンチ、ディフェンス、フットワーク、心肺持久力を中心とした打撃競技。",
+                    ventajas: "持久力、協調性、反応速度、自信を大きく向上させます。",
+                    desventajas: "肩、手首、心肺機能への負担があります。スパーリングには適切な指導が必要です。",
+                    valores: "規律、継続、自制心、敬意、自己成長。",
+                    recomendado: "強度の高い練習が好きで、心肺機能と協調性を高めたい人。蹴りよりパンチ技術を好む人。"
+                },
+                {
+                    nombre: "MMA",
+                    descripcion: "打撃、テイクダウン、寝技のコントロール、極め技を組み合わせる総合格闘技。最も総合的な競技の一つです。",
+                    ventajas: "筋力、持久力、可動性、戦略性、適応力を伸ばします。",
+                    desventajas: "学ぶ範囲が広く、初心者には身体的に demanding な場合があります。",
+                    valores: "多様性、謙虚さ、粘り強さ、戦略性、さまざまな競技への敬意。",
+                    recomendado: "高い意欲があり、複数分野を学びたい人。平均的な体力がある人、または段階的に改善したい人。"
+                },
+                {
+                    nombre: "ブラジリアン柔術",
+                    descripcion: "寝技でのグリップ、コントロール、関節技、絞め技を中心とした武道。",
+                    ventajas: "非常に技術的で、可動性と身体コントロールを高め、力だけに頼りません。",
+                    desventajas: "近い身体接触に最初は抵抗を感じることがあり、技術的な忍耐が必要です。",
+                    valores: "忍耐、謙虚さ、技術、自制心、問題解決力。",
+                    recomendado: "戦略、技術、寝技を好む人。打撃を受けたくない人にも良い選択です。"
+                },
+                {
+                    nombre: "ムエタイ",
+                    descripcion: "パンチ、肘、膝、キック、クリンチを使うタイの打撃競技。",
+                    ventajas: "体力、パワー、持久力、護身能力に優れた効果があります。",
+                    desventajas: "脚、股関節、すねへの負担があります。段階的な適応が必要です。",
+                    valores: "敬意、精神的な強さ、伝統、規律、努力への耐性。",
+                    recomendado: "強度の高い練習を求め、蹴りが好きで、全身を鍛えたい人。"
+                },
+                {
+                    nombre: "柔道",
+                    descripcion: "投げ、組み手、コントロール、受け身を中心とした日本の武道。",
+                    ventajas: "バランス、機能的な筋力、協調性、安全に倒れる能力を高めます。",
+                    desventajas: "最初は受け身や投げが大変なことがあり、不快感を避けるには正しい技術が必要です。",
+                    valores: "敬意、礼儀、自制心、仲間意識、エネルギーの効率的な使い方。",
+                    recomendado: "身体を使う練習、組み手、投げ技、パートナー練習を楽しめる人。"
+                },
+                {
+                    nombre: "空手",
+                    descripcion: "突き、蹴り、受け、型、技術練習を含む伝統的な武道。",
+                    ventajas: "協調性、集中力、可動性、姿勢、身体コントロールを高めます。",
+                    desventajas: "最初から激しい組手を求める人には、上達がゆっくりに感じることがあります。",
+                    valores: "敬意、規律、自制心、正確さ、自己成長。",
+                    recomendado: "技術、伝統、護身、精神的成長のバランスを求める人。"
+                },
+                {
+                    nombre: "テコンドー",
+                    descripcion: "速い蹴り、柔軟性、機動力で知られる韓国武道。",
+                    ventajas: "柔軟性、スピード、協調性、バランス、脚力を高めます。",
+                    desventajas: "特に高いレベルでは、股関節の可動性と柔軟性がかなり必要です。",
+                    valores: "礼儀、忍耐、自制心、不屈の精神、敬意。",
+                    recomendado: "ダイナミックな動き、蹴り、敏捷性、脚を中心とした練習が好きな人。"
+                }
             ]
         };
 
@@ -3339,7 +3640,7 @@
 
             grid.innerHTML = "";
 
-            guiaDeportes[idiomaActual].forEach(deporte => {
+            (guiaDeportes[idiomaActual] || guiaDeportes.es).forEach(deporte => {
                 const card = document.createElement("div");
                 card.classList.add("card-deporte");
 

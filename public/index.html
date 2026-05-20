@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FightFinder - Gimnasios y Tienda</title>
+    <title>FightFinder</title>
 
     <link
         rel="stylesheet"
@@ -131,6 +131,129 @@
         .opcion p {
             margin-bottom: 20px;
             color: var(--texto-secundario);
+        }
+
+        /* TARJETA NOTICIAS */
+        .tarjeta-noticias {
+            background: linear-gradient(180deg, rgba(0,0,0,0.94), rgba(0,0,0,0.94));
+            backdrop-filter: blur(4px);
+            width: min(700px, 90vw);
+            padding: 30px 35px;
+            border-radius: 18px;
+            border: 1px solid var(--borde);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.58);
+            margin: 30px auto 0;
+        }
+
+        .tarjeta-noticias h2 {
+            color: var(--rojo);
+            margin-bottom: 6px;
+            font-size: 20px;
+        }
+
+        .tarjeta-noticias .subtitulo-noticias {
+            color: var(--texto-secundario);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .lista-noticias {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .noticia-item {
+            border-left: 3px solid var(--rojo);
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .noticia-item:hover {
+            background: rgba(217,4,41,0.07);
+            border-left-color: #ff2244;
+        }
+
+        .noticia-item .noticia-titulo {
+            color: var(--texto-principal);
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .noticia-item .noticia-desc {
+            color: var(--texto-secundario);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .noticia-item .noticia-deporte {
+            display: inline-block;
+            font-size: 11px;
+            background: rgba(217,4,41,0.15);
+            color: var(--rojo);
+            border: 1px solid rgba(217,4,41,0.3);
+            border-radius: 20px;
+            padding: 2px 9px;
+            margin-bottom: 6px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .noticias-cargando {
+            color: var(--texto-secundario);
+            font-size: 14px;
+            text-align: center;
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner-noticia {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(217,4,41,0.3);
+            border-top-color: var(--rojo);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .noticias-error {
+            color: #888;
+            font-size: 13px;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .btn-refrescar-noticias {
+            background: transparent;
+            border: 1px solid var(--rojo);
+            color: var(--rojo);
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-top: 16px;
+            font-weight: normal;
+            transition: background 0.2s;
+        }
+
+        .btn-refrescar-noticias:hover {
+            background: rgba(217,4,41,0.12);
+            transform: none;
+            box-shadow: none;
         }
 
         button {
@@ -314,110 +437,12 @@
             color: var(--texto-secundario);
             font-size: 14px;
         }
-
-        .valoracion-media-gimnasio {
-            margin-top: 10px;
-            color: var(--texto-secundario);
-            font-size: 14px;
-        }
-
-        .estrellas-media {
-            color: #f5c542;
-            letter-spacing: 1px;
-            font-size: 17px;
-        }
-
-        .form-resena-gimnasio {
-            margin-top: 14px;
-            padding-top: 12px;
-            border-top: 1px solid var(--borde);
-        }
-
-        .estrellas-resena {
-            display: flex;
-            gap: 4px;
-            margin: 8px 0 10px;
-        }
-
-        .estrella-resena {
-            background: none;
-            border: none;
-            color: #555b66;
-            font-size: 24px;
-            padding: 0;
-            cursor: pointer;
-            box-shadow: none;
-            line-height: 1;
-        }
-
-        .estrella-resena:hover,
-        .estrella-resena.activa {
-            color: #f5c542;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .comentario-resena {
-            margin-top: 8px;
-            min-height: 72px;
-            resize: vertical;
-        }
-
-        .boton-guardar-resena {
-            margin-top: 10px;
-            padding: 9px 14px;
-            font-size: 13px;
-        }
-
-        .comentarios-gimnasios {
-            margin-top: 26px;
-            border-top: 1px solid var(--borde);
-            padding-top: 20px;
-        }
-
-        .comentarios-gimnasios h3 {
+.estrella-resena:hover,
+.comentarios-gimnasios h3 {
             color: var(--rojo);
             margin-bottom: 14px;
         }
-
-        .lista-comentarios-gimnasios {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .comentario-gimnasio {
-            background-color: var(--bg-tarjeta);
-            border: 1px solid var(--borde);
-            border-radius: 14px;
-            padding: 14px;
-        }
-
-        .comentario-gimnasio strong {
-            color: var(--texto-principal);
-        }
-
-
-        .comentario-gimnasio .gimnasio-comentario {
-            display: block;
-            color: var(--rojo);
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        .comentario-gimnasio p {
-            color: var(--texto-secundario);
-            margin-top: 6px;
-            line-height: 1.45;
-        }
-
-        .comentario-gimnasio .meta-comentario {
-            color: #8991a3;
-            font-size: 12px;
-            margin-top: 6px;
-        }
-
-        .acciones-navegacion {
+.acciones-navegacion {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
@@ -460,6 +485,108 @@
             border-radius: 9px;
             margin-top: 15px;
         }
+
+
+        /* DETALLE DE GIMNASIO */
+        .detalle-gimnasio {
+            display: none;
+            background: rgba(0, 0, 0, 0.86);
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid var(--borde);
+            box-shadow: 0 10px 34px rgba(0, 0, 0, 0.62);
+        }
+
+        .detalle-gimnasio h2 {
+            color: var(--rojo);
+            margin-bottom: 18px;
+        }
+
+        .detalle-gimnasio-contenido {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .galeria-gimnasio {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .foto-gimnasio {
+            min-height: 170px;
+            border-radius: 14px;
+            border: 1px solid var(--borde);
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(18,18,20,0.96));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--texto-secundario);
+            font-weight: bold;
+            text-align: center;
+            padding: 16px;
+        }
+
+        .foto-gimnasio img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .info-detalle-gimnasio {
+            background: var(--bg-tarjeta);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .info-detalle-gimnasio h3,
+        .bloque-fotos-gimnasio h3 {
+            color: var(--rojo);
+            margin-bottom: 14px;
+        }
+
+        .info-detalle-gimnasio p {
+            color: var(--texto-secundario);
+            margin-bottom: 9px;
+            line-height: 1.45;
+        }
+
+        .info-detalle-gimnasio strong {
+            color: var(--texto-principal);
+        }
+
+        .card-gimnasio {
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .card-gimnasio:hover {
+            transform: translateY(-3px);
+            border-color: var(--rojo);
+            box-shadow: 0 10px 28px rgba(217, 4, 41, 0.15);
+        }
+
+        .texto-ver-detalle-gimnasio {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #8991a3 !important;
+        }
+
+        @media (max-width: 850px) {
+            .detalle-gimnasio-contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .galeria-gimnasio {
+                grid-template-columns: 1fr;
+            }
+        }
+
 
         /* TIENDA */
         .cabecera-tienda {
@@ -798,73 +925,89 @@
 
         /* GUÍA DE DEPORTES */
         .grid-deportes {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 240px));
+            gap: 18px;
+            justify-content: center;
+            align-items: start;
             margin-top: 25px;
         }
 
         .card-deporte {
-            background-color: var(--bg-tarjeta);
+            width: 100%;
+            max-width: 240px;
             border: 1px solid var(--borde);
             border-radius: 16px;
+            background-color: var(--bg-tarjeta);
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.52);
-            transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55);
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .card-deporte:hover {
+            transform: translateY(-4px);
+            border-color: var(--rojo);
+            box-shadow: 0 10px 28px rgba(217, 4, 41, 0.15);
         }
 
         .card-deporte.abierto {
             border-color: var(--rojo);
-            box-shadow: 0 8px 28px rgba(217, 4, 41, 0.15);
+            box-shadow: 0 10px 28px rgba(217, 4, 41, 0.2);
+        }
+
+        .imagen-deporte {
+            width: 100%;
+            height: 115px;
+            min-height: 115px;
+            max-height: 115px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(18,18,20,0.96));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--borde);
+            font-size: 48px;
+            line-height: 1;
         }
 
         .card-deporte-cabecera {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 22px;
+            padding: 12px 14px 4px;
             cursor: pointer;
             user-select: none;
-            transition: background-color 0.2s;
-        }
-
-        .card-deporte-cabecera:hover {
-            background-color: var(--bg-tarjeta-hover);
         }
 
         .card-deporte-cabecera h3 {
             color: var(--rojo);
-            font-size: 18px;
-            margin: 0;
+            font-size: 16px;
+            margin: 0 0 4px 0;
+            line-height: 1.2;
         }
 
         .card-deporte-cabecera .descripcion-corta {
             color: var(--texto-secundario);
             font-size: 13px;
             margin: 0;
-            flex: 1;
-            padding: 0 16px;
+            line-height: 1.4;
         }
 
         .icono-desplegable {
-            color: var(--rojo);
-            font-size: 20px;
-            font-weight: bold;
-            line-height: 1;
-            transition: transform 0.25s ease;
-            flex-shrink: 0;
-            width: 24px;
-            text-align: center;
+            display: none;
         }
 
-        .card-deporte.abierto .icono-desplegable {
-            transform: rotate(45deg);
+        .texto-desplegable-deporte {
+            font-size: 12px;
+            color: #8991a3;
+            margin-top: 6px;
+            padding: 0 14px 10px;
         }
 
         .card-deporte-cuerpo {
             display: none;
-            padding: 0 22px 20px;
+            padding: 0 14px 14px;
             border-top: 1px solid var(--borde);
+            margin-top: 8px;
         }
 
         .card-deporte.abierto .card-deporte-cuerpo {
@@ -873,9 +1016,9 @@
 
         .card-deporte h4 {
             color: var(--texto-principal);
-            margin-top: 14px;
-            margin-bottom: 6px;
-            font-size: 14px;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             opacity: 0.85;
@@ -884,7 +1027,7 @@
         .card-deporte p {
             color: var(--texto-secundario);
             line-height: 1.5;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .intro-deportes {
@@ -1099,6 +1242,96 @@
             margin-top: 15px;
         }
 
+
+        /* PRODUCTOS RELACIONADOS EN CARRITO */
+        .productos-relacionados-carrito {
+            margin-top: 22px;
+            border-top: 1px solid var(--borde);
+            padding-top: 18px;
+        }
+
+        .productos-relacionados-carrito h3 {
+            color: var(--rojo);
+            margin-bottom: 8px;
+        }
+
+        .productos-relacionados-carrito .texto-relacionados {
+            color: var(--texto-secundario);
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        .grid-relacionados-carrito {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+        }
+
+        .card-relacionado-carrito {
+            border: 1px solid var(--borde);
+            border-radius: 14px;
+            background-color: var(--bg-tarjeta);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .card-relacionado-carrito:hover {
+            transform: translateY(-3px);
+            border-color: var(--rojo);
+            box-shadow: 0 10px 28px rgba(217, 4, 41, 0.15);
+        }
+
+        .imagen-relacionado-carrito {
+            width: 100%;
+            height: 95px;
+            border-bottom: 1px solid var(--borde);
+            background-color: rgba(0, 0, 0, 0.86);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8991a3;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .imagen-relacionado-carrito img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-relacionado-carrito {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .info-relacionado-carrito h4 {
+            color: var(--texto-principal);
+            font-size: 14px;
+            line-height: 1.25;
+        }
+
+        .info-relacionado-carrito p {
+            color: var(--texto-secundario);
+            font-size: 12px;
+        }
+
+        .precio-relacionado-carrito {
+            color: white !important;
+            font-size: 15px !important;
+            font-weight: bold;
+        }
+
+        .boton-relacionado-carrito {
+            padding: 8px 10px;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+
         /* MODAL DE MENSAJES */
         .modal-mensaje-fondo {
             position: fixed;
@@ -1171,24 +1404,10 @@
         .card-gimnasio,
         .card-producto,
         .card-deporte,
-        .comentario-gimnasio,
-        .filtros-tienda,
-        .promo-lateral {
-            background-color: rgba(0, 0, 0, 0.86);
-            border-color: var(--borde);
-            backdrop-filter: blur(4px);
-        }
-
-        .card-producto,
+.card-producto,
         .card-gimnasio,
         .card-deporte,
-        .comentario-gimnasio,
-        .promo-lateral,
-        .opcion {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.94), rgba(0, 0, 0, 0.94));
-        }
-
-        .card-producto:hover,
+.card-producto:hover,
         .card-deporte.abierto,
         .opcion:hover {
             background: linear-gradient(180deg, rgba(18, 18, 20, 0.98), rgba(8, 8, 10, 0.98));
@@ -1257,6 +1476,8 @@
                 rgba(0, 0, 0, 0.82);
             padding-right: 38px;
         }
+
+
 
         /* Evita que el campo de localización cambie a fondo claro al escribir/autocompletar */
         #localizacion,
@@ -1339,8 +1560,6 @@
             <select id="idioma" onchange="cambiarIdioma(this.value)">
                 <option value="es">Español</option>
                 <option value="en">English</option>
-                <option value="pt">Português</option>
-                <option value="ja">日本語</option>
             </select>
         </div>
     </header>
@@ -1366,6 +1585,19 @@
                     <p data-i18n="guiaDeportesDescCard">Conoce cada arte marcial y descubre cuál se adapta mejor a ti.</p>
                     <button data-i18n="verGuiaDeportes">Ver guía</button>
                 </div>
+            </div>
+
+            <!-- Tarjeta de últimas noticias -->
+            <div class="tarjeta-noticias">
+                <h2>🥊 Últimas noticias</h2>
+                <p class="subtitulo-noticias">Peleas anunciadas, resultados y novedades del mundo del combate</p>
+                <div id="contenidoNoticias" class="lista-noticias">
+                    <div class="noticias-cargando">
+                        <div class="spinner-noticia"></div>
+                        Buscando noticias recientes...
+                    </div>
+                </div>
+                <button class="btn-refrescar-noticias" onclick="cargarNoticias()">↻ Actualizar noticias</button>
             </div>
         </section>
 
@@ -1433,6 +1665,11 @@
                         </div>
 
                         <div>
+                            <label for="zona" data-i18n="zona" style="background-color: #050506;">Zona</label>
+                            <input type="text" id="zona" placeholder="Ej: Centro, Norte, La Cuesta..." />
+                        </div>
+
+                        <div>
                             <label for="horario" data-i18n="horario">Horario</label>
                             <select id="horario" required>
                                 <option value="" data-i18n="seleccionaHorario">Selecciona un horario</option>
@@ -1471,12 +1708,7 @@
                             <div id="listaGimnasios" class="lista-gimnasios"></div>
                         </div>
                     </div>
-
-                    <div id="comentariosGimnasios" class="comentarios-gimnasios" style="display: none;">
-                        <h3 data-i18n="comentariosUsuarios">Comentarios de usuarios</h3>
-                        <div id="listaComentariosGimnasios" class="lista-comentarios-gimnasios"></div>
-                    </div>
-                </div>
+</div>
 
                 <aside class="promo-lateral">
                     <h3 data-i18n="recomendado">Recomendado</h3>
@@ -1485,6 +1717,17 @@
                     </div>
                 </aside>
             </div>
+        </section>
+
+
+        <!-- Página detalle de gimnasio -->
+        <section id="detalleGimnasio" class="detalle-gimnasio">
+            <div class="acciones-navegacion">
+                <button class="volver" onclick="volverAlBuscadorDesdeDetalle()" data-i18n="volver">Volver</button>
+                <button class="boton-secundario" onclick="volverInicio()" data-i18n="volverInicio">Volver al inicio</button>
+            </div>
+
+            <div id="contenidoDetalleGimnasio"></div>
         </section>
 
         <!-- Sección tienda -->
@@ -1523,6 +1766,20 @@
                         id="buscadorNombreProducto"
                         oninput="buscarProductoPorNombre()"
                     />
+                </div>
+
+                <div class="filtro-precio-productos">
+                    <label for="filtroMarcaProducto" data-i18n="Filtrar por marca">Filtrar por marca</label>
+                    <select id="filtroMarcaProducto" onchange="aplicarFiltrosTienda()">
+                        <option value="">Todas las marcas</option>
+                    </select>
+                </div>
+
+                <div class="filtro-precio-productos">
+                    <label for="filtroDeporteProducto">Filtrar por deporte</label>
+                    <select id="filtroDeporteProducto" onchange="aplicarFiltrosTienda()">
+                        <option value="">Todos los deportes</option>
+                    </select>
                 </div>
 
                 <div class="filtro-precio-productos">
@@ -1623,6 +1880,12 @@
                     <div class="acciones-carrito">
                         <button class="boton-vaciar" onclick="vaciarCarrito()" data-i18n="vaciarCarrito">Vaciar carrito</button>
                     </div>
+
+                    <div id="productosRelacionadosCarrito" class="productos-relacionados-carrito" style="display: none;">
+                        <h3 data-i18n="compradosJuntos">Comprados juntos habitualmente</h3>
+                        <p class="texto-relacionados" data-i18n="compradosJuntosDesc">Productos relacionados con los artículos de tu carrito.</p>
+                        <div id="gridRelacionadosCarrito" class="grid-relacionados-carrito"></div>
+                    </div>
                 </div>
 
                 <div class="datos-pago">
@@ -1663,6 +1926,7 @@
         let indicePromoActual = 0;
         let categoriaProductoActual = "todos";
         let seccionAnteriorAuth = "tienda";
+        let ultimosGimnasiosEncontrados = [];
 
         const API_BACKEND = "";
 
@@ -1694,6 +1958,8 @@
                 recomendadoPara: "Recomendado para",
                 buscadorTitulo: "Buscador de gimnasios",
                 localizacion: "Localización",
+                zona: "Zona",
+                zonaPlaceholder: "Ej: Centro, Norte, La Cuesta...",
                 horario: "Horario",
                 seleccionaHorario: "Selecciona un horario",
                 manana: "Mañana",
@@ -1703,6 +1969,11 @@
                 seleccionaDeporte: "Selecciona un deporte",
                 buscar: "Buscar gimnasios",
                 gimnasiosEncontrados: "Gimnasios encontrados",
+                detalleGimnasioTitulo: "Detalle del gimnasio",
+                fotosGimnasio: "Fotos del gimnasio",
+                informacionCompleta: "Información completa",
+                sinFotosGimnasio: "Foto no disponible",
+                verDetalleGimnasio: "Haz clic para ver detalles del gimnasio",
                 productos: "Productos",
                 categorias: "Categorías",
                 todos: "Todos",
@@ -1744,20 +2015,13 @@
                 sesionIniciada: "Sesión iniciada como",
                 cerrarSesion: "Cerrar sesión",
                 carritoVacio: "Tu carrito está vacío.",
+                compradosJuntos: "Comprados juntos habitualmente",
+                compradosJuntosDesc: "Productos relacionados con los artículos de tu carrito.",
                 eliminar: "Eliminar",
                 productoDestacado: "Producto destacado",
                 recomendado: "Recomendado",
                 aviso: "Aviso",
                 aceptar: "Aceptar",
-                comentariosUsuarios: "Comentarios de usuarios",
-                guardarResena: "Guardar reseña",
-                comentarioOpcional: "Comentario opcional",
-                valorarGimnasio: "Valorar gimnasio",
-                iniciaSesionValorar: "Debes iniciar sesión para dejar una reseña.",
-                seleccionaEstrellas: "Selecciona una puntuación entre 1 y 5 estrellas.",
-                resenaGuardada: "Reseña guardada correctamente.",
-                sinComentarios: "Todavía no hay comentarios.",
-                valoraciones: "valoraciones"
             },
             en: {
                 titulo: "Fight-Finder",
@@ -1784,6 +2048,8 @@
                 recomendadoPara: "Recommended for",
                 buscadorTitulo: "Gym finder",
                 localizacion: "Location",
+                zona: "Area",
+                zonaPlaceholder: "Ex: Center, North, La Cuesta...",
                 horario: "Schedule",
                 seleccionaHorario: "Select a schedule",
                 manana: "Morning",
@@ -1793,6 +2059,11 @@
                 seleccionaDeporte: "Select a sport",
                 buscar: "Find gyms",
                 gimnasiosEncontrados: "Gyms found",
+                detalleGimnasioTitulo: "Gym details",
+                fotosGimnasio: "Gym photos",
+                informacionCompleta: "Full information",
+                sinFotosGimnasio: "Photo not available",
+                verDetalleGimnasio: "Click to see gym details",
                 productos: "Products",
                 categorias: "Categories",
                 todos: "All",
@@ -1834,207 +2105,14 @@
                 sesionIniciada: "Logged in as",
                 cerrarSesion: "Log out",
                 carritoVacio: "Your cart is empty.",
+                compradosJuntos: "Frequently bought together",
+                compradosJuntosDesc: "Products related to the items in your cart.",
                 eliminar: "Remove",
                 productoDestacado: "Featured product",
                 recomendado: "Recommended",
                 aviso: "Notice",
                 aceptar: "OK",
-                comentariosUsuarios: "User comments",
-                guardarResena: "Save review",
-                comentarioOpcional: "Optional comment",
-                valorarGimnasio: "Review gym",
-                iniciaSesionValorar: "You must log in to leave a review.",
-                seleccionaEstrellas: "Select a rating between 1 and 5 stars.",
-                resenaGuardada: "Review saved successfully.",
-                sinComentarios: "There are no comments yet.",
-                valoraciones: "reviews"
             },
-            pt: {
-                titulo: "Fight-Finder",
-                subtitulo: "Escolhe o teu caminho",
-                idioma: "Idioma",
-                buscarGimnasio: "Procurar ginásio",
-                buscarGimnasioDesc: "Encontra ginásios por localização, horário e desporto.",
-                entrarBuscador: "Entrar no buscador",
-                entrarTienda: "Entrar na loja",
-                tiendaDesc: "Compra equipamento, proteções e suplementação desportiva.",
-                irTienda: "Ir para a loja",
-                volver: "Voltar",
-                volverInicio: "Voltar ao início",
-                volverTienda: "Voltar à loja",
-                irBuscador: "Ir para o buscador",
-                guiaDeportesTituloCard: "Guia de desportos",
-                guiaDeportesDescCard: "Conhece cada arte marcial e descobre qual se adapta melhor a ti.",
-                verGuiaDeportes: "Ver guia",
-                guiaDeportesTitulo: "Guia de desportos de combate",
-                guiaDeportesIntro: "Esta secção explica os desportos disponíveis na plataforma para te ajudar a escolher segundo os teus objetivos, gostos e condição física.",
-                ventajas: "Vantagens",
-                desventajas: "Desvantagens",
-                valores: "Valores",
-                recomendadoPara: "Recomendado para",
-                buscadorTitulo: "Buscador de ginásios",
-                localizacion: "Localização",
-                horario: "Horário",
-                seleccionaHorario: "Seleciona um horário",
-                manana: "Manhã",
-                tarde: "Tarde",
-                noche: "Noite",
-                deporte: "Desporto",
-                seleccionaDeporte: "Seleciona um desporto",
-                buscar: "Procurar ginásios",
-                gimnasiosEncontrados: "Ginásios encontrados",
-                productos: "Produtos",
-                categorias: "Categorias",
-                todos: "Todos",
-                carrito: "Carrinho",
-                accesoUsuario: "Acesso de utilizador",
-                authDesc: "Para usar o carrinho e continuar para o pagamento, deves iniciar sessão ou criar uma conta.",
-                login: "Iniciar sessão",
-                crearCuenta: "Criar conta",
-                email: "Email",
-                password: "Palavra-passe",
-                nombreCompleto: "Nome completo",
-                direccion: "Morada",
-                telefono: "Telefone",
-                paginaPago: "Página de pagamento",
-                resumenCarrito: "Resumo do carrinho",
-                total: "Total",
-                vaciarCarrito: "Esvaziar carrinho",
-                datosPago: "Dados de pagamento",
-                direccionEnvio: "Morada de envio",
-                metodoPago: "Método de pagamento",
-                tarjeta: "Cartão",
-                contrareembolso: "Pagamento na entrega",
-                finalizarCompra: "Finalizar compra",
-                marca: "Marca",
-                precio: "Preço",
-                descripcion: "Descrição",
-                talla: "Tamanho",
-                peso: "Peso",
-                color: "Cor",
-                stockDisponible: "Stock disponível",
-                agotado: "Produto esgotado",
-                verDetalles: "Clica para ver detalhes",
-                noIndicada: "Não indicada",
-                noIndicado: "Não indicado",
-                sinDescripcion: "Sem descrição disponível.",
-                anadirCarrito: "Adicionar ao carrinho",
-                productoAnadido: "Produto adicionado ao carrinho",
-                noSesion: "Não iniciaste sessão",
-                sesionIniciada: "Sessão iniciada como",
-                cerrarSesion: "Terminar sessão",
-                carritoVacio: "O teu carrinho está vazio.",
-                eliminar: "Eliminar",
-                productoDestacado: "Produto destacado",
-                recomendado: "Recomendado",
-                aviso: "Aviso",
-                aceptar: "Aceitar",
-                comentariosUsuarios: "Comentários dos utilizadores",
-                guardarResena: "Guardar avaliação",
-                comentarioOpcional: "Comentário opcional",
-                valorarGimnasio: "Avaliar ginásio",
-                iniciaSesionValorar: "Deves iniciar sessão para deixar uma avaliação.",
-                seleccionaEstrellas: "Seleciona uma pontuação entre 1 e 5 estrelas.",
-                resenaGuardada: "Avaliação guardada corretamente.",
-                sinComentarios: "Ainda não há comentários.",
-                valoraciones: "avaliações",
-                comentarioSobre: "Ginásio",
-                buscarComentariosGimnasio: "Procurar comentários por ginásio",
-                sinComentariosFiltro: "Não há comentários desse ginásio."
-            },
-            ja: {
-                titulo: "Fight-Finder",
-                subtitulo: "自分の道を選ぼう",
-                idioma: "言語",
-                buscarGimnasio: "ジムを探す",
-                buscarGimnasioDesc: "場所、時間帯、スポーツでジムを検索できます。",
-                entrarBuscador: "検索へ進む",
-                entrarTienda: "ショップに入る",
-                tiendaDesc: "用具、防具、スポーツサプリメントを購入できます。",
-                irTienda: "ショップへ",
-                volver: "戻る",
-                volverInicio: "ホームへ戻る",
-                volverTienda: "ショップへ戻る",
-                irBuscador: "ジム検索へ",
-                guiaDeportesTituloCard: "スポーツガイド",
-                guiaDeportesDescCard: "格闘技を知り、自分に合うものを見つけましょう。",
-                verGuiaDeportes: "ガイドを見る",
-                guiaDeportesTitulo: "格闘技ガイド",
-                guiaDeportesIntro: "このセクションでは、目的、好み、体力に合わせて選べるスポーツを説明します。",
-                ventajas: "メリット",
-                desventajas: "デメリット",
-                valores: "価値観",
-                recomendadoPara: "おすすめの人",
-                buscadorTitulo: "ジム検索",
-                localizacion: "場所",
-                horario: "時間帯",
-                seleccionaHorario: "時間帯を選択",
-                manana: "午前",
-                tarde: "午後",
-                noche: "夜",
-                deporte: "スポーツ",
-                seleccionaDeporte: "スポーツを選択",
-                buscar: "ジムを検索",
-                gimnasiosEncontrados: "見つかったジム",
-                productos: "商品",
-                categorias: "カテゴリ",
-                todos: "すべて",
-                carrito: "カート",
-                accesoUsuario: "ユーザーアクセス",
-                authDesc: "カートを使用して支払いに進むには、ログインまたはアカウント作成が必要です。",
-                login: "ログイン",
-                crearCuenta: "アカウント作成",
-                email: "メール",
-                password: "パスワード",
-                nombreCompleto: "氏名",
-                direccion: "住所",
-                telefono: "電話番号",
-                paginaPago: "支払いページ",
-                resumenCarrito: "カート概要",
-                total: "合計",
-                vaciarCarrito: "カートを空にする",
-                datosPago: "支払い情報",
-                direccionEnvio: "配送先住所",
-                metodoPago: "支払い方法",
-                tarjeta: "カード",
-                contrareembolso: "代金引換",
-                finalizarCompra: "購入を確定",
-                marca: "ブランド",
-                precio: "価格",
-                descripcion: "説明",
-                talla: "サイズ",
-                peso: "重量",
-                color: "色",
-                stockDisponible: "在庫あり",
-                agotado: "在庫切れ",
-                verDetalles: "クリックして詳細を見る",
-                noIndicada: "未指定",
-                noIndicado: "未指定",
-                sinDescripcion: "説明はありません。",
-                anadirCarrito: "カートに追加",
-                productoAnadido: "商品をカートに追加しました",
-                noSesion: "ログインしていません",
-                sesionIniciada: "ログイン中:",
-                cerrarSesion: "ログアウト",
-                carritoVacio: "カートは空です。",
-                eliminar: "削除",
-                productoDestacado: "注目商品",
-                recomendado: "おすすめ",
-                aviso: "お知らせ",
-                aceptar: "OK",
-                comentariosUsuarios: "ユーザーコメント",
-                guardarResena: "レビューを保存",
-                comentarioOpcional: "任意コメント",
-                valorarGimnasio: "ジムを評価",
-                iniciaSesionValorar: "レビューを残すにはログインが必要です。",
-                seleccionaEstrellas: "1〜5つ星で評価してください。",
-                resenaGuardada: "レビューを保存しました。",
-                sinComentarios: "まだコメントはありません。",
-                valoraciones: "件の評価",
-                comentarioSobre: "ジム",
-                buscarComentariosGimnasio: "ジム名でコメント検索",
-                sinComentariosFiltro: "そのジムのコメントはありません。"
-            }
         };
 
         function t(clave) {
@@ -2172,6 +2250,13 @@
             `;
         }
 
+
+        function seccionEstaVisible(id) {
+            const elemento = document.getElementById(id);
+            if (!elemento) return false;
+            return window.getComputedStyle(elemento).display !== "none";
+        }
+
         function cambiarIdioma(idioma) {
             idiomaActual = idioma;
             localStorage.setItem("idiomaFightFinder", idioma);
@@ -2189,15 +2274,22 @@
                 const ordenPrecioProducto = document.getElementById("ordenPrecioProducto");
                 if (ordenPrecioProducto) ordenPrecioProducto.value = "normal";
 
+                const filtroMarcaProducto = document.getElementById("filtroMarcaProducto");
+                if (filtroMarcaProducto) filtroMarcaProducto.value = "";
+
+                const filtroDeporteProducto = document.getElementById("filtroDeporteProducto");
+                if (filtroDeporteProducto) filtroDeporteProducto.value = "";
+
                 crearBotonesCategorias(productosTienda);
                 aplicarFiltrosTienda();
             }
 
             actualizarBannersPromocion();
 
-            if (document.getElementById("guiaDeportes")?.style.display === "block") {
+            if (seccionEstaVisible("guiaDeportes")) {
                 mostrarGuiaDeportes();
             }
+            renderizarProductosRelacionadosCarrito();
         }
 
         function aplicarIdioma() {
@@ -2218,6 +2310,12 @@
                 localizacion.placeholder = idiomaActual === "es"
                     ? "Ej: Madrid, Tenerife, La Laguna..."
                     : "Ex: Madrid, Tenerife, La Laguna...";
+            }
+
+
+            const zona = document.getElementById("zona");
+            if (zona) {
+                zona.placeholder = t("zonaPlaceholder");
             }
 
             const loginPassword = document.getElementById("loginPassword");
@@ -2265,6 +2363,8 @@
             document.getElementById("guiaDeportes").style.display = "none";
             document.getElementById("auth").style.display = "none";
             document.getElementById("pago").style.display = "none";
+            document.getElementById("detalleGimnasio").style.display = "none";
+            document.getElementById("detalleGimnasio").style.display = "none";
             document.getElementById(id).style.display = "block";
 
             if (id === "buscador") {
@@ -2311,10 +2411,48 @@
             limpiarMarcadores();
         }
 
+        async function cargarNoticias() {
+            const contenedor = document.getElementById("contenidoNoticias");
+            if (!contenedor) return;
+
+            contenedor.innerHTML = `
+                <div class="noticias-cargando">
+                    <div class="spinner-noticia"></div>
+                    Buscando noticias recientes...
+                </div>
+            `;
+
+            try {
+                const respuesta = await fetch(`${API_BACKEND}/api/noticias`);
+
+                if (!respuesta.ok) throw new Error("Error del servidor");
+
+                const noticias = await respuesta.json();
+
+                if (!Array.isArray(noticias) || noticias.length === 0) throw new Error("Sin noticias");
+
+                contenedor.innerHTML = noticias.map(n => `
+                    <a class="noticia-item" href="${n.url}" target="_blank" rel="noopener noreferrer">
+                        <span class="noticia-deporte">${n.deporte || "Combate"}</span>
+                        <div class="noticia-titulo">${n.titulo}</div>
+                        <div class="noticia-desc">${n.descripcion}</div>
+                    </a>
+                `).join("");
+
+            } catch (e) {
+                contenedor.innerHTML = `<div class="noticias-error">No se pudieron cargar las noticias. Inténtalo de nuevo.</div>`;
+                console.error("Error noticias:", e);
+            }
+        }
+
+        // Cargar noticias al arrancar
+        cargarNoticias();
+
         document.getElementById("formularioBusqueda").addEventListener("submit", async function(event) {
             event.preventDefault();
 
             const localizacion = document.getElementById("localizacion").value.trim();
+            const zonaBusqueda = document.getElementById("zona").value.trim();
             const horario = document.getElementById("horario").value;
             const deporte = document.getElementById("deporte").value;
             const mensajeEstado = document.getElementById("mensajeEstado");
@@ -2322,7 +2460,7 @@
             mensajeEstado.innerHTML = '<div class="mensaje-cargando">Buscando gimnasios...</div>';
 
             try {
-                const url = `${API_BACKEND}/api/gimnasios?localizacion=${encodeURIComponent(localizacion)}&horario=${encodeURIComponent(horario)}&deporte=${encodeURIComponent(deporte)}`;
+                const url = `${API_BACKEND}/api/gimnasios?localizacion=${encodeURIComponent(localizacion)}&horario=${encodeURIComponent(horario)}&deporte=${encodeURIComponent(deporte)}${zonaBusqueda ? `&zona=${encodeURIComponent(zonaBusqueda)}` : ""}`;
 
                 const respuesta = await fetch(url);
 
@@ -2330,7 +2468,15 @@
                     throw new Error("Error en la respuesta del servidor");
                 }
 
-                const gimnasios = await respuesta.json();
+                let gimnasios = await respuesta.json();
+
+                if (zonaBusqueda) {
+                    const zonaNormalizada = normalizarTexto(zonaBusqueda);
+                    gimnasios = gimnasios.filter(gimnasio =>
+                        normalizarTexto(gimnasio.zona).includes(zonaNormalizada)
+                    );
+                }
+
                 mensajeEstado.innerHTML = "";
                 mostrarResultados(gimnasios);
 
@@ -2344,18 +2490,264 @@
             }
         });
 
+
+        function obtenerFotosGimnasio(gimnasio) {
+            const posiblesFotos = [
+                gimnasio.foto,
+                gimnasio.imagen,
+                gimnasio.imagen_url,
+                gimnasio.foto_url,
+                gimnasio.foto1,
+                gimnasio.foto2,
+                gimnasio.foto3
+            ].filter(Boolean);
+
+            if (Array.isArray(gimnasio.fotos)) {
+                posiblesFotos.push(...gimnasio.fotos.filter(Boolean));
+            }
+
+            return [...new Set(posiblesFotos)].slice(0, 4);
+        }
+
+        function crearGaleriaGimnasio(gimnasio) {
+            const fotos = obtenerFotosGimnasio(gimnasio);
+
+            if (fotos.length === 0) {
+                return `
+                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
+                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
+                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
+                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
+                `;
+            }
+
+            return fotos.map(foto => `
+                <div class="foto-gimnasio">
+                    <img src="${foto}" alt="${gimnasio.nombre || t("detalleGimnasioTitulo")}" />
+                </div>
+            `).join("");
+        }
+
+
+        function activarClicksTarjetasGimnasio() {
+            document.querySelectorAll("#listaGimnasios .card-gimnasio").forEach((tarjeta, index) => {
+                tarjeta.onclick = () => verDetalleGimnasioPorIndice(index);
+                tarjeta.title = t("verDetalleGimnasio");
+            });
+        }
+
+        function verDetalleGimnasioPorIndice(index) {
+            const gimnasio = ultimosGimnasiosEncontrados[index];
+            if (!gimnasio) return;
+            verDetalleGimnasio(gimnasio);
+        }
+
+
+        function formatearHorarioGimnasio(horario) {
+            if (!horario) return "";
+
+            if (typeof horario === "string") {
+                return horario;
+            }
+
+            const dia = horario.dia_semana || horario.dia || "";
+            const inicio = horario.hora_inicio || horario.inicio || "";
+            const fin = horario.hora_fin || horario.fin || "";
+
+            if (dia || inicio || fin) {
+                return `${dia}${dia && (inicio || fin) ? ": " : ""}${inicio}${inicio && fin ? " - " : ""}${fin}`;
+            }
+
+            return "";
+        }
+
+        async function obtenerHorarioDetalleGimnasio(gimnasio) {
+            if (!gimnasio) return t("noIndicado");
+
+            if (Array.isArray(gimnasio.horarios) && gimnasio.horarios.length > 0) {
+                const horariosFormateados = gimnasio.horarios
+                    .map(formatearHorarioGimnasio)
+                    .filter(Boolean);
+
+                if (horariosFormateados.length > 0) {
+                    return horariosFormateados.join(", ");
+                }
+            }
+
+            if (gimnasio.dia_semana || gimnasio.hora_inicio || gimnasio.hora_fin) {
+                const horarioDirecto = formatearHorarioGimnasio(gimnasio);
+
+                if (horarioDirecto) {
+                    return horarioDirecto;
+                }
+            }
+
+            const idGimnasio = gimnasio.id_gimnasio || gimnasio.id;
+
+            if (idGimnasio) {
+                const urlsHorarios = [
+                    `${API_BACKEND}/api/gimnasios/${idGimnasio}/horarios`,
+                    `${API_BACKEND}/api/horarios/${idGimnasio}`,
+                    `${API_BACKEND}/api/horarios?id_gimnasio=${encodeURIComponent(idGimnasio)}`
+                ];
+
+                for (const url of urlsHorarios) {
+                    try {
+                        const respuesta = await fetch(url);
+
+                        if (!respuesta.ok) {
+                            continue;
+                        }
+
+                        const data = await respuesta.json();
+                        const horarios = Array.isArray(data)
+                            ? data
+                            : data.horarios || data.resultados || [];
+
+                        if (Array.isArray(horarios) && horarios.length > 0) {
+                            const horariosFormateados = horarios
+                                .map(formatearHorarioGimnasio)
+                                .filter(Boolean);
+
+                            if (horariosFormateados.length > 0) {
+                                return horariosFormateados.join(", ");
+                            }
+                        }
+                    } catch (error) {
+                        console.warn("No se pudo cargar el horario del gimnasio desde:", url);
+                    }
+                }
+            }
+
+            return gimnasio.horario || t("noIndicado");
+        }
+
+        async function verDetalleGimnasio(gimnasio) {
+            const detalle = document.getElementById("detalleGimnasio");
+            const contenido = document.getElementById("contenidoDetalleGimnasio");
+
+            if (!detalle || !contenido || !gimnasio) return;
+
+            document.getElementById("inicio").style.display = "none";
+            document.getElementById("buscador").style.display = "none";
+            document.getElementById("tienda").style.display = "none";
+            document.getElementById("guiaDeportes").style.display = "none";
+            document.getElementById("auth").style.display = "none";
+            document.getElementById("pago").style.display = "none";
+            detalle.style.display = "block";
+
+            const deportes = gimnasio.deportes || gimnasio.deporte || gimnasio.nombre_deporte || t("noIndicado");
+            const horarioDetalle = await obtenerHorarioDetalleGimnasio(gimnasio);
+
+            // Campos a excluir siempre (internos, ids, fotos, ya mostrados aparte)
+            const camposExcluidos = new Set([
+                "id", "id_gimnasio", "nombre", "foto", "foto_url", "imagen", "imagen_url",
+                "foto1", "foto2", "foto3", "foto4", "foto5",
+                "deportes", "deporte", "nombre_deporte",
+                "ciudad", "direccion", "telefono", "horario", "email", "descripcion",
+                "latitud", "longitud", "lat", "lng", "coordenadas",
+                "created_at", "updated_at", "activo", "verificado"
+            ]);
+
+            // Etiquetas legibles para campos conocidos
+            const etiquetas = {
+                web: "Web",
+                website: "Web",
+                precio: t("precio"),
+                precio_mes: "Precio/mes",
+                whatsapp: "WhatsApp",
+                red_social: "Red social",
+                instagram: "Instagram",
+                facebook: "Facebook",
+                twitter: "Twitter",
+                youtube: "YouTube",
+                tiktok: "TikTok",
+                cp: "Código postal",
+                codigo_postal: "Código postal",
+                provincia: "Provincia",
+                pais: "País",
+                capacidad: "Capacidad",
+                fundacion: "Fundación",
+                propietario: "Propietario",
+                responsable: "Responsable",
+            };
+
+            // Detectar si un valor es una URL
+            function esURL(valor) {
+                return /^https?:\/\//i.test(valor) || /^www\./i.test(valor);
+            }
+
+            function formatearValor(clave, valor) {
+                const v = String(valor).trim();
+                if (esURL(v)) {
+                    const href = v.startsWith("http") ? v : "https://" + v;
+                    return `<a href="${href}" target="_blank" rel="noopener">${v}</a>`;
+                }
+                return v;
+            }
+
+            // Construir filas dinámicas con los campos no nulos no excluidos
+            const filasDinamicas = Object.entries(gimnasio)
+                .filter(([clave, valor]) => {
+                    if (camposExcluidos.has(clave)) return false;
+                    if (valor === null || valor === undefined) return false;
+                    if (String(valor).trim() === "" || String(valor).toLowerCase() === "null") return false;
+                    return true;
+                })
+                .map(([clave, valor]) => {
+                    const etiqueta = etiquetas[clave] || capitalizar(clave.replace(/_/g, " "));
+                    return `<p><strong>${etiqueta}:</strong> ${formatearValor(clave, valor)}</p>`;
+                })
+                .join("");
+
+            contenido.innerHTML = `
+                <h2>${gimnasio.nombre || t("detalleGimnasioTitulo")}</h2>
+
+                <div class="detalle-gimnasio-contenido">
+                    <div class="bloque-fotos-gimnasio">
+                        <h3>${t("fotosGimnasio")}</h3>
+                        <div class="galeria-gimnasio">
+                            ${crearGaleriaGimnasio(gimnasio)}
+                        </div>
+                    </div>
+
+                    <div class="info-detalle-gimnasio">
+                        <h3>${t("informacionCompleta")}</h3>
+                        <p><strong>${t("localizacion")}:</strong> ${gimnasio.ciudad || t("noIndicada")}</p>
+                        <p><strong>${t("direccion")}:</strong> ${gimnasio.direccion || t("noIndicada")}</p>
+                        <p><strong>${t("telefono")}:</strong> ${gimnasio.telefono || t("noIndicado")}</p>
+                        <p><strong>${t("deporte")}:</strong> ${Array.isArray(deportes) ? deportes.join(", ") : deportes}</p>
+                        <p><strong>${t("horario")}:</strong> ${horarioDetalle}</p>
+                        ${gimnasio.email ? `<p><strong>Email:</strong> <a href="mailto:${gimnasio.email}">${gimnasio.email}</a></p>` : ""}
+                        ${gimnasio.descripcion ? `<p><strong>${t("descripcion")}:</strong> ${gimnasio.descripcion}</p>` : ""}
+                        ${filasDinamicas}
+                    </div>
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function volverAlBuscadorDesdeDetalle() {
+            document.getElementById("detalleGimnasio").style.display = "none";
+            document.getElementById("buscador").style.display = "block";
+
+            setTimeout(() => {
+                if (mapa) {
+                    mapa.invalidateSize();
+                }
+            }, 150);
+        }
+
+
         function mostrarResultados(gimnasios) {
+            ultimosGimnasiosEncontrados = gimnasios || [];
             const resultados = document.getElementById("resultados");
             const lista = document.getElementById("listaGimnasios");
 
             resultados.style.display = "grid";
             lista.innerHTML = "";
 
-            const comentariosGimnasios = document.getElementById("comentariosGimnasios");
-            const listaComentariosGimnasios = document.getElementById("listaComentariosGimnasios");
-
-            if (comentariosGimnasios) comentariosGimnasios.style.display = "block";
-            if (listaComentariosGimnasios) listaComentariosGimnasios.innerHTML = "";
 
             limpiarMarcadores();
 
@@ -2372,14 +2764,13 @@
 
             if (gimnasios.length === 0) {
                 lista.innerHTML = "<p>No se encontraron gimnasios con esos filtros.</p>";
-                if (comentariosGimnasios) comentariosGimnasios.style.display = "none";
                 mapa.setView([40.4168, -3.7038], 6);
                 return;
             }
 
             const bounds = [];
 
-            gimnasios.forEach(gimnasio => {
+            gimnasios.forEach((gimnasio, index) => {
                 const latitud = parseFloat(gimnasio.latitud);
                 const longitud = parseFloat(gimnasio.longitud);
 
@@ -2393,39 +2784,8 @@
                     <p><strong>Dirección:</strong> ${gimnasio.direccion || "No indicada"}</p>
                     <p><strong>Teléfono:</strong> ${gimnasio.telefono || "No indicado"}</p>
 
-                    <div class="valoracion-media-gimnasio" id="valoracion-media-${gimnasio.id_gimnasio}">
-                        <span class="estrellas-media">☆☆☆☆☆</span> 0.0 / 5
-                    </div>
-
-                    <div class="form-resena-gimnasio">
-                        <strong>${t("valorarGimnasio")}</strong>
-                        <input type="hidden" id="puntuacion-${gimnasio.id_gimnasio}" value="0">
-
-                        <div class="estrellas-resena">
-                            <button type="button" class="estrella-resena" data-gimnasio="${gimnasio.id_gimnasio}" data-valor="1" onclick="pintarEstrellasResena(${gimnasio.id_gimnasio}, 1)">★</button>
-                            <button type="button" class="estrella-resena" data-gimnasio="${gimnasio.id_gimnasio}" data-valor="2" onclick="pintarEstrellasResena(${gimnasio.id_gimnasio}, 2)">★</button>
-                            <button type="button" class="estrella-resena" data-gimnasio="${gimnasio.id_gimnasio}" data-valor="3" onclick="pintarEstrellasResena(${gimnasio.id_gimnasio}, 3)">★</button>
-                            <button type="button" class="estrella-resena" data-gimnasio="${gimnasio.id_gimnasio}" data-valor="4" onclick="pintarEstrellasResena(${gimnasio.id_gimnasio}, 4)">★</button>
-                            <button type="button" class="estrella-resena" data-gimnasio="${gimnasio.id_gimnasio}" data-valor="5" onclick="pintarEstrellasResena(${gimnasio.id_gimnasio}, 5)">★</button>
-                        </div>
-
-                        <textarea 
-                            id="comentario-${gimnasio.id_gimnasio}" 
-                            class="comentario-resena"
-                            placeholder="${t("Dejanos tu opinión")}"
-                        ></textarea>
-
-                        <button 
-                            type="button" 
-                            class="boton-guardar-resena"
-                            onclick="guardarResenaGimnasio(${gimnasio.id_gimnasio})"
-                        >
-                            ${t("guardarResena")}
-                        </button>
-                    </div>
                 `;
                 lista.appendChild(card);
-                cargarValoracionesGimnasio(gimnasio.id_gimnasio, gimnasio.nombre);
 
                 if (!isNaN(latitud) && !isNaN(longitud)) {
                     const posicion = [latitud, longitud];
@@ -2447,6 +2807,7 @@
             if (marcadores.length > 0) {
                 mapa.fitBounds(bounds, { padding: [30, 30] });
             }
+            activarClicksTarjetasGimnasio();
         }
 
         function limpiarMarcadores() {
@@ -2498,160 +2859,6 @@
             } else {
                 estado.textContent = t("noSesion");
                 boton.textContent = t("login");
-            }
-        }
-
-        function generarEstrellasMedia(media) {
-            const valor = Math.round(Number(media || 0));
-            let estrellas = "";
-
-            for (let i = 1; i <= 5; i++) {
-                estrellas += i <= valor ? "★" : "☆";
-            }
-
-            return estrellas;
-        }
-
-
-        function obtenerNombreGimnasioDesdeTarjeta(idGimnasio) {
-            const media = document.getElementById(`valoracion-media-${idGimnasio}`);
-            const tarjeta = media ? media.closest(".card-gimnasio") : null;
-            const titulo = tarjeta ? tarjeta.querySelector("h3") : null;
-            return titulo ? titulo.textContent.trim() : "";
-        }
-
-        async function cargarValoracionesGimnasio(idGimnasio, nombreGimnasio = '') {
-            try {
-                const respuesta = await fetch(`${API_BACKEND}/api/gimnasios/${idGimnasio}/valoraciones`);
-
-                if (!respuesta.ok) {
-                    throw new Error("Error cargando valoraciones");
-                }
-
-                const data = await respuesta.json();
-                const media = Number(data.media || 0);
-                const total = Number(data.total_valoraciones || 0);
-
-                const contenedorMedia = document.getElementById(`valoracion-media-${idGimnasio}`);
-
-                if (contenedorMedia) {
-                    contenedorMedia.innerHTML = `
-                        <span class="estrellas-media">${generarEstrellasMedia(media)}</span>
-                        ${media.toFixed(1)} / 5
-                        <span>(${total} ${t("valoraciones")})</span>
-                    `;
-                }
-
-                renderizarComentariosGimnasio(data.comentarios || [], nombreGimnasio);
-
-            } catch (error) {
-                console.error("Error cargando valoraciones:", error);
-            }
-        }
-
-        function renderizarComentariosGimnasio(comentarios, nombreGimnasio = '') {
-            const lista = document.getElementById("listaComentariosGimnasios");
-
-            if (!lista) return;
-
-            if (!comentarios || comentarios.length === 0) {
-                if (!lista.innerHTML.trim()) {
-                    lista.innerHTML = `<p>${t("sinComentarios")}</p>`;
-                }
-                return;
-            }
-
-            const comentariosHtml = comentarios
-                .filter(item => item.comentario)
-                .map(item => `
-                    <div class="comentario-gimnasio">
-                        <span class="gimnasio-comentario">${nombreGimnasio || item.gimnasio || "Gimnasio"}</span>
-                        <strong>${item.usuario || "Usuario"}</strong>
-                        <span class="estrellas-media">${generarEstrellasMedia(item.puntuacion)}</span>
-                        <p>${item.comentario}</p>
-                        <div class="meta-comentario">
-                            ${item.fecha_valoracion ? new Date(item.fecha_valoracion).toLocaleDateString() : ""}
-                        </div>
-                    </div>
-                `)
-                .join("");
-
-            if (comentariosHtml) {
-                if (lista.innerHTML.includes(t("sinComentarios"))) {
-                    lista.innerHTML = "";
-                }
-
-                lista.innerHTML += comentariosHtml;
-            }
-        }
-
-        function pintarEstrellasResena(idGimnasio, puntuacion) {
-            const estrellas = document.querySelectorAll(`.estrella-resena[data-gimnasio="${idGimnasio}"]`);
-
-            estrellas.forEach(estrella => {
-                const valor = Number(estrella.dataset.valor);
-
-                if (valor <= puntuacion) {
-                    estrella.classList.add("activa");
-                } else {
-                    estrella.classList.remove("activa");
-                }
-            });
-
-            const input = document.getElementById(`puntuacion-${idGimnasio}`);
-            if (input) input.value = puntuacion;
-        }
-
-        async function guardarResenaGimnasio(idGimnasio) {
-            if (!usuarioLogeado) {
-                mostrarMensajeModal(t("iniciaSesionValorar"));
-                seccionAnteriorAuth = "buscador";
-                mostrarSeccion("auth");
-                return;
-            }
-
-            const inputPuntuacion = document.getElementById(`puntuacion-${idGimnasio}`);
-            const inputComentario = document.getElementById(`comentario-${idGimnasio}`);
-
-            const puntuacion = Number(inputPuntuacion ? inputPuntuacion.value : 0);
-            const comentario = inputComentario ? inputComentario.value.trim() : "";
-
-            if (!puntuacion || puntuacion < 1 || puntuacion > 5) {
-                mostrarMensajeModal(t("seleccionaEstrellas"));
-                return;
-            }
-
-            try {
-                const respuesta = await fetch(`${API_BACKEND}/api/gimnasios/${idGimnasio}/valoraciones`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        id_usuario: usuarioLogeado.id_usuario,
-                        puntuacion,
-                        comentario
-                    })
-                });
-
-                const data = await respuesta.json();
-
-                if (!respuesta.ok) {
-                    throw new Error(data.error || "Error guardando reseña");
-                }
-
-                mostrarMensajeModal(t("resenaGuardada"));
-
-                if (inputComentario) inputComentario.value = "";
-                pintarEstrellasResena(idGimnasio, 0);
-
-                const listaComentarios = document.getElementById("listaComentariosGimnasios");
-                if (listaComentarios) listaComentarios.innerHTML = "";
-
-                cargarValoracionesGimnasio(idGimnasio, obtenerNombreGimnasioDesdeTarjeta(idGimnasio));
-
-            } catch (error) {
-                mostrarMensajeModal(error.message);
             }
         }
 
@@ -2862,6 +3069,38 @@
                 };
                 contenedor.appendChild(boton);
             });
+
+            // Poblar select de marcas
+            const selectMarca = document.getElementById("filtroMarcaProducto");
+            if (selectMarca) {
+                const marcasUnicas = [...new Set(
+                    productos
+                        .map(p => p.marca)
+                        .filter(m => m && m.trim() !== "")
+                )].sort();
+                selectMarca.innerHTML = '<option value="">Todas las marcas</option>';
+                marcasUnicas.forEach(marca => {
+                    const opt = document.createElement("option");
+                    opt.value = marca;
+                    opt.textContent = marca;
+                    selectMarca.appendChild(opt);
+                });
+            }
+
+            // Poblar select de deportes
+            const selectDeporte = document.getElementById("filtroDeporteProducto");
+            if (selectDeporte) {
+                const deportesUnicos = [...new Set(
+                    productos.flatMap(p => Array.isArray(p.deportes) ? p.deportes : [])
+                )].sort();
+                selectDeporte.innerHTML = '<option value="">Todos los deportes</option>';
+                deportesUnicos.forEach(dep => {
+                    const opt = document.createElement("option");
+                    opt.value = dep;
+                    opt.textContent = dep;
+                    selectDeporte.appendChild(opt);
+                });
+            }
         }
 
         function filtrarProductos(categoria, botonSeleccionado) {
@@ -2885,6 +3124,10 @@
 
             const textoBusqueda = normalizarTexto(inputBusqueda ? inputBusqueda.value : "");
             const ordenPrecio = selectPrecio ? selectPrecio.value : "normal";
+            const selectMarca = document.getElementById("filtroMarcaProducto");
+            const marcaSeleccionada = selectMarca ? selectMarca.value : "";
+            const selectDeporte = document.getElementById("filtroDeporteProducto");
+            const deporteSeleccionado = selectDeporte ? selectDeporte.value : "";
 
             let productosFiltrados = [...productosTienda];
 
@@ -2898,6 +3141,19 @@
             if (textoBusqueda) {
                 productosFiltrados = productosFiltrados.filter(producto => {
                     return normalizarTexto(producto.nombre || "").includes(textoBusqueda);
+                });
+            }
+
+            if (marcaSeleccionada) {
+                productosFiltrados = productosFiltrados.filter(producto => {
+                    return normalizarTexto(producto.marca || "") === normalizarTexto(marcaSeleccionada);
+                });
+            }
+
+            if (deporteSeleccionado) {
+                productosFiltrados = productosFiltrados.filter(producto => {
+                    return Array.isArray(producto.deportes) &&
+                           producto.deportes.some(d => normalizarTexto(d) === normalizarTexto(deporteSeleccionado));
                 });
             }
 
@@ -2963,6 +3219,9 @@
 
                         <div class="detalle-producto">
                             <span class="categoria-producto">${traducirCategoria(categoria)}</span>
+                            ${Array.isArray(producto.deportes) && producto.deportes.length > 0
+                                ? `<p><strong>Deportes:</strong> ${producto.deportes.join(", ")}</p>`
+                                : ""}
                             <p><strong>${t("descripcion")}:</strong> ${traducirDescripcion(producto.descripcion)}</p>
                             ${caracteristicasProducto}
                             <p class="${stock > 0 ? "stock-disponible" : "stock-agotado"}">
@@ -3185,7 +3444,10 @@
             }, 1800);
         }
 
-        function irAPago() {
+        async function irAPago() {
+            if (!tiendaCargada || productosTienda.length === 0) {
+                await cargarProductos();
+            }
             if (carrito.length === 0) {
                 mostrarMensajeModal("El carrito está vacío. Añade algún producto antes de continuar.");
                 return;
@@ -3283,6 +3545,137 @@
             }
         }
 
+
+        function obtenerIdProducto(producto) {
+            return Number(producto?.id_producto || producto?.id || 0);
+        }
+
+        function obtenerDeportesProducto(producto) {
+            if (!producto) return [];
+
+            if (Array.isArray(producto.deportes)) {
+                return producto.deportes.map(normalizarTexto).filter(Boolean);
+            }
+
+            if (typeof producto.deportes === "string") {
+                try {
+                    const parsed = JSON.parse(producto.deportes);
+                    if (Array.isArray(parsed)) {
+                        return parsed.map(normalizarTexto).filter(Boolean);
+                    }
+                } catch (error) {
+                    return producto.deportes.split(",").map(normalizarTexto).filter(Boolean);
+                }
+            }
+
+            if (producto.deporte) {
+                return [normalizarTexto(producto.deporte)];
+            }
+
+            return [];
+        }
+
+        function calcularProductosRelacionadosCarrito() {
+            if (!Array.isArray(carrito) || carrito.length === 0 || !Array.isArray(productosTienda)) {
+                return [];
+            }
+
+            const idsCarrito = carrito.map(obtenerIdProducto).filter(Boolean);
+            const categoriasCarrito = carrito.map(item => normalizarTexto(item.categoria)).filter(Boolean);
+            const marcasCarrito = carrito.map(item => normalizarTexto(item.marca)).filter(Boolean);
+            const deportesCarrito = carrito.flatMap(obtenerDeportesProducto).filter(Boolean);
+
+            return productosTienda
+                .filter(producto => !idsCarrito.includes(obtenerIdProducto(producto)))
+                .map(producto => {
+                    let puntuacion = 0;
+
+                    const categoriaProducto = normalizarTexto(producto.categoria);
+                    const marcaProducto = normalizarTexto(producto.marca);
+                    const deportesProducto = obtenerDeportesProducto(producto);
+
+                    if (categoriaProducto && categoriasCarrito.includes(categoriaProducto)) {
+                        puntuacion += 4;
+                    }
+
+                    if (marcaProducto && marcasCarrito.includes(marcaProducto)) {
+                        puntuacion += 2;
+                    }
+
+                    if (deportesProducto.some(deporte => deportesCarrito.includes(deporte))) {
+                        puntuacion += 3;
+                    }
+
+                    if (Number(producto.stock || 0) > 0) {
+                        puntuacion += 1;
+                    }
+
+                    return { producto, puntuacion };
+                })
+                .filter(item => item.puntuacion > 0)
+                .sort((a, b) => b.puntuacion - a.puntuacion || Number(a.producto.precio || 0) - Number(b.producto.precio || 0))
+                .slice(0, 4)
+                .map(item => item.producto);
+        }
+
+        function renderizarProductosRelacionadosCarrito() {
+            const contenedor = document.getElementById("productosRelacionadosCarrito");
+            const grid = document.getElementById("gridRelacionadosCarrito");
+
+            if (!contenedor || !grid) return;
+
+            const relacionados = calcularProductosRelacionadosCarrito();
+
+            if (relacionados.length === 0) {
+                contenedor.style.display = "none";
+                grid.innerHTML = "";
+                return;
+            }
+
+            contenedor.style.display = "block";
+
+            grid.innerHTML = relacionados.map(producto => {
+                const imagen = producto.imagen_url
+                    ? `<img src="${producto.imagen_url}" alt="${traducirProducto(producto.nombre)}" />`
+                    : renderizarPlaceholderProducto(producto);
+
+                return `
+                    <div class="card-relacionado-carrito">
+                        <div class="imagen-relacionado-carrito">
+                            ${imagen}
+                        </div>
+
+                        <div class="info-relacionado-carrito">
+                            <h4>${traducirProducto(producto.nombre)}</h4>
+                            <p>${traducirCategoria(producto.categoria)}</p>
+                            ${producto.marca ? `<p>${t("marca")}: ${producto.marca}</p>` : ""}
+                            <p class="precio-relacionado-carrito">${Number(producto.precio).toFixed(2)} €</p>
+                            <button class="boton-relacionado-carrito" type="button" onclick="anadirAlCarritoRelacionado(${obtenerIdProducto(producto)})">${t("anadirCarrito")}</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function anadirAlCarritoRelacionado(idProducto) {
+            const producto = productosTienda.find(item => obtenerIdProducto(item) === Number(idProducto));
+
+            if (!producto) return;
+
+            anadirAlCarrito(producto);
+            renderizarProductosRelacionadosCarrito();
+            actualizarCarrito();
+        }
+
+        function actualizarProductosRelacionadosSiVisible() {
+            const contenedor = document.getElementById("productosRelacionadosCarrito");
+
+            if (contenedor) {
+                renderizarProductosRelacionadosCarrito();
+            }
+        }
+
+
         function actualizarCarrito() {
             const listaCarrito = document.getElementById("listaCarrito");
             const totalCarrito = document.getElementById("totalCarrito");
@@ -3326,6 +3719,7 @@
 
                 listaCarrito.appendChild(div);
             });
+            actualizarProductosRelacionadosSiVisible();
         }
 
         function guardarCarrito() {
@@ -3516,122 +3910,17 @@
                     recomendado: "People who enjoy dynamic movement, kicks, agility and leg-focused training."
                 }
             ],
-            pt: [
-                {
-                    nombre: "Boxe",
-                    descripcion: "Desporto de combate focado em golpes de punho, defesa, jogo de pés e resistência cardiovascular.",
-                    ventajas: "Melhora muito a resistência, coordenação, velocidade de reação e autoconfiança.",
-                    desventajas: "Pode ser exigente para ombros, punhos e cardio. O sparring requer boa supervisão.",
-                    valores: "Disciplina, constância, autocontrolo, respeito e desenvolvimento pessoal.",
-                    recomendado: "Pessoas que gostam de treino intenso, querem melhorar o cardio e a coordenação, e preferem técnicas de punhos sem pontapés."
-                },
-                {
-                    nombre: "MMA",
-                    descripcion: "Desporto de combate misto que combina golpes, quedas, controlo no chão e finalizações. Uma das modalidades mais completas.",
-                    ventajas: "Desenvolve força, resistência, mobilidade, estratégia e capacidade de adaptação.",
-                    desventajas: "Tem uma curva de aprendizagem ampla e pode ser fisicamente exigente para principiantes.",
-                    valores: "Versatilidade, humildade, resiliência, estratégia e respeito por diferentes disciplinas.",
-                    recomendado: "Pessoas com muita motivação, interesse em aprender várias áreas e condição física média ou vontade de melhorar progressivamente."
-                },
-                {
-                    nombre: "Jiu-Jitsu Brasileiro",
-                    descripcion: "Arte marcial focada em agarres, controlo, finalizações e estrangulamentos no chão.",
-                    ventajas: "Muito técnico, melhora mobilidade e controlo corporal, e não depende apenas da força.",
-                    desventajas: "O contacto físico próximo pode ser desconfortável no início e exige paciência técnica.",
-                    valores: "Paciência, humildade, técnica, autocontrolo e resolução de problemas.",
-                    recomendado: "Pessoas que preferem estratégia, técnica e combate de solo. Boa opção para quem não quer receber golpes."
-                },
-                {
-                    nombre: "Muay Thai",
-                    descripcion: "Desporto de golpeo tailandês que usa punhos, cotovelos, joelhos, pontapés e clinch.",
-                    ventajas: "Excelente para condição física, potência, resistência e defesa pessoal.",
-                    desventajas: "Pode ser duro para pernas, ancas e canelas. Requer adaptação progressiva.",
-                    valores: "Respeito, força mental, tradição, disciplina e tolerância ao esforço.",
-                    recomendado: "Pessoas que procuram treino intenso, gostam de pontapés e querem trabalhar todo o corpo."
-                },
-                {
-                    nombre: "Judo",
-                    descripcion: "Arte marcial japonesa baseada em projeções, agarres, controlo e técnicas de queda.",
-                    ventajas: "Melhora equilíbrio, força funcional, coordenação e capacidade de cair com segurança.",
-                    desventajas: "As quedas podem ser exigentes no início e é necessária boa técnica para evitar desconforto.",
-                    valores: "Respeito, cortesia, autocontrolo, companheirismo e uso eficiente da energia.",
-                    recomendado: "Pessoas que gostam de trabalho físico, agarres, projeções e treino com parceiro."
-                },
-                {
-                    nombre: "Karaté",
-                    descripcion: "Arte marcial tradicional com golpes, pontapés, defesas, katas e trabalho técnico.",
-                    ventajas: "Melhora coordenação, concentração, mobilidade, postura e controlo corporal.",
-                    desventajas: "O progresso pode parecer mais gradual se procuras combate intenso desde o início.",
-                    valores: "Respeito, disciplina, autocontrolo, precisão e desenvolvimento pessoal.",
-                    recomendado: "Pessoas que procuram uma mistura de técnica, tradição, defesa pessoal e desenvolvimento mental."
-                },
-                {
-                    nombre: "Taekwondo",
-                    descripcion: "Arte marcial coreana conhecida pelos pontapés rápidos, flexibilidade e mobilidade.",
-                    ventajas: "Melhora flexibilidade, velocidade, coordenação, equilíbrio e potência de pernas.",
-                    desventajas: "Pode exigir bastante mobilidade de anca e flexibilidade, especialmente em níveis altos.",
-                    valores: "Cortesia, perseverança, autocontrolo, espírito indomável e respeito.",
-                    recomendado: "Pessoas que gostam de movimentos dinâmicos, pontapés, agilidade e trabalho de pernas."
-                }
-            ],
-            ja: [
-                {
-                    nombre: "ボクシング",
-                    descripcion: "パンチ、ディフェンス、フットワーク、心肺持久力を中心とした打撃競技。",
-                    ventajas: "持久力、協調性、反応速度、自信を大きく向上させます。",
-                    desventajas: "肩、手首、心肺機能への負担があります。スパーリングには適切な指導が必要です。",
-                    valores: "規律、継続、自制心、敬意、自己成長。",
-                    recomendado: "強度の高い練習が好きで、心肺機能と協調性を高めたい人。蹴りよりパンチ技術を好む人。"
-                },
-                {
-                    nombre: "MMA",
-                    descripcion: "打撃、テイクダウン、寝技のコントロール、極め技を組み合わせる総合格闘技。最も総合的な競技の一つです。",
-                    ventajas: "筋力、持久力、可動性、戦略性、適応力を伸ばします。",
-                    desventajas: "学ぶ範囲が広く、初心者には身体的に demanding な場合があります。",
-                    valores: "多様性、謙虚さ、粘り強さ、戦略性、さまざまな競技への敬意。",
-                    recomendado: "高い意欲があり、複数分野を学びたい人。平均的な体力がある人、または段階的に改善したい人。"
-                },
-                {
-                    nombre: "ブラジリアン柔術",
-                    descripcion: "寝技でのグリップ、コントロール、関節技、絞め技を中心とした武道。",
-                    ventajas: "非常に技術的で、可動性と身体コントロールを高め、力だけに頼りません。",
-                    desventajas: "近い身体接触に最初は抵抗を感じることがあり、技術的な忍耐が必要です。",
-                    valores: "忍耐、謙虚さ、技術、自制心、問題解決力。",
-                    recomendado: "戦略、技術、寝技を好む人。打撃を受けたくない人にも良い選択です。"
-                },
-                {
-                    nombre: "ムエタイ",
-                    descripcion: "パンチ、肘、膝、キック、クリンチを使うタイの打撃競技。",
-                    ventajas: "体力、パワー、持久力、護身能力に優れた効果があります。",
-                    desventajas: "脚、股関節、すねへの負担があります。段階的な適応が必要です。",
-                    valores: "敬意、精神的な強さ、伝統、規律、努力への耐性。",
-                    recomendado: "強度の高い練習を求め、蹴りが好きで、全身を鍛えたい人。"
-                },
-                {
-                    nombre: "柔道",
-                    descripcion: "投げ、組み手、コントロール、受け身を中心とした日本の武道。",
-                    ventajas: "バランス、機能的な筋力、協調性、安全に倒れる能力を高めます。",
-                    desventajas: "最初は受け身や投げが大変なことがあり、不快感を避けるには正しい技術が必要です。",
-                    valores: "敬意、礼儀、自制心、仲間意識、エネルギーの効率的な使い方。",
-                    recomendado: "身体を使う練習、組み手、投げ技、パートナー練習を楽しめる人。"
-                },
-                {
-                    nombre: "空手",
-                    descripcion: "突き、蹴り、受け、型、技術練習を含む伝統的な武道。",
-                    ventajas: "協調性、集中力、可動性、姿勢、身体コントロールを高めます。",
-                    desventajas: "最初から激しい組手を求める人には、上達がゆっくりに感じることがあります。",
-                    valores: "敬意、規律、自制心、正確さ、自己成長。",
-                    recomendado: "技術、伝統、護身、精神的成長のバランスを求める人。"
-                },
-                {
-                    nombre: "テコンドー",
-                    descripcion: "速い蹴り、柔軟性、機動力で知られる韓国武道。",
-                    ventajas: "柔軟性、スピード、協調性、バランス、脚力を高めます。",
-                    desventajas: "特に高いレベルでは、股関節の可動性と柔軟性がかなり必要です。",
-                    valores: "礼儀、忍耐、自制心、不屈の精神、敬意。",
-                    recomendado: "ダイナミックな動き、蹴り、敏捷性、脚を中心とした練習が好きな人。"
-                }
-            ]
+           
+        };
+
+        const iconosDeporte = {
+            "Boxeo": "🥊", "Boxing": "🥊",
+            "MMA": "🥋",
+            "Jiu-Jitsu Brasileño": "🤼", "Brazilian Jiu-Jitsu": "🤼",
+            "Muay Thai": "🦵",
+            "Judo": "🤸",
+            "Karate": "🥋",
+            "Taekwondo": "🦶"
         };
 
         function mostrarGuiaDeportes() {
@@ -3644,12 +3933,15 @@
                 const card = document.createElement("div");
                 card.classList.add("card-deporte");
 
+                const icono = iconosDeporte[deporte.nombre] || "🥋";
+
                 card.innerHTML = `
-                    <div class="card-deporte-cabecera" onclick="toggleDeporte(this)">
+                    <div class="imagen-deporte" onclick="toggleDeporte(this.parentElement)">${icono}</div>
+                    <div class="card-deporte-cabecera" onclick="toggleDeporte(this.parentElement)">
                         <h3>${deporte.nombre}</h3>
                         <p class="descripcion-corta">${deporte.descripcion}</p>
-                        <span class="icono-desplegable">+</span>
                     </div>
+                    <p class="texto-desplegable-deporte">Ver más ▾</p>
                     <div class="card-deporte-cuerpo">
                         <h4>${t("ventajas")}</h4>
                         <p>${deporte.ventajas}</p>
@@ -3669,8 +3961,7 @@
             });
         }
 
-        function toggleDeporte(cabecera) {
-            const card = cabecera.parentElement;
+        function toggleDeporte(card) {
             card.classList.toggle("abierto");
         }
 
@@ -3721,4 +4012,4 @@
     </script>
 
 </body>
-</html>
+</html> 

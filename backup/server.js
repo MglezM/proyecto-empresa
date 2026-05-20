@@ -131,17 +131,9 @@ app.get("/api/productos", async (req, res) => {
                 p.talla,
                 p.color,
                 p.imagen_url,
-                c.nombre AS categoria,
-                COALESCE(
-                    JSON_AGG(d.nombre ORDER BY d.nombre) FILTER (WHERE d.nombre IS NOT NULL),
-                    '[]'
-                ) AS deportes
+                c.nombre AS categoria
             FROM productos p
             LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
-            LEFT JOIN producto_deporte pd ON p.id_producto = pd.id_producto
-            LEFT JOIN deportes d ON pd.id_deporte = d.id_deporte
-            GROUP BY p.id_producto, p.nombre, p.descripcion, p.precio, p.stock,
-                     p.marca, p.talla, p.color, p.imagen_url, c.nombre
             ORDER BY p.id_producto
         `);
 
@@ -418,46 +410,6 @@ app.post("/api/pedidos", async (req, res) => {
         res.status(400).json({ error: error.message || "Error al crear el pedido" });
     } finally {
         client.release();
-    }
-});
-
-app.get("/api/noticias", async (req, res) => {
-    try {
-        const url = `https://newsapi.org/v2/everything?q=MMA+UFC+boxing+muay+thai+kickboxing+jiu-jitsu&sortBy=publishedAt&pageSize=4&language=en&apiKey=${process.env.NEWS_API_KEY}`;
-
-        const respuesta = await fetch(url);
-        const data = await respuesta.json();
-
-        if (!respuesta.ok || data.status === "error") {
-            console.error("Error NewsAPI:", data);
-            return res.status(500).json({ error: "Error al consultar noticias" });
-        }
-
-        const deportesPorKeyword = (titulo = "") => {
-            const t = titulo.toLowerCase();
-            if (t.includes("ufc") || t.includes("mma")) return "MMA";
-            if (t.includes("box")) return "Boxeo";
-            if (t.includes("muay")) return "Muay Thai";
-            if (t.includes("jiu") || t.includes("bjj")) return "Jiu-Jitsu";
-            if (t.includes("kick")) return "Kickboxing";
-            return "Combate";
-        };
-
-        const noticias = (data.articles || [])
-            .filter(a => a.title && a.description && a.title !== "[Removed]")
-            .slice(0, 4)
-            .map(a => ({
-                deporte: deportesPorKeyword(a.title),
-                titulo: a.title,
-                descripcion: a.description,
-                url: a.url
-            }));
-
-        res.json(noticias);
-
-    } catch (error) {
-        console.error("Error en /api/noticias:", error);
-        res.status(500).json({ error: "Error al obtener noticias" });
     }
 });
 
