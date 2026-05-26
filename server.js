@@ -46,6 +46,7 @@ app.get("/api/gimnasios", async (req, res) => {
                 g.red_social,
                 g.latitud,
                 g.longitud,
+                g.promocionado,
                 d.nombre AS deporte
             FROM gimnasios g
             JOIN gimnasio_deporte gd ON g.id_gimnasio = gd.id_gimnasio

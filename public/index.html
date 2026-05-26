@@ -450,6 +450,58 @@
             color: var(--texto-secundario);
         }
 
+        /* GIMNASIOS PROMOCIONADOS */
+        #seccionPromocionados {
+            margin-bottom: 24px;
+        }
+
+        #seccionPromocionados h2 {
+            color: #f5a623;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #seccionPromocionados h2::before {
+            content: "⭐";
+            font-size: 18px;
+        }
+
+        .card-gimnasio-promocionado {
+            border: 1px solid rgba(245, 166, 35, 0.55);
+            border-radius: 14px;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(245, 166, 35, 0.08), rgba(0, 0, 0, 0.92));
+            box-shadow: 0 5px 22px rgba(245, 166, 35, 0.18);
+            position: relative;
+        }
+
+        .card-gimnasio-promocionado h3 {
+            color: #f5a623;
+            margin-bottom: 8px;
+        }
+
+        .card-gimnasio-promocionado p {
+            margin-bottom: 5px;
+            color: var(--texto-secundario);
+        }
+
+        .badge-promocionado {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(245, 166, 35, 0.18);
+            border: 1px solid rgba(245, 166, 35, 0.45);
+            color: #f5a623;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
         .cabecera-buscador {
             display: flex;
             justify-content: space-between;
@@ -1945,6 +1997,10 @@
                         <div id="mapa"></div>
 
                         <div>
+                            <div id="seccionPromocionados" style="display:none;">
+                                <h2>Gimnasios recomendados</h2>
+                                <div id="listaPromocionados" class="lista-gimnasios"></div>
+                            </div>
                             <h2 data-i18n="gimnasiosEncontrados">Gimnasios encontrados</h2>
                             <div id="listaGimnasios" class="lista-gimnasios"></div>
                         </div>
@@ -2764,8 +2820,11 @@
 
 
         function activarClicksTarjetasGimnasio() {
-            document.querySelectorAll("#listaGimnasios .card-gimnasio").forEach((tarjeta, index) => {
-                tarjeta.onclick = () => verDetalleGimnasioPorIndice(index);
+            document.querySelectorAll("#listaGimnasios .card-gimnasio").forEach((tarjeta) => {
+                const idx = parseInt(tarjeta.dataset.gimnasioIdx, 10);
+                if (!isNaN(idx)) {
+                    tarjeta.onclick = () => verDetalleGimnasioPorIndice(idx);
+                }
                 tarjeta.title = t("verDetalleGimnasio");
             });
         }
@@ -2984,14 +3043,33 @@
         }
 
 
+        function crearCardGimnasio(gimnasio, promocionado, idxGlobal) {
+            const card = document.createElement("div");
+            card.classList.add(promocionado ? "card-gimnasio-promocionado" : "card-gimnasio");
+            if (idxGlobal !== undefined) card.dataset.gimnasioIdx = idxGlobal;
+            card.innerHTML = `
+                ${promocionado ? '<span class="badge-promocionado">Destacado</span>' : ""}
+                <h3>${gimnasio.nombre}</h3>
+                <p><strong>Deporte:</strong> ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}</p>
+                <p><strong>Ciudad:</strong> ${gimnasio.ciudad || "No indicada"}</p>
+                <p><strong>Zona:</strong> ${gimnasio.zona || "No indicada"}</p>
+                <p><strong>Dirección:</strong> ${gimnasio.direccion || "No indicada"}</p>
+                <p><strong>Teléfono:</strong> ${gimnasio.telefono || "No indicado"}</p>
+            `;
+            return card;
+        }
+
         function mostrarResultados(gimnasios) {
             ultimosGimnasiosEncontrados = gimnasios || [];
             const resultados = document.getElementById("resultados");
             const lista = document.getElementById("listaGimnasios");
+            const listaPromocionados = document.getElementById("listaPromocionados");
+            const seccionPromocionados = document.getElementById("seccionPromocionados");
 
             resultados.style.display = "grid";
             lista.innerHTML = "";
-
+            listaPromocionados.innerHTML = "";
+            seccionPromocionados.style.display = "none";
 
             limpiarMarcadores();
 
@@ -3022,42 +3100,67 @@
             }
 
             const bounds = [];
+            const promocionados = gimnasios.filter(g => g.promocionado === true || g.promocionado === "true");
+            const normales = gimnasios.filter(g => !g.promocionado || g.promocionado === "false" || g.promocionado === false);
 
-            gimnasios.forEach((gimnasio, index) => {
-                const latitud = parseFloat(gimnasio.latitud);
-                const longitud = parseFloat(gimnasio.longitud);
+            // Mostrar sección de promocionados si hay alguno
+            if (promocionados.length > 0) {
+                seccionPromocionados.style.display = "block";
+                promocionados.forEach((gimnasio) => {
+                    const idxGlobal = gimnasios.indexOf(gimnasio);
+                    const card = crearCardGimnasio(gimnasio, true, idxGlobal);
+                    card.onclick = () => verDetalleGimnasio(gimnasio);
+                    card.title = t("verDetalleGimnasio");
+                    listaPromocionados.appendChild(card);
+                });
+            }
 
-                const card = document.createElement("div");
-                card.classList.add("card-gimnasio");
-                card.innerHTML = `
-                    <h3>${gimnasio.nombre}</h3>
-                    <p><strong>Deporte:</strong> ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}</p>
-                    <p><strong>Ciudad:</strong> ${gimnasio.ciudad || "No indicada"}</p>
-                    <p><strong>Zona:</strong> ${gimnasio.zona || "No indicada"}</p>
-                    <p><strong>Dirección:</strong> ${gimnasio.direccion || "No indicada"}</p>
-                    <p><strong>Teléfono:</strong> ${gimnasio.telefono || "No indicado"}</p>
-
-                `;
+            // Mostrar el resto de gimnasios
+            normales.forEach((gimnasio) => {
+                const idxGlobal = gimnasios.indexOf(gimnasio);
+                const card = crearCardGimnasio(gimnasio, false, idxGlobal);
                 lista.appendChild(card);
 
-                if (!isNaN(latitud) && !isNaN(longitud)) {
-                    const posicion = [latitud, longitud];
+                if (!isNaN(parseFloat(gimnasio.latitud)) && !isNaN(parseFloat(gimnasio.longitud))) {
+                    const posicion = [parseFloat(gimnasio.latitud), parseFloat(gimnasio.longitud)];
 
                     const marcador = L.marker(posicion).addTo(mapa);
-
-                    // Tooltip pequeño al pasar el ratón
                     marcador.bindTooltip(`<strong>${gimnasio.nombre}</strong>`, {
                         direction: "top",
                         offset: [0, -10]
                     });
-
-                    // Click en el marcador abre la página de detalle del gimnasio
                     marcador.on("click", (function(g) {
-                        return function() {
-                            verDetalleGimnasio(g);
-                        };
+                        return function() { verDetalleGimnasio(g); };
                     })(gimnasio));
 
+                    marcadores.push(marcador);
+                    bounds.push(posicion);
+                }
+            });
+
+            // Añadir también marcadores de los promocionados al mapa (icono naranja)
+            const iconoPromocionado = L.icon({
+                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+
+            promocionados.forEach((gimnasio) => {
+                const latitud = parseFloat(gimnasio.latitud);
+                const longitud = parseFloat(gimnasio.longitud);
+                if (!isNaN(latitud) && !isNaN(longitud)) {
+                    const posicion = [latitud, longitud];
+                    const marcador = L.marker(posicion, { icon: iconoPromocionado }).addTo(mapa);
+                    marcador.bindTooltip(`<strong>⭐ ${gimnasio.nombre}</strong>`, {
+                        direction: "top",
+                        offset: [0, -10]
+                    });
+                    marcador.on("click", (function(g) {
+                        return function() { verDetalleGimnasio(g); };
+                    })(gimnasio));
                     marcadores.push(marcador);
                     bounds.push(posicion);
                 }
