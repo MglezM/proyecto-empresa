@@ -43,7 +43,7 @@
         header {
             background:
                 linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.22)),
-                url("/img/banner1.png") center center / cover no-repeat;
+                url("/img/banner4.png") center center / cover no-repeat;
             color: white;
             padding: 24px 25px;
             text-align: center;
@@ -310,26 +310,63 @@
         }
 
         input,
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--borde);
             border-radius: 9px;
             font-size: 15px;
-            background-color: rgba(0, 0, 0, 0.82);
-            color: var(--texto-principal);
+            background-color: rgba(0, 0, 0, 0.82) !important;
+            color: var(--texto-principal) !important;
             outline: none;
             backdrop-filter: blur(4px);
+            -webkit-text-fill-color: var(--texto-principal) !important;
+            caret-color: var(--texto-principal);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input::placeholder {
+        input::placeholder,
+        textarea::placeholder {
             color: #777f90;
+            -webkit-text-fill-color: #777f90 !important;
         }
 
         input:focus,
-        select:focus {
+        select:focus,
+        textarea:focus {
             border-color: var(--rojo);
             box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.18);
+            background-color: rgba(0, 0, 0, 0.82) !important;
+        }
+
+        input:hover,
+        select:hover,
+        textarea:hover {
+            background-color: rgba(0, 0, 0, 0.82) !important;
+        }
+
+        /* Bloquear autofill del navegador en todos los campos */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.82) inset !important;
+            -webkit-text-fill-color: var(--texto-principal) !important;
+            caret-color: var(--texto-principal);
+            transition: background-color 9999s ease-in-out 0s;
+            border-color: var(--borde) !important;
+        }
+
+        ::selection {
+            background-color: rgba(217, 4, 41, 0.35);
+            color: var(--texto-principal);
         }
 
         .contenedor-resultados {
@@ -511,12 +548,28 @@
 
         .galeria-gimnasio {
             display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 12px;
+            /* Por defecto 2 columnas */
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        /* 1 foto → ocupa todo el ancho */
+        .foto-gimnasio:only-child {
+            grid-column: 1 / -1;
+        }
+
+        /* 3 fotos → primera ocupa todo el ancho, las otras dos se reparten */
+        .foto-gimnasio:first-child:nth-last-child(3) {
+            grid-column: 1 / -1;
+        }
+
+        /* 5+ fotos impares → la última ocupa todo el ancho */
+        .foto-gimnasio:last-child:nth-child(odd):not(:only-child) {
+            grid-column: 1 / -1;
         }
 
         .foto-gimnasio {
-            min-height: 170px;
+            aspect-ratio: 4 / 3;
             border-radius: 14px;
             border: 1px solid var(--borde);
             overflow: hidden;
@@ -527,7 +580,26 @@
             color: var(--texto-secundario);
             font-weight: bold;
             text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .foto-gimnasio:hover {
+            border-color: var(--rojo);
+            transform: scale(1.02);
+        }
+
+        .foto-gimnasio-vacia {
+            cursor: default;
+            grid-column: 1 / -1;
+            aspect-ratio: auto;
+            min-height: 100px;
             padding: 16px;
+        }
+
+        .foto-gimnasio-vacia:hover {
+            border-color: var(--borde);
+            transform: none;
         }
 
         .foto-gimnasio img {
@@ -535,6 +607,89 @@
             height: 100%;
             object-fit: cover;
             display: block;
+        }
+
+        /* Lightbox de fotos */
+        .lightbox-fondo {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .lightbox-fondo.activo {
+            display: flex;
+        }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 78vh;
+            border-radius: 12px;
+            border: 1px solid var(--borde);
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+
+        .lightbox-controles {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lightbox-btn {
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--borde);
+            color: var(--texto-principal);
+            font-size: 22px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, background 0.2s;
+            padding: 0;
+        }
+
+        .lightbox-btn:hover {
+            border-color: var(--rojo);
+            background: rgba(217,4,41,0.15);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .lightbox-contador {
+            color: var(--texto-secundario);
+            font-size: 14px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .lightbox-cerrar {
+            position: fixed;
+            top: 18px;
+            right: 22px;
+            font-size: 28px;
+            background: transparent;
+            border: none;
+            color: var(--texto-principal);
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px 8px;
+        }
+
+        .lightbox-cerrar:hover {
+            color: var(--rojo);
+            background: transparent;
+            transform: none;
+            box-shadow: none;
         }
 
         .info-detalle-gimnasio {
@@ -1228,10 +1383,41 @@
         .item-carrito {
             border-bottom: 1px solid var(--borde);
             padding: 12px 0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
         }
 
         .item-carrito:last-child {
             border-bottom: none;
+        }
+
+        .item-carrito-imagen {
+            width: 72px;
+            height: 72px;
+            min-width: 72px;
+            border-radius: 10px;
+            border: 1px solid var(--borde);
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.86);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8991a3;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .item-carrito-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-carrito-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .item-carrito h4 {
@@ -1465,13 +1651,7 @@
             background: linear-gradient(180deg, rgba(18, 18, 20, 0.98), rgba(8, 8, 10, 0.98));
         }
 
-        input,
-        select,
-        textarea {
-            background-color: rgba(0, 0, 0, 0.82);
-            border-color: var(--borde);
-            color: var(--texto-principal);
-        }
+        /* input/select/textarea: cubierto por reglas globales arriba */
 
         .boton-secundario,
         .boton-login-tienda,
@@ -1531,31 +1711,7 @@
 
 
 
-        /* Evita que el campo de localización cambie a fondo claro al escribir/autocompletar */
-        #localizacion,
-        #localizacion:focus,
-        #localizacion:active,
-        #localizacion:hover {
-            background-color: rgba(0, 0, 0, 0.82) !important;
-            color: var(--texto-principal) !important;
-            border-color: var(--borde);
-            caret-color: var(--texto-principal);
-        }
-
-        #localizacion:-webkit-autofill,
-        #localizacion:-webkit-autofill:hover,
-        #localizacion:-webkit-autofill:focus,
-        #localizacion:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.82) inset !important;
-            -webkit-text-fill-color: var(--texto-principal) !important;
-            caret-color: var(--texto-principal);
-            transition: background-color 9999s ease-in-out 0s;
-        }
-
-        #localizacion::selection {
-            background-color: rgba(217, 4, 41, 0.35);
-            color: var(--texto-principal);
-        }
+        /* Estilos específicos de #localizacion y #zona cubiertos por reglas globales */
 
         @media (max-width: 900px) {
             .contenedor-pago {
@@ -2580,39 +2736,28 @@
         });
 
 
-        function obtenerFotosGimnasio(gimnasio) {
-            const posiblesFotos = [
-                gimnasio.foto,
-                gimnasio.imagen,
-                gimnasio.imagen_url,
-                gimnasio.foto_url,
-                gimnasio.foto1,
-                gimnasio.foto2,
-                gimnasio.foto3
-            ].filter(Boolean);
-
-            if (Array.isArray(gimnasio.fotos)) {
-                posiblesFotos.push(...gimnasio.fotos.filter(Boolean));
+        async function cargarFotosGimnasio(idGimnasio) {
+            try {
+                const respuesta = await fetch(`${API_BACKEND}/api/gimnasios/${idGimnasio}/fotos`);
+                if (!respuesta.ok) return [];
+                const fotos = await respuesta.json();
+                return Array.isArray(fotos) ? fotos.map(f => f.url).filter(Boolean) : [];
+            } catch (e) {
+                console.warn("No se pudieron cargar las fotos del gimnasio:", e);
+                return [];
             }
-
-            return [...new Set(posiblesFotos)].slice(0, 4);
         }
 
-        function crearGaleriaGimnasio(gimnasio) {
-            const fotos = obtenerFotosGimnasio(gimnasio);
-
-            if (fotos.length === 0) {
-                return `
-                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
-                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
-                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
-                    <div class="foto-gimnasio">${t("sinFotosGimnasio")}</div>
-                `;
+        function renderizarGaleria(fotos, nombreGimnasio) {
+            if (!fotos || fotos.length === 0) {
+                return `<div class="foto-gimnasio foto-gimnasio-vacia">${t("sinFotosGimnasio")}</div>`;
             }
-
-            return fotos.map(foto => `
-                <div class="foto-gimnasio">
-                    <img src="${foto}" alt="${gimnasio.nombre || t("detalleGimnasioTitulo")}" />
+            // Guardamos las fotos en variable global para que onclick las pueda acceder sin problemas de escape
+            lightboxFotos = fotos;
+            return fotos.map((url, i) => `
+                <div class="foto-gimnasio" onclick="abrirLightbox(${i})" title="Ver foto">
+                    <img src="${url}" alt="${nombreGimnasio || t("detalleGimnasioTitulo")}"
+                         onerror="this.parentElement.classList.add('foto-gimnasio-vacia'); this.remove();" />
                 </div>
             `).join("");
         }
@@ -2728,6 +2873,10 @@
             const deportes = gimnasio.deportes || gimnasio.deporte || gimnasio.nombre_deporte || t("noIndicado");
             const horarioDetalle = await obtenerHorarioDetalleGimnasio(gimnasio);
 
+            // Cargar fotos desde la API
+            const idGimnasio = gimnasio.id_gimnasio || gimnasio.id;
+            const fotosGimnasio = idGimnasio ? await cargarFotosGimnasio(idGimnasio) : [];
+
             // Campos a excluir siempre (internos, ids, fotos, ya mostrados aparte)
             const camposExcluidos = new Set([
                 "id", "id_gimnasio", "nombre", "foto", "foto_url", "imagen", "imagen_url",
@@ -2795,8 +2944,8 @@
                 <div class="detalle-gimnasio-contenido">
                     <div class="bloque-fotos-gimnasio">
                         <h3>${t("fotosGimnasio")}</h3>
-                        <div class="galeria-gimnasio">
-                            ${crearGaleriaGimnasio(gimnasio)}
+                        <div class="galeria-gimnasio" id="galeriaGimnasioActual">
+                            <div class="foto-gimnasio foto-gimnasio-vacia">Cargando fotos...</div>
                         </div>
                     </div>
 
@@ -2815,6 +2964,12 @@
             `;
 
             window.scrollTo({ top: 0, behavior: "smooth" });
+
+            // Inyectar fotos en la galería tras renderizar el HTML
+            const galeriaEl = document.getElementById("galeriaGimnasioActual");
+            if (galeriaEl) {
+                galeriaEl.innerHTML = renderizarGaleria(fotosGimnasio, gimnasio.nombre);
+            }
         }
 
         function volverAlBuscadorDesdeDetalle() {
@@ -2840,11 +2995,20 @@
 
             limpiarMarcadores();
 
+            // Forzar refresco del mapa en dos momentos para garantizar visibilidad
             setTimeout(() => {
                 if (mapa) {
                     mapa.invalidateSize();
                 }
-            }, 150);
+            }, 100);
+
+            setTimeout(() => {
+                if (mapa) {
+                    mapa.invalidateSize();
+                }
+                // Scroll automático al bloque de resultados para que el usuario los vea sin minimizar nada
+                resultados.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 300);
 
             if (!mapa) {
                 lista.innerHTML = "<p>El mapa todavía no se ha cargado.</p>";
@@ -2881,22 +3045,33 @@
 
                     const marcador = L.marker(posicion).addTo(mapa);
 
-                    marcador.bindPopup(`
-                        <strong>${gimnasio.nombre}</strong><br>
-                        ${gimnasio.direccion || "Dirección no indicada"}<br>
-                        Deporte: ${gimnasio.deporte ? gimnasio.deporte.toUpperCase() : "No indicado"}<br>
-                        Ciudad: ${gimnasio.ciudad || "No indicada"}
-                    `);
+                    // Tooltip pequeño al pasar el ratón
+                    marcador.bindTooltip(`<strong>${gimnasio.nombre}</strong>`, {
+                        direction: "top",
+                        offset: [0, -10]
+                    });
+
+                    // Click en el marcador abre la página de detalle del gimnasio
+                    marcador.on("click", (function(g) {
+                        return function() {
+                            verDetalleGimnasio(g);
+                        };
+                    })(gimnasio));
 
                     marcadores.push(marcador);
                     bounds.push(posicion);
                 }
             });
 
-            if (marcadores.length > 0) {
-                mapa.fitBounds(bounds, { padding: [30, 30] });
-            }
             activarClicksTarjetasGimnasio();
+
+            if (marcadores.length > 0) {
+                // fitBounds después de invalidateSize para que el mapa ajuste correctamente
+                setTimeout(() => {
+                    mapa.invalidateSize();
+                    mapa.fitBounds(bounds, { padding: [30, 30] });
+                }, 350);
+            }
         }
 
         function limpiarMarcadores() {
@@ -3108,7 +3283,14 @@
                     throw new Error("Error en la respuesta del servidor");
                 }
 
-                productosTienda = await respuesta.json();
+                const rawProductos = await respuesta.json();
+                // Garantizar que deportes es siempre un array, no un string JSON
+                productosTienda = rawProductos.map(p => ({
+                    ...p,
+                    deportes: Array.isArray(p.deportes)
+                        ? p.deportes
+                        : (typeof p.deportes === 'string' ? JSON.parse(p.deportes) : [])
+                }));
                 tiendaCargada = true;
                 mensajeTienda.innerHTML = "";
 
@@ -3514,7 +3696,8 @@
                     nombre: producto.nombre,
                     precio: Number(producto.precio || 0),
                     stock: stock,
-                    cantidad: 1
+                    cantidad: 1,
+                    imagen_url: producto.imagen_url || ""
                 });
             }
 
@@ -3832,15 +4015,23 @@
                 div.classList.add("item-carrito");
 
                 div.innerHTML = `
-                    <h4>${traducirProducto(item.nombre)}</h4>
-                    <p>${t("precio")}: ${item.precio.toFixed(2)} €</p>
-                    <p>Subtotal: ${subtotal.toFixed(2)} €</p>
+                    <div class="item-carrito-imagen">
+                        ${item.imagen_url
+                            ? `<img src="${item.imagen_url}" alt="${traducirProducto(item.nombre)}" onerror="this.parentElement.innerHTML='🛍️'">`
+                            : "🛍️"
+                        }
+                    </div>
+                    <div class="item-carrito-info">
+                        <h4>${traducirProducto(item.nombre)}</h4>
+                        <p>${t("precio")}: ${item.precio.toFixed(2)} €</p>
+                        <p>Subtotal: ${subtotal.toFixed(2)} €</p>
 
-                    <div class="controles-carrito">
-                        <button class="boton-cantidad" onclick="disminuirCantidad(${item.id_producto})">-</button>
-                        <strong>${item.cantidad}</strong>
-                        <button class="boton-cantidad" onclick="aumentarCantidad(${item.id_producto})">+</button>
-                        <button class="boton-eliminar" onclick="eliminarDelCarrito(${item.id_producto})">${t("eliminar")}</button>
+                        <div class="controles-carrito">
+                            <button class="boton-cantidad" onclick="disminuirCantidad(${item.id_producto})">-</button>
+                            <strong>${item.cantidad}</strong>
+                            <button class="boton-cantidad" onclick="aumentarCantidad(${item.id_producto})">+</button>
+                            <button class="boton-eliminar" onclick="eliminarDelCarrito(${item.id_producto})">${t("eliminar")}</button>
+                        </div>
                     </div>
                 `;
 
@@ -3918,13 +4109,13 @@
                 await cargarProductos(false);
             }
         }
-        const videoBoxing = "https://www.youtube.com/watch?v=uITAYo97mgU"
-        const videoMMA = "https://www.youtube.com/watch?v=1bn90TtnNRQ"
-        const videoBJJ = "https://www.youtube.com/watch?v=5H3ZI9yproE"
-        const videoMuayThai = "https://youtube.com/shorts/k2QTyGH1ZZI?si=-Mcjs4pgBPGzCcTt"
-        const videoJudo = "https://www.youtube.com/watch?v=bPGLd3yz0DE"
-        const videoKarate = "https://www.youtube.com/watch?v=wjlZKEToSE8&pp=ygUQcXVlIGVzIGVsIGthcmF0ZQ%3D%3D"
-        const videoTaekwondo = "https://www.youtube.com/watch?v=pVTqxx9-_Cg&pp=ygUTcXVlIGVzIGVsIHRhZWt3b25kbw%3D%3D"
+        const videoBoxing = "https://www.youtube.com/embed/uITAYo97mgU"
+        const videoMMA = "https://www.youtube.com/embed/1bn90TtnNRQ"
+        const videoBJJ = "https://www.youtube.com/embed/5H3ZI9yproE"
+        const videoMuayThai = "https://www.youtube.com/embed/k2QTyGH1ZZI?si=-Mcjs4pgBPGzCcTt"
+        const videoJudo = "https://www.youtube.com/embed/bPGLd3yz0DE"
+        const videoKarate = "https://www.youtube.com/embed/wjlZKEToSE8"
+        const videoTaekwondo = "https://www.youtube.com/embed/pVTqxx9-_Cg&pp=ygUTcXVlIGVzIGVsIHRhZWt3b25kbw%3D%3D"
 
         const guiaDeportes = {
             es: [
@@ -4000,7 +4191,7 @@
                     desventajas: "Can be demanding on shoulders, wrists and cardio. Sparring requires good supervision.",
                     valores: "Discipline, consistency, self-control, respect and personal growth.",
                     recomendado: "People who enjoy intense training, want better cardio and coordination, and prefer punching techniques without kicks.",
-                    video: "https://www.youtube.com/watch?v=TCu4S6kuVCE"
+                    video: "https://www.youtube.com/embed/TCu4S6kuVCE"
                 },
                 {
                     nombre: "MMA",
@@ -4009,7 +4200,7 @@
                     desventajas: "Has a broad learning curve and can be physically demanding for beginners.",
                     valores: "Versatility, humility, resilience, strategy and respect for different disciplines.",
                     recomendado: "People with strong motivation, interest in learning multiple areas and average fitness or willingness to improve gradually.",
-                    video: "https://www.youtube.com/watch?v=ybN-Xdbva2M"
+                    video: "https://www.youtube.com/embed/ybN-Xdbva2M"
                 },
                 {
                     nombre: "Brazilian Jiu-Jitsu",
@@ -4018,7 +4209,7 @@
                     desventajas: "Close physical contact can feel uncomfortable at first and it requires technical patience.",
                     valores: "Patience, humility, technique, self-control and problem-solving.",
                     recomendado: "People who prefer strategy, technique and ground fighting. Good option if you do not want to receive strikes.",
-                    video: "https://www.youtube.com/watch?v=5iRtVcssUH0"
+                    video: "https://www.youtube.com/embed/5iRtVcssUH0"
                 },
                 {
                     nombre: "Muay Thai",
@@ -4027,7 +4218,7 @@
                     desventajas: "Can be tough on legs, hips and shins. Requires gradual adaptation.",
                     valores: "Respect, mental toughness, tradition, discipline and effort tolerance.",
                     recomendado: "People looking for intense training, who like kicks and want to train the whole body.",
-                    video: "https://www.youtube.com/watch?v=mYy91yFUM-k&pp=ygURd2hhdCBpcyBtdWF5IHRoYWk%3D"
+                    video: "https://www.youtube.com/embed/mYy91yFUM-k"
                 },
                 {
                     nombre: "Judo",
@@ -4036,7 +4227,7 @@
                     desventajas: "Falls can be demanding at first and good technique is needed to prevent discomfort.",
                     valores: "Respect, courtesy, self-control, teamwork and efficient use of energy.",
                     recomendado: "People who enjoy physical work, grips, throws and partner-based training.",
-                    video: "https://www.youtube.com/watch?v=pgfKasoI5yc&pp=ygUMd2hhdCBpcyBqdWRv"
+                    video: "https://www.youtube.com/embed/pgfKasoI5yc"
                 },
                 {
                     nombre: "Karate",
@@ -4045,7 +4236,7 @@
                     desventajas: "Progress can feel gradual if you want intense sparring from the beginning.",
                     valores: "Respect, discipline, self-control, precision and personal development.",
                     recomendado: "People looking for a mix of technique, tradition, self-defense and mental development.",
-                    video: "https://www.youtube.com/watch?v=pyfmBvomiR0&pp=ygUOd2hhdCBpcyBrYXJhdGU%3D"
+                    video: "https://www.youtube.com/embed/pyfmBvomiR0"
                 },
                 {
                     nombre: "Taekwondo",
@@ -4054,7 +4245,7 @@
                     desventajas: "Can require significant hip mobility and flexibility, especially at higher levels.",
                     valores: "Courtesy, perseverance, self-control, indomitable spirit and respect.",
                     recomendado: "People who enjoy dynamic movement, kicks, agility and leg-focused training.",
-                    video: "https://www.youtube.com/watch?v=x4XQLwEzZsc"
+                    video: "https://www.youtube.com/embed/x4XQLwEzZsc"
                 }
             ],
            
@@ -4127,7 +4318,43 @@
             return texto;
         }
 
+
+        function convertirUrlYoutubeAEmbed(url) {
+            if (!url) return "";
+
+            let limpia = String(url).trim();
+
+            if (limpia.includes("youtube.com/embed/")) {
+                return limpia;
+            }
+
+            let videoId = "";
+
+            const watchMatch = limpia.match(/[?&]v=([^&]+)/);
+            if (watchMatch) {
+                videoId = watchMatch[1];
+            }
+
+            const shortMatch = limpia.match(/youtu\.be\/([^?&]+)/);
+            if (shortMatch) {
+                videoId = shortMatch[1];
+            }
+
+            const shortsMatch = limpia.match(/youtube\.com\/shorts\/([^?&]+)/);
+            if (shortsMatch) {
+                videoId = shortsMatch[1];
+            }
+
+            if (!videoId) {
+                return limpia;
+            }
+
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+
+
         function renderizarVideoDeporte(deporte) {
+            const videoEmbed = convertirUrlYoutubeAEmbed(deporte.video);
             const urlVideo = obtenerUrlVideoEmbebido(deporte.video);
 
             if (!urlVideo) {
@@ -4222,6 +4449,17 @@
     </script>
 
 
+    <!-- Lightbox de fotos de gimnasio -->
+    <div id="lightboxFondo" class="lightbox-fondo" onclick="cerrarLightbox(event)">
+        <button class="lightbox-cerrar" onclick="cerrarLightbox()">✕</button>
+        <img id="lightboxImg" class="lightbox-img" src="" alt="Foto del gimnasio" />
+        <div class="lightbox-controles">
+            <button class="lightbox-btn" onclick="lightboxAnterior()">&#8592;</button>
+            <span id="lightboxContador" class="lightbox-contador">1 / 1</span>
+            <button class="lightbox-btn" onclick="lightboxSiguiente()">&#8594;</button>
+        </div>
+    </div>
+
     <!-- Modal de mensajes personalizado -->
     <div id="modalMensajeFondo" class="modal-mensaje-fondo" onclick="cerrarMensajeModal(event)">
         <div class="modal-mensaje" role="dialog" aria-modal="true" aria-labelledby="modalMensajeTitulo" onclick="event.stopPropagation()">
@@ -4236,7 +4474,46 @@
 
 
     <script>
+        // ── Lightbox ──────────────────────────────────────────────
+        let lightboxFotos = [];
+        let lightboxIndice = 0;
+
+        function abrirLightbox(indice) {
+            lightboxIndice = indice;
+            actualizarLightbox();
+            document.getElementById("lightboxFondo").classList.add("activo");
+        }
+
+        function cerrarLightbox(event) {
+            if (event && event.target.id !== "lightboxFondo") return;
+            document.getElementById("lightboxFondo").classList.remove("activo");
+        }
+
+        function actualizarLightbox() {
+            const img = document.getElementById("lightboxImg");
+            const contador = document.getElementById("lightboxContador");
+            img.src = lightboxFotos[lightboxIndice];
+            contador.textContent = `${lightboxIndice + 1} / ${lightboxFotos.length}`;
+        }
+
+        function lightboxSiguiente() {
+            lightboxIndice = (lightboxIndice + 1) % lightboxFotos.length;
+            actualizarLightbox();
+        }
+
+        function lightboxAnterior() {
+            lightboxIndice = (lightboxIndice - 1 + lightboxFotos.length) % lightboxFotos.length;
+            actualizarLightbox();
+        }
+
         document.addEventListener("keydown", function(event) {
+            const lb = document.getElementById("lightboxFondo");
+            if (lb && lb.classList.contains("activo")) {
+                if (event.key === "ArrowRight") lightboxSiguiente();
+                else if (event.key === "ArrowLeft") lightboxAnterior();
+                else if (event.key === "Escape") lb.classList.remove("activo");
+                return;
+            }
             if (event.key === "Escape") {
                 cerrarMensajeModal();
             }

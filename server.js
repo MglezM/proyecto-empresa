@@ -79,6 +79,24 @@ app.get("/api/gimnasios", async (req, res) => {
     }
 });
 
+app.get("/api/gimnasios/:id_gimnasio/fotos", async (req, res) => {
+    try {
+        const { id_gimnasio } = req.params;
+
+        const result = await db.query(`
+            SELECT id_foto, id_gimnasio, url, orden
+            FROM gimnasio_fotos
+            WHERE id_gimnasio = $1
+            ORDER BY orden ASC, id_foto ASC
+        `, [id_gimnasio]);
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error obteniendo fotos del gimnasio:", error);
+        res.status(500).json({ error: "Error al obtener fotos del gimnasio" });
+    }
+});
+
 app.get("/api/gimnasios/:id_gimnasio/horarios", async (req, res) => {
     try {
         const { id_gimnasio } = req.params;
@@ -145,7 +163,12 @@ app.get("/api/productos", async (req, res) => {
             ORDER BY p.id_producto
         `);
 
-        res.json(result.rows);
+        // Asegurar que deportes es siempre un array real, no un string JSON
+        const rows = result.rows.map(p => ({
+            ...p,
+            deportes: typeof p.deportes === 'string' ? JSON.parse(p.deportes) : (p.deportes || [])
+        }));
+        res.json(rows);
     } catch (error) {
         console.error("Error obteniendo productos:", error);
         res.status(500).json({ error: "Error al obtener productos" });
