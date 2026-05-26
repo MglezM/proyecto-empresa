@@ -421,48 +421,77 @@ app.post("/api/pedidos", async (req, res) => {
     }
 });
 
+// Caché de noticias: se refresca cada 6 horas
+const CACHE_NOTICIAS_MS = 6 * 60 * 60 * 1000;
+let cacheNoticias = { datos: null, ultimaActualizacion: 0 };
+
+const deportesPorKeyword = (titulo = "") => {
+    const t = titulo.toLowerCase();
+    if (t.includes("ufc") || t.includes("mma")) return "MMA";
+    if (t.includes("box")) return "Boxeo";
+    if (t.includes("muay")) return "Muay Thai";
+    if (t.includes("jiu") || t.includes("bjj")) return "Jiu-Jitsu";
+    if (t.includes("kick")) return "Kickboxing";
+    return "Combate";
+};
+
+async function fetchNoticias() {
+    const url = `https://newsapi.org/v2/everything?q=MMA+UFC+boxing+muay+thai+kickboxing+jiu-jitsu&sortBy=publishedAt&pageSize=4&language=en&apiKey=${process.env.NEWS_API_KEY}`;
+    const respuesta = await fetch(url);
+    const data = await respuesta.json();
+
+    if (!respuesta.ok || data.status === "error") {
+        throw new Error(data.message || "Error NewsAPI");
+    }
+
+    return (data.articles || [])
+        .filter(a => a.title && a.description && a.title !== "[Removed]")
+        .slice(0, 4)
+        .map(a => ({
+            deporte: deportesPorKeyword(a.title),
+            titulo: a.title,
+            descripcion: a.description,
+            url: a.url
+        }));
+}
+
 app.get("/api/noticias", async (req, res) => {
     try {
-        const url = `https://newsapi.org/v2/everything?q=MMA+UFC+boxing+muay+thai+kickboxing+jiu-jitsu&sortBy=publishedAt&pageSize=4&language=en&apiKey=${process.env.NEWS_API_KEY}`;
+        const ahora = Date.now();
+        const cacheExpirada = ahora - cacheNoticias.ultimaActualizacion > CACHE_NOTICIAS_MS;
 
-        const respuesta = await fetch(url);
-        const data = await respuesta.json();
-
-        if (!respuesta.ok || data.status === "error") {
-            console.error("Error NewsAPI:", data);
-            return res.status(500).json({ error: "Error al consultar noticias" });
+        if (!cacheNoticias.datos || cacheExpirada) {
+            console.log("Actualizando caché de noticias...");
+            cacheNoticias.datos = await fetchNoticias();
+            cacheNoticias.ultimaActualizacion = ahora;
+        } else {
+            const minutosRestantes = Math.round((CACHE_NOTICIAS_MS - (ahora - cacheNoticias.ultimaActualizacion)) / 60000);
+            console.log(`Noticias desde caché (se actualiza en ${minutosRestantes} min)`);
         }
 
-        const deportesPorKeyword = (titulo = "") => {
-            const t = titulo.toLowerCase();
-            if (t.includes("ufc") || t.includes("mma")) return "MMA";
-            if (t.includes("box")) return "Boxeo";
-            if (t.includes("muay")) return "Muay Thai";
-            if (t.includes("jiu") || t.includes("bjj")) return "Jiu-Jitsu";
-            if (t.includes("kick")) return "Kickboxing";
-            return "Combate";
-        };
-
-        const noticias = (data.articles || [])
-            .filter(a => a.title && a.description && a.title !== "[Removed]")
-            .slice(0, 4)
-            .map(a => ({
-                deporte: deportesPorKeyword(a.title),
-                titulo: a.title,
-                descripcion: a.description,
-                url: a.url
-            }));
-
-        res.json(noticias);
+        res.json(cacheNoticias.datos);
 
     } catch (error) {
         console.error("Error en /api/noticias:", error);
+
+        // Si hay caché aunque sea antigua, devolverla antes que un error
+        if (cacheNoticias.datos) {
+            return res.json(cacheNoticias.datos);
+        }
+
         res.status(500).json({ error: "Error al obtener noticias" });
     }
 });
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", async () => {
     console.log(`Servidor iniciado en puerto ${PORT}`);
+    try {
+        cacheNoticias.datos = await fetchNoticias();
+        cacheNoticias.ultimaActualizacion = Date.now();
+        console.log("Noticias cargadas al inicio correctamente.");
+    } catch (e) {
+        console.warn("No se pudieron cargar las noticias al inicio:", e.message);
+    }
 });
