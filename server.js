@@ -446,7 +446,7 @@ app.post("/api/pedidos", async (req, res) => {
 });
 
 // Caché de noticias: se refresca cada 6 horas
-const CACHE_NOTICIAS_MS = 6 * 60 * 60 * 1000;
+const CACHE_NOTICIAS_MS = 6 * 60 * 60 * 1000; // 
 let cacheNoticias = { datos: null, ultimaActualizacion: 0 };
 
 const deportesPorKeyword = (titulo = "") => {
