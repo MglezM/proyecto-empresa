@@ -1,4 +1,4 @@
-# FightFinder - Documentación del proyecto
+# FightFinder 
 
 ## 1. Descripción general
 
